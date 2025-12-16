@@ -1,0 +1,22 @@
+notepad .\bootstrap_yta.sh
+source .venv/bin/activate
+python -m yt_automation.cli init
+python -m yt_automation.cli plan "ai tools" "productivity" --days 7
+python -m yt_automation.cli script --title "I Automated X for 7 Days" --kw "ai tools" --content-type long
+python -m yt_automation.cli thumb "STOP Doing This in AI Tools"
+python -m yt_automation.cli render project/scripts/I-Automated-X-for-7-Days.md --output-name auto.mp4
+python -m yt_automation.cli upload project/output/auto.mp4 --title "I Automated X for 7 Days" --thumb_path project/thumbs/STOP-Doing-This-in-AI-Tools.png --privacy_status private
+.\.venv\Scripts\Activate.ps1
+python -m yt_automation.cli init
+python -m yt_automation.cli plan "ai tools" "productivity" --days 7
+# …same commands as above
+your-folder/
+├─ config.yaml
+├─ requirements.txt
+├─ oauth_client_secret.json      # ← place this here
+├─ src/yt_automation/            # all code modules (CLI, upload, render, etc.)
+└─ project/
+   ├─ assets/    # music, b-roll, voiceovers
+   ├─ output/    # rendered MP4s
+   ├─ thumbs/    # generated thumbnails
+   └─ scripts/   # markdown scripts
