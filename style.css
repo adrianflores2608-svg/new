@@ -114,6 +114,8 @@ img { max-width: 100%; display: block; }
 }
 .logo { display: flex; align-items: center; gap: 0.5rem; margin-right: auto; }
 .logo-icon { font-size: 1.5rem; color: var(--gold); }
+.logo-img { width: 48px; height: 48px; object-fit: contain; border-radius: 50%; }
+.footer-logo { width: 64px; height: 64px; }
 .logo-text {
   font-family: 'Playfair Display', serif;
   font-size: 1.4rem;
