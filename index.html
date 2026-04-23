@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notorious Cutz Barbershop | San Benito, TX</title>
-  <link rel="stylesheet" href="style.css?v=5" />
+  <link rel="stylesheet" href="style.css?v=6" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 </head>
@@ -21,8 +21,10 @@
         <li><a href="#home">Home</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#faq">FAQ</a></li>
         <li><a href="#book">Book Now</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank">Facebook</a></li>
       </ul>
       <a href="#book" class="btn btn-nav">Book Appointment</a>
       <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -47,7 +49,7 @@
         <a href="tel:9568732957" class="btn btn-outline">&#128222; Call Us</a>
       </div>
       <div class="hero-info">
-        <div class="info-pill">&#128205; San Benito, TX</div>
+        <div class="info-pill">&#128205; 201B N Sam Houston, San Benito, TX</div>
         <div class="info-pill">&#128222; (956) 873-2957</div>
         <div class="info-pill">&#128336; Tue–Sat 11am–8pm</div>
       </div>
@@ -170,7 +172,8 @@
           </div>
           <div class="contact-quick">
             <a href="tel:9568732957" class="contact-link">&#128222; (956) 873-2957</a>
-            <span class="contact-link">&#128205; San Benito, TX</span>
+            <span class="contact-link">&#128205; 201B N Sam Houston, San Benito, TX</span>
+            <a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank" class="contact-link">&#128155; Facebook</a>
           </div>
         </div>
 
@@ -266,6 +269,27 @@
               <textarea id="notes" name="notes" rows="3" placeholder="Any special requests or style references..."></textarea>
             </div>
 
+            <div class="deposit-box">
+              <div class="deposit-header">
+                <span class="deposit-icon">&#128274;</span>
+                <div>
+                  <strong>Secure Your Spot with a $10 Deposit</strong>
+                  <p>Optional but recommended — guarantees your appointment and goes toward your service.</p>
+                </div>
+              </div>
+              <div class="deposit-options">
+                <label class="deposit-option">
+                  <input type="radio" name="deposit" value="yes" id="depositYes" />
+                  <span>Yes, I'll pay a $10 deposit (Venmo / CashApp / Zelle)</span>
+                </label>
+                <label class="deposit-option">
+                  <input type="radio" name="deposit" value="no" id="depositNo" checked />
+                  <span>No deposit — I understand no-shows may require one in the future</span>
+                </label>
+              </div>
+              <p class="deposit-note">If paying deposit: send $10 to <strong>(956) 873-2957</strong> with your name &amp; appointment date.</p>
+            </div>
+
             <div class="form-group consent-group">
               <label class="checkbox-label">
                 <input type="checkbox" id="smsConsent" name="smsConsent" required />
@@ -350,6 +374,7 @@
             <span class="ci-icon">&#128205;</span>
             <div>
               <strong>Location</strong>
+              <p>201B North Sam Houston</p>
               <p>San Benito, TX 78586</p>
             </div>
           </div>
@@ -376,11 +401,21 @@
               <p>4.9 Stars on Google</p>
             </div>
           </div>
-          <a href="tel:9568732957" class="btn btn-primary" style="margin-top:1.5rem;">&#128222; Call Now</a>
+          <div class="contact-item">
+            <span class="ci-icon">&#128155;</span>
+            <div>
+              <strong>Facebook</strong>
+              <p><a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank">Follow us on Facebook</a></p>
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;">
+            <a href="tel:9568732957" class="btn btn-primary">&#128222; Call Now</a>
+            <a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank" class="btn btn-outline">&#128155; Facebook</a>
+          </div>
         </div>
         <div class="map-wrap">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57474.82!2d-97.63!3d26.13!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x866fa41b27b5f3d9%3A0x7a7b7b7b7b7b7b7b!2sSan%20Benito%2C%20TX%2078586!5e0!3m2!1sen!2sus!4v1690000000000!5m2!1sen!2sus"
+            src="https://maps.google.com/maps?q=201+N+Sam+Houston,+San+Benito,+TX+78586&hl=en&z=16&output=embed"
             width="100%"
             height="400"
             style="border:0;border-radius:12px;"
@@ -390,6 +425,97 @@
             title="San Benito TX Map">
           </iframe>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
+      <p class="section-sub">Everything you need to know before you come in</p>
+      <div class="faq-grid">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Do I need an appointment or do you take walk-ins?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Appointments are strongly recommended so you don't have to wait. Walk-ins are welcome based on availability, but booking online guarantees your spot.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            How do I cancel or reschedule?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Call or text us at <a href="tel:9568732957">(956) 873-2957</a> at least 2 hours before your appointment and we'll take care of it — no problem at all.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            What happens if I don't show up?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>No-shows affect other clients waiting for that time slot. After a no-show, future bookings may require a $10 deposit to secure your appointment.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            How much does a haircut cost?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Services start at $15 for beard trims and kids cuts, $20 for a classic cut, and $25 for a skin fade. Check our full services menu above for all pricing.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Where are you located?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>We're at <strong>201B North Sam Houston, San Benito, TX 78586</strong>. See the map in the Contact section for directions.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            What are your hours?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>We're open <strong>Tuesday through Saturday, 11:00 AM – 8:00 PM</strong>. We are closed Sunday and Monday.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Do you cut kids' hair?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! Kids cuts (12 & under) are $15. We're patient and make sure your child is comfortable the whole time.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            What payment methods do you accept?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>We accept cash, Venmo, CashApp, and Zelle. Deposits for appointments can be sent to <strong>(956) 873-2957</strong>.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -415,8 +541,9 @@
         <div class="footer-contact">
           <h4>Contact Us</h4>
           <p>&#128222; <a href="tel:9568732957">(956) 873-2957</a></p>
-          <p>&#128205; San Benito, TX 78586</p>
+          <p>&#128205; 201B N Sam Houston, San Benito, TX</p>
           <p>&#11088; 4.9 Stars on Google</p>
+          <p>&#128155; <a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank">Facebook</a></p>
         </div>
       </div>
       <div class="footer-bottom">

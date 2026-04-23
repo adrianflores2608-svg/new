@@ -646,6 +646,81 @@ img { max-width: 100%; display: block; }
   .booking-form-wrap { padding: 1.5rem; }
 }
 
+/* ── Deposit Box ── */
+.deposit-box {
+  background: rgba(220,32,32,0.06);
+  border: 1px solid rgba(220,32,32,0.25);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.1rem;
+}
+.deposit-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.deposit-icon { font-size: 1.4rem; flex-shrink: 0; }
+.deposit-header strong { color: var(--white); display: block; margin-bottom: 0.25rem; font-size: 0.95rem; }
+.deposit-header p { color: var(--text-muted); font-size: 0.85rem; }
+.deposit-options { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 0.75rem; }
+.deposit-option { display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; }
+.deposit-option input[type="radio"] { margin-top: 3px; accent-color: var(--gold); flex-shrink: 0; }
+.deposit-option span { color: #ccc; font-size: 0.88rem; line-height: 1.4; }
+.deposit-note { color: var(--text-muted); font-size: 0.82rem; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 0.75rem; }
+.deposit-note strong { color: var(--gold); }
+
+/* ── FAQ ── */
+.faq { padding: 5rem 0; background: var(--dark-2); }
+.faq-grid { display: flex; flex-direction: column; gap: 0.75rem; max-width: 800px; margin: 0 auto; }
+.faq-item {
+  background: var(--dark-3);
+  border: 1px solid var(--dark-4);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.faq-item:hover { border-color: rgba(220,32,32,0.3); }
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.5rem;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 0.98rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s;
+}
+.faq-question:hover { color: var(--gold); }
+.faq-question[aria-expanded="true"] { color: var(--gold); }
+.faq-icon {
+  font-size: 1.4rem;
+  color: var(--gold);
+  flex-shrink: 0;
+  transition: transform 0.3s;
+  line-height: 1;
+}
+.faq-question[aria-expanded="true"] .faq-icon { transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  padding: 0 1.5rem;
+}
+.faq-answer.open {
+  max-height: 200px;
+  padding: 0 1.5rem 1.25rem;
+}
+.faq-answer p { color: #aaa; font-size: 0.92rem; line-height: 1.7; }
+.faq-answer a { color: var(--gold); }
+
 /* ── Animations ── */
 .fade-up {
   opacity: 0;
