@@ -162,21 +162,21 @@ function scheduleReminders(data) {
   // Here we log the actions that would be triggered.
   const confirmPayload = {
     to: data.phone,
-    message: `Hi ${data.firstName}! Your appointment at Elite Cuts on ${data.apptDate} at ${data.apptTime} is confirmed. Reply CANCEL to cancel (must be 2+ hrs before). (956) 873-2957`
+    message: `Hi ${data.firstName}! Your appointment at Notorious Cutz on ${data.apptDate} at ${data.apptTime} is confirmed. Reply CANCEL to cancel (must be 2+ hrs before). (956) 873-2957`
   };
   const reminder24Payload = {
     to: data.phone,
-    message: `Reminder: You have an appointment at Elite Cuts tomorrow at ${data.apptTime}. Need to cancel? Call (956) 873-2957 at least 2 hrs before.`
+    message: `Reminder: You have an appointment at Notorious Cutz tomorrow at ${data.apptTime}. Need to cancel? Call (956) 873-2957 at least 2 hrs before.`
   };
   const reminder2hPayload = {
     to: data.phone,
-    message: `Your Elite Cuts appointment is in 2 hours (${data.apptTime})! See you soon. Call (956) 873-2957 if you need to reschedule.`
+    message: `Your Notorious Cutz appointment is in 2 hours (${data.apptTime})! See you soon. Call (956) 873-2957 if you need to reschedule.`
   };
 
-  console.info('[Elite Cuts] SMS Confirmation queued:', confirmPayload);
-  console.info('[Elite Cuts] 24-hr Reminder queued:', reminder24Payload);
-  console.info('[Elite Cuts] 2-hr Reminder queued:', reminder2hPayload);
-  console.info('[Elite Cuts] Email confirmation queued to:', data.email);
+  console.info('[Notorious Cutz] SMS Confirmation queued:', confirmPayload);
+  console.info('[Notorious Cutz] 24-hr Reminder queued:', reminder24Payload);
+  console.info('[Notorious Cutz] 2-hr Reminder queued:', reminder2hPayload);
+  console.info('[Notorious Cutz] Email confirmation queued to:', data.email);
 }
 
 function resetForm() {

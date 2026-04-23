@@ -1,18 +1,18 @@
 /* ============================================================
-   ELITE CUTS BARBERSHOP — Main Stylesheet
+   NOTORIOUS CUTZ BARBERSHOP — Main Stylesheet
    ============================================================ */
 
 :root {
-  --gold: #c9a84c;
-  --gold-light: #e8c96a;
-  --gold-dark: #9e7c2e;
+  --gold: #dc2020;
+  --gold-light: #ff3b3b;
+  --gold-dark: #a81010;
   --dark: #0d0d0d;
-  --dark-2: #161616;
-  --dark-3: #1f1f1f;
-  --dark-4: #2a2a2a;
+  --dark-2: #111111;
+  --dark-3: #1a1a1a;
+  --dark-4: #222222;
   --mid: #3a3a3a;
-  --light: #f5f0e8;
-  --lighter: #faf8f3;
+  --light: #f5f0f0;
+  --lighter: #faf8f8;
   --white: #ffffff;
   --text-muted: #999;
   --text-body: #ccc;
@@ -20,8 +20,8 @@
   --green: #27ae60;
   --radius: 12px;
   --radius-lg: 20px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.3);
-  --shadow-gold: 0 4px 24px rgba(201,168,76,0.2);
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-gold: 0 4px 24px rgba(220,32,32,0.25);
 }
 
 /* ── Reset ── */
@@ -165,8 +165,8 @@ img { max-width: 100%; display: block; }
   justify-content: center;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 60% 40%, rgba(201,168,76,0.12) 0%, transparent 60%),
-    linear-gradient(135deg, #0d0d0d 0%, #1a1507 50%, #0d0d0d 100%);
+    radial-gradient(ellipse at 60% 40%, rgba(220,32,32,0.12) 0%, transparent 60%),
+    linear-gradient(135deg, #0d0d0d 0%, #1a0505 50%, #0d0d0d 100%);
 }
 .hero::before {
   content: '';
@@ -177,14 +177,14 @@ img { max-width: 100%; display: block; }
       45deg,
       transparent,
       transparent 60px,
-      rgba(201,168,76,0.03) 60px,
-      rgba(201,168,76,0.03) 61px
+      rgba(220,32,32,0.04) 60px,
+      rgba(220,32,32,0.04) 61px
     );
 }
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center bottom, rgba(201,168,76,0.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center bottom, rgba(220,32,32,0.08) 0%, transparent 70%);
 }
 .hero-content {
   position: relative;
@@ -197,8 +197,8 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(201,168,76,0.15);
-  border: 1px solid rgba(201,168,76,0.3);
+  background: rgba(220,32,32,0.15);
+  border: 1px solid rgba(220,32,32,0.3);
   border-radius: 50px;
   padding: 0.5rem 1.25rem;
   margin-bottom: 2rem;
@@ -307,7 +307,7 @@ img { max-width: 100%; display: block; }
 .service-card:hover { border-color: var(--gold); transform: translateY(-4px); }
 .service-card.featured {
   border-color: var(--gold);
-  background: linear-gradient(135deg, var(--dark-3) 0%, rgba(201,168,76,0.08) 100%);
+  background: linear-gradient(135deg, var(--dark-3) 0%, rgba(220,32,32,0.08) 100%);
 }
 .badge {
   position: absolute;
@@ -354,7 +354,7 @@ img { max-width: 100%; display: block; }
 .gallery-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(201,168,76,0.85);
+  background: rgba(220,32,32,0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -365,12 +365,12 @@ img { max-width: 100%; display: block; }
   transition: opacity 0.3s;
   letter-spacing: 1px;
 }
-.g1 { background: linear-gradient(135deg, #1a1507 0%, #2d2010 50%, #1a1507 100%); }
-.g2 { background: linear-gradient(135deg, #0f1a1a 0%, #102020 50%, #0f1a1a 100%); }
-.g3 { background: linear-gradient(135deg, #1a0f0a 0%, #2d1810 50%, #1a0f0a 100%); }
-.g4 { background: linear-gradient(135deg, #12101a 0%, #1e1830 50%, #12101a 100%); }
-.g5 { background: linear-gradient(135deg, #0a1a0a 0%, #102010 50%, #0a1a0a 100%); }
-.g6 { background: linear-gradient(135deg, #1a1a0a 0%, #28280f 50%, #1a1a0a 100%); }
+.g1 { background: linear-gradient(135deg, #1a0505 0%, #2d0a0a 50%, #1a0505 100%); }
+.g2 { background: linear-gradient(135deg, #0f0505 0%, #200a0a 50%, #0f0505 100%); }
+.g3 { background: linear-gradient(135deg, #1a0808 0%, #2d1010 50%, #1a0808 100%); }
+.g4 { background: linear-gradient(135deg, #120505 0%, #1e0808 50%, #120505 100%); }
+.g5 { background: linear-gradient(135deg, #0d0505 0%, #1a0808 50%, #0d0505 100%); }
+.g6 { background: linear-gradient(135deg, #1a0505 0%, #280808 50%, #1a0505 100%); }
 .g1::after, .g2::after, .g3::after, .g4::after, .g5::after, .g6::after {
   content: '✂';
   position: absolute;
@@ -406,7 +406,7 @@ img { max-width: 100%; display: block; }
 }
 .policy-box {
   background: var(--dark-3);
-  border: 1px solid rgba(201,168,76,0.3);
+  border: 1px solid rgba(220,32,32,0.3);
   border-left: 4px solid var(--gold);
   border-radius: var(--radius);
   padding: 1.5rem;
@@ -454,7 +454,7 @@ img { max-width: 100%; display: block; }
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+  box-shadow: 0 0 0 3px rgba(220,32,32,0.12);
 }
 .form-group input.invalid,
 .form-group select.invalid,
@@ -508,8 +508,8 @@ img { max-width: 100%; display: block; }
 }
 .success-reminders p { color: #aaa; font-size: 0.9rem; margin-bottom: 0.4rem; }
 .cancel-note {
-  background: rgba(201,168,76,0.08);
-  border: 1px solid rgba(201,168,76,0.2);
+  background: rgba(220,32,32,0.08);
+  border: 1px solid rgba(220,32,32,0.2);
   border-radius: 8px;
   padding: 1rem;
   font-size: 0.9rem;
