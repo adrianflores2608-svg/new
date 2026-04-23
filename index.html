@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notorious Cutz Barbershop | San Benito, TX</title>
-  <link rel="stylesheet" href="style.css?v=10" />
+  <link rel="stylesheet" href="style.css?v=11" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="config.js"></script>
@@ -179,7 +179,11 @@
         </div>
 
         <div class="booking-form-wrap">
-          <form class="booking-form" id="bookingForm" novalidate>
+          <form class="booking-form" id="bookingForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+            <input type="hidden" name="access_key" value="PASTE_KEY_HERE" />
+            <input type="hidden" name="subject" value="New Appointment Request — Notorious Cutz" />
+            <input type="hidden" name="from_name" value="Notorious Cutz Website" />
+            <input type="hidden" name="redirect" value="false" />
             <h3>Reserve Your Spot</h3>
 
             <div class="form-row">

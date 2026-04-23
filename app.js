@@ -197,29 +197,42 @@ form && form.addEventListener('submit', (e) => {
 function submitBooking(data) {
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.textContent = 'Booking...';
+  btn.textContent = 'Sending...';
 
-  // Simulate async API call (replace with real backend integration)
-  setTimeout(() => {
-    const serviceLabel = document.getElementById('service').selectedOptions[0].text;
-    const dateFormatted = new Date(data.apptDate + 'T00:00:00').toLocaleDateString('en-US', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
+  const formData = new FormData(form);
 
-    const details = document.getElementById('successDetails');
-    details.innerHTML = `
-      <strong>${data.firstName} ${data.lastName}</strong>, your appointment is confirmed!<br/>
-      <span style="color:#c9a84c">&#128336; ${dateFormatted} at ${data.apptTime}</span><br/>
-      <span>${serviceLabel}</span>
-    `;
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(json => {
+    if (json.success) {
+      const serviceLabel = document.getElementById('service').selectedOptions[0].text;
+      const dateFormatted = new Date(data.apptDate + 'T00:00:00').toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      const details = document.getElementById('successDetails');
+      details.innerHTML = `
+        <strong>${data.firstName} ${data.lastName}</strong>, your appointment is confirmed!<br/>
+        <span style="color:#dc2020">&#128336; ${dateFormatted} at ${data.apptTime}</span><br/>
+        <span>${serviceLabel}</span>
+      `;
+      form.style.display = 'none';
+      successPanel.style.display = 'block';
+      successPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Confirm Appointment';
+      alert('Something went wrong. Please call us at (956) 873-2957 to book.');
+    }
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.textContent = 'Confirm Appointment';
+    alert('Could not send. Please call us at (956) 873-2957 to book.');
+  });
 
-    form.style.display = 'none';
-    successPanel.style.display = 'block';
-    successPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-    // Simulated reminder system output
-    scheduleReminders(data);
-  }, 1200);
 }
 
 function scheduleReminders(data) {
