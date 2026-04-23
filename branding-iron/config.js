@@ -101,7 +101,6 @@ const SHOP = {
       icon: "🥤",
       items: [
         { name: "Fountain Drinks",                 desc: "Cola, Diet Cola, Lemon-Lime and more",                                                       price: "",       popular: false },
-        { name: "Milkshakes",                      desc: "Thick and creamy milkshakes",                                                                price: "",       popular: true  },
       ]
     },
   ],
