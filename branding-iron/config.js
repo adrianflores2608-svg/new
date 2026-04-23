@@ -34,7 +34,7 @@ const SHOP = {
   colorAccent:  "#8B4513",
 
   // ── Images ─────────────────────────────────────────────────
-  logo:      "logo.png",
+  logo:      "../34BB0028-608C-4D8B-98D1-D99C4C9FE6A5.png",
   heroBg:    "hero.jpg",
   gallery: [
     { file: "food1.jpg", label: "Signature Burger" },
