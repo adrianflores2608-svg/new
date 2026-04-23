@@ -19,7 +19,7 @@ const SHOP = {
   zip:         "78550",
 
   // ── Social ─────────────────────────────────────────────────
-  facebook:    "",
+  facebook:    "https://www.facebook.com/share/1Cy2xuELfp/?mibextid=wwXIfr",
   instagram:   "",
 
   // ── Hours ──────────────────────────────────────────────────
@@ -35,13 +35,13 @@ const SHOP = {
 
   // ── Images ─────────────────────────────────────────────────
   logo:      "../34BB0028-608C-4D8B-98D1-D99C4C9FE6A5.png",
-  heroBg:    "hero.jpg",
+  heroBg:    "../IMG_7042.jpeg",
   gallery: [
-    { file: "food1.jpg", label: "Signature Burger" },
-    { file: "food2.jpg", label: "BBQ Stack"        },
-    { file: "food3.jpg", label: "Loaded Fries"     },
-    { file: "food4.jpg", label: "Combo Meal"       },
-    { file: "food5.jpg", label: "The Shop"         },
+    { file: "../IMG_7042.jpeg", label: "Signature Burger" },
+    { file: "../IMG_7043.jpeg", label: "BBQ Stack"        },
+    { file: "../IMG_7044.jpeg", label: "Loaded Fries"     },
+    { file: "../IMG_7045.jpeg", label: "Combo Meal"       },
+    { file: "../IMG_7046.jpeg", label: "The Shop"         },
   ],
 
   // ── Menu ───────────────────────────────────────────────────
