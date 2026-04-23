@@ -1,0 +1,6 @@
+config.yaml
+leads.csv
+__pycache__/
+*.pyc
+.venv/
+venv/
