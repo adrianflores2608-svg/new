@@ -47,61 +47,61 @@ const SHOP = {
   // ── Menu ───────────────────────────────────────────────────
   menu: [
     {
-      category: "Burgers",
+      category: "Burgers & Combos",
       icon: "🍔",
       items: [
-        { name: "Half Pound Burger",        desc: "Juicy half pound beef patty — build it your way with jalapeños, lettuce, tomato, pickles & more at the condiment bar", price: "", popular: true  },
-        { name: "Double Meat Burger",       desc: "Two beef patties stacked high — customize your toppings at the condiment bar",                                          price: "", popular: false },
-        { name: "Triple Meat Burger",       desc: "Three patties for the serious burger lover — load it up your way",                                                      price: "", popular: false },
-        { name: "Fish Sandwich",            desc: "Crispy golden fish fillet with your choice of toppings",                                                                price: "$6.35", popular: false },
-        { name: "Chicken Fried Sandwich",   desc: "Golden fried chicken sandwich — fresh toppings your way",                                                              price: "$6.35", popular: false },
-        { name: "Hot Dog",                  desc: "Classic Texas-style hot dog",                                                                                           price: "", popular: false },
-      ]
-    },
-    {
-      category: "Combos",
-      icon: "🤠",
-      items: [
-        { name: "Double Meat Burger Combo", desc: "Double meat burger + fries + drink",                           price: "$13.79", popular: true  },
-        { name: "Triple Meat Burger Combo", desc: "Triple meat burger + fries + drink",                           price: "$14.99", popular: false },
-        { name: "Half Pound Burger Combo",  desc: "Half pound burger + fries + drink",                            price: "$14.99", popular: false },
+        { name: "Double Meat Burger Combo",       desc: "Double beef patty burger + fries + drink",                                                    price: "$13.79", popular: true  },
+        { name: "Half Pound Burger Combo",         desc: "Juicy half pound beef patty burger + fries + drink",                                         price: "$14.99", popular: false },
+        { name: "Triple Meat Burger Combo",        desc: "Triple beef patty burger + fries + drink",                                                   price: "$14.99", popular: false },
+        { name: "Phillipe Cheese Sandwich Combo",  desc: "Phillipe cheese sandwich + fries + drink",                                                   price: "$14.99", popular: false },
+        { name: "Pulled Pork on Bun Combo",        desc: "Tender pulled pork on a bun + fries + drink",                                               price: "$14.39", popular: false },
+        { name: "3 Chicken Strip Combo",           desc: "3 crispy chicken strips + fries + drink",                                                    price: "$13.55", popular: false },
+        { name: "Jumbo Hot-Dog Combo",             desc: "Jumbo hot dog + fries + drink",                                                              price: "$11.15", popular: false },
+        { name: "Chicken Fried Sandwich",          desc: "Golden fried chicken sandwich with your choice of toppings",                                 price: "$6.35",  popular: false },
+        { name: "Fish Sandwich",                   desc: "Crispy golden fish fillet with fresh toppings",                                              price: "$6.35",  popular: false },
       ]
     },
     {
       category: "Wings",
       icon: "🍗",
       items: [
-        { name: "Buffalo Wings",            desc: "Crispy wings tossed in classic buffalo sauce",                 price: "", popular: true  },
-        { name: "Mango Wings",              desc: "Sweet and tangy mango glazed wings",                           price: "", popular: false },
+        { name: "Buffalo Wings",                   desc: "Crispy wings tossed in classic buffalo sauce",                                               price: "",       popular: true  },
+        { name: "Mango Wings",                     desc: "Sweet and tangy mango glazed wings",                                                         price: "",       popular: false },
       ]
     },
     {
       category: "Sides",
       icon: "🍟",
       items: [
-        { name: "Fries",                    desc: "Classic golden fries",                                         price: "", popular: false },
-        { name: "Cheese Fries",             desc: "Fries topped with melted cheese",                              price: "", popular: true  },
-        { name: "Seasoned Fries",           desc: "Fries with our signature seasoning blend",                     price: "", popular: false },
-        { name: "Sweet Potato Fries",       desc: "Crispy sweet potato fries",                                    price: "", popular: false },
-        { name: "Tater Tots",               desc: "Golden crispy tater tots",                                     price: "", popular: false },
-        { name: "Onion Rings",              desc: "Golden crispy onion rings",                                    price: "", popular: false },
-        { name: "Bacon Fries",              desc: "Fries loaded with crispy bacon",                               price: "", popular: false },
-        { name: "Nachos",                   desc: "Loaded nachos",                                                price: "$4.99", popular: false },
+        { name: "Nachos",                          desc: "Loaded nachos with cheese",                                                                  price: "$4.99",  popular: true  },
+        { name: "Cheese Sticks",                   desc: "Golden fried mozzarella cheese sticks with dipping sauce",                                  price: "$4.49",  popular: false },
+        { name: "Fries",                           desc: "Classic golden fries",                                                                       price: "",       popular: false },
+        { name: "Cheese Fries",                    desc: "Fries topped with melted cheese",                                                            price: "",       popular: false },
+        { name: "Seasoned Fries",                  desc: "Fries with signature seasoning blend",                                                       price: "",       popular: false },
+        { name: "Sweet Potato Fries",              desc: "Crispy sweet potato fries",                                                                  price: "",       popular: false },
+        { name: "Tater Tots",                      desc: "Golden crispy tater tots",                                                                   price: "",       popular: false },
+        { name: "Onion Rings",                     desc: "Golden crispy onion rings",                                                                  price: "",       popular: false },
+        { name: "Bacon Fries",                     desc: "Fries loaded with crispy bacon",                                                             price: "",       popular: false },
       ]
     },
     {
-      category: "Kids",
+      category: "Kids Combos",
       icon: "👦",
       items: [
-        { name: "Kids Combo",               desc: "Kid-sized burger + fries + drink — perfect for the little ones", price: "", popular: false },
+        { name: "Kids 4 Count Chicken Nugget",     desc: "4 nuggets + small fries + soda (Cola, Diet Cola, or Lemon-Lime)",                           price: "$5.99",  popular: false },
+        { name: "Kids 6 Count Chicken Nugget",     desc: "6 chicken nuggets + small fries + soda (Cola, Diet Cola, or Lemon-Lime)",                   price: "$6.99",  popular: true  },
+        { name: "Kids Burger Combo",               desc: "Juicy burger + small fries + soda (Cola, Diet Cola, or Lemon-Lime)",                        price: "$6.99",  popular: false },
+        { name: "Kids Burrito Combo",              desc: "Soft tortilla wrap + small fries + soda (Cola, Diet Cola, or Lemon-Lime)",                  price: "$5.99",  popular: false },
+        { name: "Kids Corn Dog Combo",             desc: "Mini hotdog in cornmeal batter + small fries + soda (Cola, Diet Cola, or Lemon-Lime)",      price: "$5.99",  popular: false },
+        { name: "Kids Hot Dog Combo",              desc: "Hot dog + small fries + soda (Cola, Diet Cola, or Lemon-Lime)",                             price: "$6.99",  popular: false },
       ]
     },
     {
       category: "Drinks",
       icon: "🥤",
       items: [
-        { name: "Fountain Drinks",          desc: "Coke, Sprite, Dr Pepper, Sweet Tea and more",                  price: "", popular: false },
-        { name: "Milkshakes",              desc: "Thick and creamy milkshakes",                                   price: "", popular: true  },
+        { name: "Fountain Drinks",                 desc: "Cola, Diet Cola, Lemon-Lime and more",                                                       price: "",       popular: false },
+        { name: "Milkshakes",                      desc: "Thick and creamy milkshakes",                                                                price: "",       popular: true  },
       ]
     },
   ],
