@@ -264,7 +264,16 @@ img { max-width: 100%; display: block; }
 /* ── Why Us ── */
 .why-us {
   padding: 5rem 0;
-  background: var(--dark-2);
+  position: relative;
+  background: url('IMG_7025.jpeg') center center / cover no-repeat fixed;
+  isolation: isolate;
+}
+.why-us::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  z-index: -1;
 }
 .features-grid {
   display: grid;
@@ -273,17 +282,25 @@ img { max-width: 100%; display: block; }
   margin-top: 3rem;
 }
 .feature-card {
-  background: var(--dark-3);
-  border: 1px solid var(--dark-4);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
   padding: 2rem;
   text-align: center;
-  transition: border-color 0.3s, transform 0.3s;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 0.3s, transform 0.3s, background 0.3s;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
-.feature-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.feature-card:hover {
+  border-color: var(--gold);
+  background: rgba(220, 32, 32, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(220, 32, 32, 0.15);
+}
 .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-.feature-card h3 { color: var(--white); font-size: 1.1rem; margin-bottom: 0.5rem; }
-.feature-card p { color: var(--text-muted); font-size: 0.9rem; }
+.feature-card h3 { color: var(--white); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700; }
+.feature-card p { color: #bbb; font-size: 0.9rem; }
 
 /* ── Services ── */
 .services {
