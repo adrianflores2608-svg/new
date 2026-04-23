@@ -1,6 +1,69 @@
 /* ============================================================
-   ELITE CUTS BARBERSHOP — Main JS
+   BARBERSHOP WEBSITE — Main JS
+   Edit config.js to rebrand for a new client.
    ============================================================ */
+
+// ── Apply config values to the page ──
+(function applyConfig() {
+  if (typeof SHOP === 'undefined') return;
+
+  // Colors
+  document.documentElement.style.setProperty('--gold', SHOP.colorPrimary);
+  document.documentElement.style.setProperty('--gold-light', SHOP.colorHover);
+
+  // Page title
+  document.title = `${SHOP.name} Barbershop | ${SHOP.city}, ${SHOP.state}`;
+
+  // All phone links
+  document.querySelectorAll('a[href^="tel:"]').forEach(a => {
+    a.href = `tel:${SHOP.phoneRaw}`;
+    if (a.textContent.includes('873') || a.textContent.includes('956')) {
+      a.textContent = SHOP.phone;
+    }
+  });
+
+  // Facebook links
+  if (SHOP.facebook) {
+    document.querySelectorAll('a[href*="facebook"]').forEach(a => {
+      a.href = SHOP.facebook;
+    });
+  }
+
+  // Swap logo src
+  document.querySelectorAll('.logo-img').forEach(img => {
+    img.src = SHOP.logo;
+    img.alt = `${SHOP.name} Logo`;
+  });
+
+  // Shop background photo
+  const whyUs = document.querySelector('.why-us');
+  if (whyUs) whyUs.style.backgroundImage = `url('${SHOP.shopPhoto}')`;
+
+  // Populate time slots dynamically
+  const timeSelect = document.getElementById('apptTime');
+  if (timeSelect && SHOP.timeSlots) {
+    timeSelect.innerHTML = '<option value="">-- Select Time --</option>';
+    SHOP.timeSlots.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t; opt.textContent = t;
+      timeSelect.appendChild(opt);
+    });
+  }
+
+  // Populate barber options
+  const barberSelect = document.getElementById('barber');
+  if (barberSelect && SHOP.barbers) {
+    barberSelect.innerHTML = '';
+    SHOP.barbers.forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b.value; opt.textContent = b.label;
+      barberSelect.appendChild(opt);
+    });
+  }
+
+  // Closed days validation
+  window.CLOSED_DAYS = SHOP.closedDays || [0];
+})();
 
 // ── Navbar scroll effect ──
 const navbar = document.getElementById('navbar');
@@ -30,12 +93,12 @@ if (dateInput) {
   else if (dayOfWeek === 1) minDate.setDate(minDate.getDate() + 1);
   dateInput.min = minDate.toISOString().split('T')[0];
 
-  // Block Sundays and Mondays
+  // Block closed days from config
   dateInput.addEventListener('input', () => {
     const chosen = new Date(dateInput.value + 'T00:00:00');
-    const d = chosen.getDay();
-    if (d === 0 || d === 1) {
-      showFieldError('apptDate', 'We are closed Sunday & Monday. Please pick Tue–Sat.');
+    const closed = window.CLOSED_DAYS || [0, 1];
+    if (closed.includes(chosen.getDay())) {
+      showFieldError('apptDate', 'We are closed that day. Please pick an open day.');
       dateInput.value = '';
     } else {
       clearFieldError('apptDate');
