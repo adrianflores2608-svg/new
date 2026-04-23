@@ -23,11 +23,9 @@ const SHOP = {
   instagram:   "",
 
   // ── Hours ──────────────────────────────────────────────────
-  hoursShort:  "Mon–Sun 10am–10pm",
+  hoursShort:  "Open Daily 11am–9pm",
   hours: [
-    { day: "Monday–Thursday", time: "10:00 AM – 10:00 PM" },
-    { day: "Friday–Saturday", time: "10:00 AM – 11:00 PM" },
-    { day: "Sunday",          time: "11:00 AM – 9:00 PM"  },
+    { day: "Monday–Sunday", time: "11:00 AM – 9:10 PM" },
   ],
 
   // ── Colors ─────────────────────────────────────────────────
@@ -52,39 +50,48 @@ const SHOP = {
       category: "Burgers",
       icon: "🍔",
       items: [
-        { name: "The Branding Iron",   desc: "Double smash patty, cheddar, caramelized onions, house sauce",  price: "$12.99", popular: true  },
-        { name: "Texas BBQ Burger",    desc: "Smoked brisket, BBQ sauce, onion rings, pepper jack",           price: "$13.99", popular: false },
-        { name: "Classic Smash",       desc: "Single smash patty, American cheese, pickles, mustard",        price: "$9.99",  popular: false },
-        { name: "Jalapeño Inferno",    desc: "Double patty, jalapeños, ghost pepper sauce, pepper jack",     price: "$13.99", popular: false },
-        { name: "Mushroom Swiss",      desc: "Sautéed mushrooms, Swiss cheese, garlic aioli",                price: "$11.99", popular: false },
-      ]
-    },
-    {
-      category: "Sides",
-      icon: "🍟",
-      items: [
-        { name: "Loaded Fries",        desc: "Crispy fries, cheese sauce, bacon, jalapeños",                 price: "$6.99",  popular: true  },
-        { name: "Onion Rings",         desc: "Beer battered, golden crispy",                                 price: "$5.99",  popular: false },
-        { name: "Regular Fries",       desc: "Seasoned with our Texas blend",                                price: "$3.99",  popular: false },
-        { name: "Coleslaw",            desc: "House-made creamy coleslaw",                                   price: "$2.99",  popular: false },
-      ]
-    },
-    {
-      category: "Drinks",
-      icon: "🥤",
-      items: [
-        { name: "Fountain Drinks",     desc: "Coke, Sprite, Dr Pepper, Sweet Tea",                          price: "$2.99",  popular: false },
-        { name: "Milkshakes",          desc: "Vanilla, Chocolate, Strawberry",                              price: "$5.99",  popular: true  },
-        { name: "Lemonade",            desc: "Fresh squeezed, regular or strawberry",                       price: "$3.99",  popular: false },
+        { name: "Half Pound Burger",        desc: "Juicy half pound beef patty with your choice of toppings — jalapeños, lettuce, tomato, pickles",  price: "", popular: true  },
+        { name: "Double Meat Burger",       desc: "Two beef patties stacked high with fresh toppings your way",                                       price: "", popular: false },
+        { name: "Triple Meat Burger",       desc: "Three patties for the serious burger lover",                                                       price: "", popular: false },
+        { name: "Fish Sandwich",            desc: "Crispy fish fillet with fresh toppings",                                                           price: "$6.35", popular: false },
+        { name: "Chicken Fried Sandwich",   desc: "Golden fried chicken sandwich with your choice of toppings",                                       price: "$6.35", popular: false },
       ]
     },
     {
       category: "Combos",
       icon: "🤠",
       items: [
-        { name: "Classic Combo",       desc: "Any burger + fries + drink",                                  price: "$14.99", popular: true  },
-        { name: "Family Pack",         desc: "4 burgers + 4 fries + 4 drinks",                              price: "$49.99", popular: false },
-        { name: "Kids Meal",           desc: "Small burger + small fries + drink + toy",                    price: "$7.99",  popular: false },
+        { name: "Double Meat Burger Combo", desc: "Double meat burger + fries + drink",                     price: "$13.79", popular: true  },
+        { name: "Triple Meat Burger Combo", desc: "Triple meat burger + fries + drink",                     price: "$14.99", popular: false },
+        { name: "Half Pound Burger Combo",  desc: "Half pound burger + fries + drink",                      price: "$14.99", popular: false },
+      ]
+    },
+    {
+      category: "Wings",
+      icon: "🍗",
+      items: [
+        { name: "Buffalo Wings",            desc: "Crispy wings tossed in buffalo sauce",                   price: "", popular: true  },
+      ]
+    },
+    {
+      category: "Sides",
+      icon: "🍟",
+      items: [
+        { name: "Nachos",                   desc: "Loaded nachos",                                          price: "$4.99", popular: true  },
+      ]
+    },
+    {
+      category: "Kids",
+      icon: "👦",
+      items: [
+        { name: "Kids Combo",               desc: "Kid-sized burger combo with fries and drink",            price: "", popular: false },
+      ]
+    },
+    {
+      category: "Drinks",
+      icon: "🥤",
+      items: [
+        { name: "Fountain Drinks",          desc: "Coke, Sprite, Dr Pepper, Sweet Tea and more",           price: "", popular: false },
       ]
     },
   ],
