@@ -34,14 +34,14 @@ const SHOP = {
   colorAccent:  "#8B4513",
 
   // ── Images ─────────────────────────────────────────────────
-  logo:      "../34BB0028-608C-4D8B-98D1-D99C4C9FE6A5.png",
-  heroBg:    "../IMG_7042.jpeg",
+  logo:      "logo.png",
+  heroBg:    "IMG_7042.jpeg",
   gallery: [
-    { file: "../IMG_7042.jpeg", label: "Signature Burger" },
-    { file: "../IMG_7043.jpeg", label: "BBQ Stack"        },
-    { file: "../IMG_7044.jpeg", label: "Loaded Fries"     },
-    { file: "../IMG_7045.jpeg", label: "Combo Meal"       },
-    { file: "../IMG_7046.jpeg", label: "The Shop"         },
+    { file: "IMG_7042.jpeg", label: "Signature Burger" },
+    { file: "IMG_7043.jpeg", label: "BBQ Stack"        },
+    { file: "IMG_7044.jpeg", label: "Loaded Fries"     },
+    { file: "IMG_7045.jpeg", label: "Combo Meal"       },
+    { file: "IMG_7046.jpeg", label: "The Shop"         },
   ],
 
   // ── Menu ───────────────────────────────────────────────────
