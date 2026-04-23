@@ -23,17 +23,19 @@ navLinks.querySelectorAll('a').forEach(link => {
 const dateInput = document.getElementById('apptDate');
 if (dateInput) {
   const today = new Date();
-  // Don't allow Sunday (0)
+  // Don't allow Sunday (0) or Monday (1)
   const dayOfWeek = today.getDay();
   const minDate = new Date(today);
-  if (dayOfWeek === 0) minDate.setDate(minDate.getDate() + 1);
+  if (dayOfWeek === 0) minDate.setDate(minDate.getDate() + 2);
+  else if (dayOfWeek === 1) minDate.setDate(minDate.getDate() + 1);
   dateInput.min = minDate.toISOString().split('T')[0];
 
-  // Disable Sundays
+  // Block Sundays and Mondays
   dateInput.addEventListener('input', () => {
     const chosen = new Date(dateInput.value + 'T00:00:00');
-    if (chosen.getDay() === 0) {
-      showFieldError('apptDate', 'We are closed on Sundays. Please pick another day.');
+    const d = chosen.getDay();
+    if (d === 0 || d === 1) {
+      showFieldError('apptDate', 'We are closed Sunday & Monday. Please pick Tue–Sat.');
       dateInput.value = '';
     } else {
       clearFieldError('apptDate');
