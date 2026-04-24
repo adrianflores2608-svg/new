@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Prospecting Tool</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">◆</span>
+        <h1>AI Prospecting Tool</h1>
+      </div>
+      <nav class="stats" id="stats">
+        <div class="stat"><span class="label">Prospects</span><span class="value" id="stat-prospects">0</span></div>
+        <div class="stat"><span class="label">No Website</span><span class="value" id="stat-nosite">0</span></div>
+        <div class="stat"><span class="label">Emails Sent</span><span class="value" id="stat-sent">0</span></div>
+        <div class="stat closed"><span class="label">Closed</span><span class="value" id="stat-closed">0</span></div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="panel settings">
+        <h2>Your Settings</h2>
+        <div class="grid">
+          <label>
+            <span>Your name</span>
+            <input id="sender-name" type="text" placeholder="e.g. Adrian" autocomplete="name" />
+          </label>
+          <label>
+            <span>Demo website URL</span>
+            <input id="demo-url" type="url" placeholder="https://your-demo-site.com" />
+          </label>
+          <label>
+            <span>Tone</span>
+            <input id="tone" type="text" placeholder="friendly, local, humble, concise" />
+          </label>
+        </div>
+        <p class="hint">Saved in your browser only.</p>
+      </section>
+
+      <section class="panel search">
+        <h2>1. Find Shops</h2>
+        <form id="search-form" class="search-row">
+          <input id="city" type="text" placeholder="City (McAllen, Edinburg, Pharr...)" required />
+          <select id="radius" title="Search radius">
+            <option value="5000">5 km</option>
+            <option value="12000" selected>12 km</option>
+            <option value="25000">25 km</option>
+            <option value="40000">40 km</option>
+          </select>
+          <button type="submit" id="search-btn">Find Shops</button>
+        </form>
+        <div id="search-status" class="status" aria-live="polite"></div>
+      </section>
+
+      <section class="panel results">
+        <div class="results-header">
+          <h2>2. Prospects</h2>
+          <div class="filter-row">
+            <label><input type="checkbox" id="filter-nowebsite" checked /> Only show shops with no website</label>
+            <button id="clear-btn" class="ghost" type="button">Clear list</button>
+          </div>
+        </div>
+        <div id="results" class="cards">
+          <p class="empty">Search a city to pull barbershops. Targets (no website) bubble to the top.</p>
+        </div>
+      </section>
+    </main>
+
+    <div id="email-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-body">
+        <header>
+          <h3 id="modal-title">Cold email</h3>
+          <button class="icon" id="modal-close" aria-label="Close">&times;</button>
+        </header>
+        <div class="modal-grid">
+          <label>
+            <span>To (email)</span>
+            <input id="to-email" type="email" placeholder="shop@example.com" />
+          </label>
+          <label>
+            <span>Subject</span>
+            <input id="subject" type="text" />
+          </label>
+          <label class="full">
+            <span>Body</span>
+            <textarea id="body" rows="12"></textarea>
+          </label>
+        </div>
+        <footer>
+          <button class="ghost" id="regenerate">Regenerate</button>
+          <button class="ghost" id="copy-email">Copy</button>
+          <button class="primary" id="open-mail">Open in Mail & Mark Sent</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

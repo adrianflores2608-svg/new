@@ -1,0 +1,20 @@
+{
+  "name": "ai-prospecting-tool",
+  "version": "1.0.0",
+  "description": "AI-powered prospecting tool: find local shops without websites, generate personalized cold emails with Claude, and track deals.",
+  "private": true,
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.65.0",
+    "dotenv": "^17.0.0",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
