@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RGV Web Studio | Professional Websites for Local Businesses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #0b0f1a; color: #8a95a8; line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(11,15,26,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-logo { font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .nav-logo span { color: #4a90d9; }
+    .nav-cta {
+      background: #2563a8; color: #fff; padding: 0.5rem 1.25rem;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: #3a7fc1; }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 1.5rem 4rem;
+      background: radial-gradient(ellipse at 50% 0%, rgba(37,99,168,0.18) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 720px; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(37,99,168,0.15);
+      border: 1px solid rgba(74,144,217,0.35);
+      color: #7ab8e8;
+      padding: 0.35rem 1rem; border-radius: 50px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800; color: #fff; line-height: 1.1;
+      letter-spacing: -1px; margin-bottom: 1.25rem;
+    }
+    .hero h1 span { color: #4a90d9; }
+    .hero p { font-size: 1.1rem; color: #5a6a80; max-width: 520px; margin: 0 auto 2.5rem; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: #2563a8; color: #fff; padding: 0.85rem 2rem;
+      border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: #3a7fc1; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,168,0.4); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.05); color: #c0cce0; padding: 0.85rem 2rem;
+      border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+      border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.09); }
+
+    .stats {
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.02);
+    }
+    .stats-grid {
+      max-width: 800px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;
+    }
+    .stat-num { font-size: 2.2rem; font-weight: 800; color: #fff; }
+    .stat-label { font-size: 0.85rem; color: #5a6a80; margin-top: 0.25rem; }
+
+    .demos { padding: 6rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .demos h2 {
+      text-align: center; font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800; color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.5px;
+    }
+    .demos-sub { text-align: center; color: #5a6a80; margin-bottom: 3rem; }
+    .demos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .demo-card {
+      background: #111827; border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; overflow: hidden; transition: all 0.3s; cursor: pointer;
+    }
+    .demo-card:hover { transform: translateY(-6px); border-color: rgba(74,144,217,0.45); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .demo-thumb {
+      height: 180px; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative;
+    }
+    .demo-thumb.barbershop { background: linear-gradient(135deg, #1a0000, #3d0000); }
+    .demo-thumb.burger     { background: linear-gradient(135deg, #0f0900, #2a1500); }
+    .demo-thumb.nails      { background: linear-gradient(135deg, #120a0e, #2a1824); }
+    .demo-thumb.coming     { background: linear-gradient(135deg, #0d1117, #161f2e); }
+    .thumb-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 0.75rem 1rem; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .barbershop .thumb-label { color: #dc2020; }
+    .burger .thumb-label     { color: #c17f24; }
+    .nails .thumb-label      { color: #c9748f; }
+    .coming .thumb-label     { color: #3a4a60; }
+    .demo-body { padding: 1.5rem; }
+    .demo-tag {
+      display: inline-block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 0.25rem 0.75rem; border-radius: 50px; margin-bottom: 0.75rem;
+    }
+    .tag-barbershop { background: rgba(220,32,32,0.12); color: #dc2020; }
+    .tag-burger     { background: rgba(193,127,36,0.12); color: #c17f24; }
+    .tag-nails      { background: rgba(201,116,143,0.12); color: #c9748f; }
+    .tag-coming     { background: rgba(255,255,255,0.05); color: #3a4a60; }
+    .demo-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+    .demo-desc { font-size: 0.83rem; color: #5a6a80; margin-bottom: 1.25rem; line-height: 1.5; }
+    .demo-features { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+    .feature-tag {
+      background: rgba(74,144,217,0.08); border: 1px solid rgba(74,144,217,0.15);
+      color: #4a7090; font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 4px;
+    }
+    .demo-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: #2563a8; color: #fff; padding: 0.6rem 1.25rem;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 600; transition: background 0.2s;
+    }
+    .demo-link:hover { background: #3a7fc1; }
+    .demo-link.disabled { background: rgba(255,255,255,0.04); color: #3a4a60; cursor: default; pointer-events: none; }
+
+    .services { padding: 6rem 1.5rem; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); }
+    .services-inner { max-width: 1100px; margin: 0 auto; }
+    .services h2 {
+      text-align: center; font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800; color: #fff; margin-bottom: 0.5rem;
+    }
+    .services-sub { text-align: center; color: #5a6a80; margin-bottom: 3rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+    .service-card {
+      background: #111827; border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 1.5rem; transition: all 0.2s;
+    }
+    .service-card:hover { border-color: rgba(74,144,217,0.3); transform: translateY(-3px); }
+    .service-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+    .service-card h3 { color: #e0eaf5; font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .service-card p { font-size: 0.83rem; color: #5a6a80; }
+
+    .cta-section {
+      padding: 6rem 1.5rem; text-align: center;
+      background: radial-gradient(ellipse at 50% 100%, rgba(37,99,168,0.15) 0%, transparent 70%);
+    }
+    .cta-section h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 1rem; }
+    .cta-section p { color: #5a6a80; margin-bottom: 2rem; font-size: 1.05rem; }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 2rem 1.5rem; text-align: center;
+      font-size: 0.82rem; color: #2a3548;
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .hero-btns { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">RGV <span>Web</span> Studio</div>
+    <a href="mailto:Adrian.flores2608@gmail.com" class="nav-cta">Get a Website</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">&#127759; Serving the Rio Grande Valley</div>
+      <h1>Professional Websites<br />for <span>Local Businesses</span></h1>
+      <p>Fast, modern, mobile-ready websites built for barbershops, restaurants, nail salons and more — at a price that makes sense for small business.</p>
+      <div class="hero-btns">
+        <a href="mailto:Adrian.flores2608@gmail.com" class="btn-primary">Get Your Website Today</a>
+        <a href="#demos" class="btn-secondary">View Our Work ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stats-grid">
+      <div><div class="stat-num">3+</div><div class="stat-label">Websites Built</div></div>
+      <div><div class="stat-num">$0</div><div class="stat-label">Hosting Cost to You</div></div>
+      <div><div class="stat-num">48hr</div><div class="stat-label">Avg. Turnaround</div></div>
+    </div>
+  </div>
+
+  <section class="demos" id="demos">
+    <h2>Our Work</h2>
+    <p class="demos-sub">Real websites built for real businesses in the Valley</p>
+    <div class="demos-grid">
+
+      <div class="demo-card" onclick="location.href='notorious-cutz/'">
+        <div class="demo-thumb barbershop"><span>✂️</span><div class="thumb-label">Barbershop Template</div></div>
+        <div class="demo-body">
+          <span class="demo-tag tag-barbershop">Barbershop</span>
+          <div class="demo-name">Notorious Cutz</div>
+          <div class="demo-desc">San Benito barbershop with online booking, no-show protection, gallery and FAQ.</div>
+          <div class="demo-features">
+            <span class="feature-tag">Booking Form</span>
+            <span class="feature-tag">Gallery</span>
+            <span class="feature-tag">FAQ</span>
+            <span class="feature-tag">Mobile Ready</span>
+          </div>
+          <a href="notorious-cutz/" class="demo-link">View Demo →</a>
+        </div>
+      </div>
+
+      <div class="demo-card" onclick="location.href='branding-iron/'">
+        <div class="demo-thumb burger"><span>🍔</span><div class="thumb-label">Restaurant Template</div></div>
+        <div class="demo-body">
+          <span class="demo-tag tag-burger">Restaurant</span>
+          <div class="demo-name">Texas Branding Iron Burgers</div>
+          <div class="demo-desc">Harlingen burger restaurant with full menu, DoorDash ordering and food gallery.</div>
+          <div class="demo-features">
+            <span class="feature-tag">Full Menu</span>
+            <span class="feature-tag">DoorDash</span>
+            <span class="feature-tag">Gallery</span>
+            <span class="feature-tag">Mobile Ready</span>
+          </div>
+          <a href="branding-iron/" class="demo-link">View Demo →</a>
+        </div>
+      </div>
+
+      <div class="demo-card" onclick="location.href='rgv-nails/'">
+        <div class="demo-thumb nails"><span>💅</span><div class="thumb-label">Nail Salon Template</div></div>
+        <div class="demo-body">
+          <span class="demo-tag tag-nails">Nail Salon</span>
+          <div class="demo-name">RGV Luxury Nails</div>
+          <div class="demo-desc">Harlingen luxury nail salon with services menu, online booking and reviews.</div>
+          <div class="demo-features">
+            <span class="feature-tag">Booking Form</span>
+            <span class="feature-tag">Services</span>
+            <span class="feature-tag">Reviews</span>
+            <span class="feature-tag">Mobile Ready</span>
+          </div>
+          <a href="rgv-nails/" class="demo-link">View Demo →</a>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-thumb coming"><span>🔮</span><div class="thumb-label">Coming Soon</div></div>
+        <div class="demo-body">
+          <span class="demo-tag tag-coming">Coming Soon</span>
+          <div class="demo-name">Tattoo Shop Template</div>
+          <div class="demo-desc">Dark, edgy design with artist portfolios, booking and flash gallery.</div>
+          <div class="demo-features">
+            <span class="feature-tag">Portfolio</span>
+            <span class="feature-tag">Booking</span>
+            <span class="feature-tag">Gallery</span>
+          </div>
+          <a class="demo-link disabled">In Progress...</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="services">
+    <div class="services-inner">
+      <h2>What's Included</h2>
+      <p class="services-sub">Every website comes fully loaded</p>
+      <div class="services-grid">
+        <div class="service-card"><div class="service-icon">📱</div><h3>Mobile Friendly</h3><p>Looks perfect on every phone, tablet and desktop.</p></div>
+        <div class="service-card"><div class="service-icon">⚡</div><h3>Fast Loading</h3><p>Optimized for speed so customers don't wait.</p></div>
+        <div class="service-card"><div class="service-icon">📅</div><h3>Online Booking</h3><p>Appointment forms that send directly to your email.</p></div>
+        <div class="service-card"><div class="service-icon">📍</div><h3>Google Maps</h3><p>Built-in map so customers can find you easily.</p></div>
+        <div class="service-card"><div class="service-icon">🎨</div><h3>Custom Design</h3><p>Unique look built to match your brand and style.</p></div>
+        <div class="service-card"><div class="service-icon">🔧</div><h3>Monthly Support</h3><p>We update your hours, photos and info anytime.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to get your business online?</h2>
+    <p>Starting at $600 — up and running in 48 hours.</p>
+    <a href="mailto:Adrian.flores2608@gmail.com" class="btn-primary" style="font-size:1rem;padding:1rem 2.5rem;">Contact Us Today</a>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 RGV Web Studio · Rio Grande Valley, TX · Adrian.flores2608@gmail.com</p>
+  </footer>
+
+</body>
+</html>

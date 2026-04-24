@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Texas Branding Iron Burgers | Harlingen, TX</title>
+  <link rel="stylesheet" href="style.css?v=6" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Rye&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="logo">
+        <img src="logo.png" alt="Texas Branding Iron Logo" class="logo-img" id="logoImg" />
+        <span class="logo-text">Branding Iron</span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="https://www.doordash.com/store/36259922" target="_blank" class="btn btn-nav">🛵 Order Now</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-icon">🤠</span>
+        <span>Texas Proud Since Day One</span>
+      </div>
+      <h1>Burgers Built<br /><span class="accent">Texas Strong</span></h1>
+      <p class="hero-sub">Boldly seasoned. Texas sized. Fired to perfection right here in Harlingen.</p>
+      <div class="rating-row">
+        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="rating-num">4.1</span>
+        <span class="rating-sep">|</span>
+        <span class="rating-count">288 Google Reviews</span>
+      </div>
+      <div class="hero-actions">
+        <a href="https://www.doordash.com/store/36259922" target="_blank" class="btn btn-primary">🛵 Order on DoorDash</a>
+        <a href="#menu" class="btn btn-outline">View Menu</a>
+        <a href="tel:9562305809" class="btn btn-ghost">&#128222; (956) 230-5809</a>
+      </div>
+      <div class="hero-pills">
+        <div class="pill">&#128205; 2230 S 77 Sunshine Strip, Harlingen TX</div>
+        <div class="pill">&#128336; Open Daily 11am–9pm</div>
+        <div class="pill">🍔 Dine In & Takeout</div>
+      </div>
+    </div>
+    <div class="hero-scroll">&#8595; Scroll</div>
+  </section>
+
+  <!-- HIGHLIGHTS -->
+  <section class="highlights">
+    <div class="container">
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <div class="h-icon">🔥</div>
+          <h3>Smash Burgers</h3>
+          <p>Smashed fresh to order on a flat iron griddle for maximum flavor and crispy edges.</p>
+        </div>
+        <div class="highlight-card">
+          <div class="h-icon">🤠</div>
+          <h3>Texas Flavors</h3>
+          <p>Bold seasoning, BBQ, jalapeños — flavors as big as the Lone Star State itself.</p>
+        </div>
+        <div class="highlight-card">
+          <div class="h-icon">&#11088;</div>
+          <h3>4.1 Star Rated</h3>
+          <p>288 happy customers on Google. Harlingen's go-to burger spot.</p>
+        </div>
+        <div class="highlight-card">
+          <div class="h-icon">🥩</div>
+          <h3>Fresh & Never Frozen</h3>
+          <p>100% fresh beef, never frozen, cooked to order every single time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section class="menu-section" id="menu">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our <span class="accent">Menu</span></h2>
+        <p class="section-sub">Everything's made fresh and cooked to order</p>
+      </div>
+
+      <!-- Category Tabs -->
+      <div class="menu-tabs" id="menuTabs">
+        <button class="tab-btn active" data-cat="0">🍔 Burgers & Combos</button>
+        <button class="tab-btn" data-cat="1">🍗 Wings</button>
+        <button class="tab-btn" data-cat="2">🍟 Sides</button>
+        <button class="tab-btn" data-cat="3">👦 Kids Combos</button>
+        <button class="tab-btn" data-cat="4">🥤 Drinks</button>
+      </div>
+
+      <!-- Menu Panels -->
+      <div class="menu-panels" id="menuPanels"></div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <h2 class="section-title">Fresh Off <span class="accent">The Griddle</span></h2>
+      <p class="section-sub">Real food, real flavors</p>
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="g-item g-tall"><div class="g-overlay">Signature Burger</div></div>
+        <div class="g-item"><div class="g-overlay">BBQ Stack</div></div>
+        <div class="g-item"><div class="g-overlay">Loaded Fries</div></div>
+        <div class="g-item g-wide"><div class="g-overlay">The Restaurant</div></div>
+        <div class="g-item"><div class="g-overlay">Combo Meal</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="about-tag">Our Story</span>
+          <h2>Texas Born.<br /><span class="accent">Harlingen Raised.</span></h2>
+          <p>Texas Branding Iron Burgers started with one mission — serve the boldest, most satisfying burgers in the Rio Grande Valley. Every patty is smashed fresh on a sizzling flat iron, seasoned with our signature Texas blend, and stacked high with toppings that mean business.</p>
+          <p>We're not a chain. We're your neighbors. Come hungry, leave happy.</p>
+          <div class="about-stats">
+            <div class="stat">
+              <span class="stat-num">288</span>
+              <span class="stat-label">Happy Customers</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">4.1★</span>
+              <span class="stat-label">Google Rating</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">100%</span>
+              <span class="stat-label">Fresh Beef</span>
+            </div>
+          </div>
+          <a href="tel:9562305809" class="btn btn-primary">&#128222; Call to Order</a>
+        </div>
+        <div class="about-img-wrap">
+          <div class="about-img-placeholder">
+            <span>🍔</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews">
+    <div class="container">
+      <h2 class="section-title">What People <span class="accent">Are Saying</span></h2>
+      <div class="rating-summary">
+        <div class="big-rating">4.1</div>
+        <div class="rating-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+        <div class="rating-sub">288 Reviews on Google</div>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"Best smash burger in the Valley. The Branding Iron burger is insane — crispy edges, perfect cheese pull, incredible sauce."</p>
+          <div class="reviewer">— Miguel R., Harlingen</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"Loaded fries are a must. My whole family comes here every weekend. Nothing else in Harlingen comes close."</p>
+          <div class="reviewer">— Sandra T., Harlingen</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"The Texas BBQ burger is everything. Real BBQ flavor, fresh beef, huge portions. Worth every penny."</p>
+          <div class="reviewer">— Jose M., McAllen</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+          <p>"Jalapeño Inferno is no joke — but it's so good. Milkshakes are thick and creamy. Great spot!"</p>
+          <div class="reviewer">— Ashley G., Brownsville</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="section-title">Come <span class="accent">Find Us</span></h2>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Texas Branding Iron Burgers</h3>
+          <div class="c-item">
+            <span class="c-icon">&#128205;</span>
+            <div>
+              <strong>Address</strong>
+              <p>2230 S 77 Sunshine Strip</p>
+              <p>Harlingen, TX 78550</p>
+            </div>
+          </div>
+          <div class="c-item">
+            <span class="c-icon">&#128222;</span>
+            <div>
+              <strong>Phone</strong>
+              <p><a href="tel:9562305809">(956) 230-5809</a></p>
+            </div>
+          </div>
+          <div class="c-item">
+            <span class="c-icon">&#128336;</span>
+            <div>
+              <strong>Hours</strong>
+              <p>Monday – Sunday: 11:00 AM – 9:10 PM</p>
+            </div>
+          </div>
+          <div class="c-item">
+            <span class="c-icon">&#11088;</span>
+            <div>
+              <strong>Rating</strong>
+              <p>4.1 Stars · 288 Google Reviews</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;">
+            <a href="https://www.doordash.com/store/36259922" target="_blank" class="btn btn-primary">🛵 Order on DoorDash</a>
+            <a href="tel:9562305809" class="btn btn-outline">&#128222; Call Us</a>
+          </div>
+        </div>
+        <div class="map-wrap">
+          <iframe
+            src="https://maps.google.com/maps?q=2230+S+77+Sunshine+Strip,+Harlingen,+TX+78550&hl=en&z=16&output=embed"
+            width="100%" height="420"
+            style="border:0;border-radius:16px;"
+            allowfullscreen loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Branding Iron Location">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="logo.png" alt="Texas Branding Iron Logo" class="logo-img footer-logo" />
+          <span class="logo-text">Branding Iron</span>
+          <p>Harlingen's boldest burgers.<br />Fresh beef. Texas flavors. Every time.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p>&#128222; <a href="tel:9562305809">(956) 230-5809</a></p>
+          <p>&#128205; 2230 S 77 Sunshine Strip, Harlingen TX</p>
+          <p>&#11088; 4.1 Stars · 288 Reviews</p>
+          <p>&#128279; <a href="https://www.facebook.com/share/1Cy2xuELfp/?mibextid=wwXIfr" target="_blank">Facebook Page</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Texas Branding Iron Burgers. All rights reserved. Harlingen, TX.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
