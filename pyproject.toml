@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "biz-scout"
+version = "0.1.0"
+description = "Audit small business websites and generate actionable scaling recommendations."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "biz-scout" }]
+dependencies = [
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
+    "click>=8.1.0",
+    "jinja2>=3.1.0",
+    "tldextract>=5.1.0",
+    "flask>=3.0.0",
+    "rich>=13.7.0",
+]
+
+[project.scripts]
+biz-scout = "biz_scout.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["biz_scout*"]
+
+[tool.setuptools.package-data]
+biz_scout = ["templates/*.html"]

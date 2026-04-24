@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>biz-scout — {{ profile.name or profile.domain or profile.url }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0b0d12; --panel: #141821; --ink: #e7ecf3; --muted: #8d96a7;
+    --accent: #6ee7b7; --warn: #fbbf24; --bad: #f87171; --ok: #34d399;
+    --border: #232936;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.55 -apple-system, Segoe UI, Roboto, Inter, sans-serif;
+         background: var(--bg); color: var(--ink); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  h2 { font-size: 18px; margin: 32px 0 12px; color: var(--accent); letter-spacing: .5px;
+       text-transform: uppercase; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .url { color: var(--muted); word-break: break-all; }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+          padding: 18px; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px;
+          font-weight: 600; letter-spacing: .3px; text-transform: uppercase; }
+  .p-critical { background: #45151a; color: var(--bad); }
+  .p-high { background: #4a3411; color: var(--warn); }
+  .p-medium { background: #1f3a44; color: #67e8f9; }
+  .p-low { background: #1f2b1f; color: var(--ok); }
+  .score { font-size: 38px; font-weight: 800; }
+  .score.small { font-size: 24px; }
+  .grade { font-size: 56px; font-weight: 800; }
+  .grade.A { color: var(--ok); } .grade.B { color: var(--accent); }
+  .grade.C { color: var(--warn); } .grade.D { color: #fb923c; } .grade.F { color: var(--bad); }
+  .muted { color: var(--muted); }
+  .kv { display: grid; grid-template-columns: 180px 1fr; gap: 6px 12px; font-size: 14px; }
+  .kv dt { color: var(--muted); }
+  .rec { background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+         padding: 16px; margin-bottom: 12px; }
+  .rec h3 { margin: 0 0 6px; font-size: 16px; }
+  .rec p { margin: 6px 0; }
+  .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+  .bar { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden;
+         margin-top: 8px; }
+  .bar > i { display: block; height: 100%; background: linear-gradient(90deg, #6ee7b7, #34d399); }
+  ul.tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  ul.tags li { background: #1c2230; border: 1px solid var(--border); padding: 3px 9px;
+               border-radius: 999px; font-size: 12px; }
+  .footer { margin-top: 48px; color: var(--muted); font-size: 12px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>{{ profile.name or profile.domain or profile.url }}</h1>
+  <div class="url"><a href="{{ profile.final_url or profile.url }}" target="_blank" rel="noopener">{{ profile.final_url or profile.url }}</a></div>
+  {% if profile.description %}<p class="muted" style="margin-top:8px">{{ profile.description }}</p>{% endif %}
+
+  <h2>Scorecard</h2>
+  <div class="grid">
+    <div class="card" style="text-align:center">
+      <div class="label">Overall</div>
+      <div class="score">{{ scorecard.total }}<span class="muted" style="font-size:18px">/100</span></div>
+      <div class="grade {{ scorecard.grade }}">{{ scorecard.grade }}</div>
+    </div>
+    {% for name, val in [('SEO', scorecard.seo), ('Content', scorecard.content), ('Conversion', scorecard.conversion), ('Tech', scorecard.tech), ('Trust', scorecard.trust)] %}
+    <div class="card">
+      <div class="label">{{ name }}</div>
+      <div class="score small">{{ val }}<span class="muted" style="font-size:14px">/100</span></div>
+      <div class="bar"><i style="width:{{ val }}%"></i></div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2>Snapshot</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="label">Tech</div>
+      <dl class="kv">
+        <dt>HTTPS</dt><dd>{{ 'yes' if profile.https else 'no' }}</dd>
+        <dt>Mobile viewport</dt><dd>{{ 'yes' if profile.mobile_viewport else 'no' }}</dd>
+        <dt>Page load</dt><dd>{{ profile.page_load_ms }} ms</dd>
+        <dt>Homepage size</dt><dd>{{ profile.homepage_size_kb }} KB</dd>
+        <dt>Pages crawled</dt><dd>{{ profile.pages_crawled }}</dd>
+        <dt>CMS</dt><dd>{{ profile.cms or '—' }}</dd>
+        <dt>Analytics</dt><dd>{{ 'yes' if profile.has_analytics else 'no' }}</dd>
+        <dt>Retargeting pixel</dt><dd>{{ 'yes' if profile.has_pixel else 'no' }}</dd>
+        <dt>Booking</dt><dd>{{ 'yes' if profile.has_booking else 'no' }}</dd>
+        <dt>Payments</dt><dd>{{ 'yes' if profile.has_payments else 'no' }}</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <div class="label">Contact</div>
+      <dl class="kv">
+        <dt>Emails</dt><dd>{{ profile.emails | join(', ') or '—' }}</dd>
+        <dt>Phones</dt><dd>{{ profile.phones | join(', ') or '—' }}</dd>
+        <dt>Addresses</dt><dd>{{ profile.addresses | join('; ') or '—' }}</dd>
+        <dt>Contact form</dt><dd>{{ 'yes' if profile.contact_form_present else 'no' }}</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <div class="label">SEO</div>
+      <dl class="kv">
+        <dt>Title length</dt><dd>{{ profile.title_length }} chars</dd>
+        <dt>Description length</dt><dd>{{ profile.description_length }} chars</dd>
+        <dt>H1 count</dt><dd>{{ profile.h1_count }}</dd>
+        <dt>Images / no-alt</dt><dd>{{ profile.images_total }} / {{ profile.images_missing_alt }}</dd>
+        <dt>Canonical</dt><dd>{{ 'yes' if profile.canonical_present else 'no' }}</dd>
+        <dt>Open Graph</dt><dd>{{ 'yes' if profile.open_graph_present else 'no' }}</dd>
+        <dt>Schema.org</dt><dd>{{ profile.schema_org_types | join(', ') or '—' }}</dd>
+        <dt>Sitemap</dt><dd>{{ 'yes' if profile.sitemap_found else 'no' }}</dd>
+        <dt>robots.txt</dt><dd>{{ 'yes' if profile.robots_present else 'no' }}</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <div class="label">Conversion signals</div>
+      <dl class="kv">
+        <dt>CTAs detected</dt><dd>{{ profile.cta_count }}</dd>
+        <dt>CTA examples</dt><dd>{{ profile.cta_examples | join(', ') or '—' }}</dd>
+        <dt>Has blog</dt><dd>{{ 'yes' if profile.has_blog else 'no' }}</dd>
+        <dt>Has testimonials</dt><dd>{{ 'yes' if profile.has_testimonials else 'no' }}</dd>
+        <dt>Has pricing</dt><dd>{{ 'yes' if profile.has_pricing else 'no' }}</dd>
+        <dt>Email capture</dt><dd>{{ 'yes' if profile.has_email_capture else 'no' }}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h2>Tech stack</h2>
+  <div class="card">
+    {% if profile.tech_stack %}
+      <ul class="tags">
+        {% for t in profile.tech_stack %}<li>{{ t }}</li>{% endfor %}
+      </ul>
+    {% else %}<span class="muted">Nothing detected.</span>{% endif %}
+  </div>
+
+  <h2>Social presence</h2>
+  <div class="card">
+    {% if profile.social_links %}
+      <ul class="tags">
+        {% for name, link in profile.social_links.items() %}
+          <li><a href="{{ link }}" target="_blank" rel="noopener">{{ name }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}<span class="muted">No social profiles linked.</span>{% endif %}
+  </div>
+
+  <h2>Recommendations ({{ recs|length }})</h2>
+  {% for r in recs %}
+    <div class="rec">
+      <h3>
+        <span class="pill p-{{ r.priority }}">{{ r.priority }}</span>
+        {{ r.title }}
+        <span class="muted" style="font-weight:400; font-size:13px">— {{ r.pillar }}</span>
+      </h3>
+      <p><span class="label">Why</span> {{ r.why }}</p>
+      <p><span class="label">Action</span> {{ r.action }}</p>
+      <p><span class="label">Impact</span> {{ r.estimated_impact }}</p>
+    </div>
+  {% else %}
+    <div class="card">No issues detected — great job.</div>
+  {% endfor %}
+
+  <div class="footer">Generated by biz-scout · {{ profile.url }}</div>
+</div>
+</body>
+</html>
