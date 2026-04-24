@@ -1,6 +1,6 @@
 const SHOP = {
-  name:        "ROV Luxury Nails",
-  nameShort:   "ROV Nails",
+  name:        "RGV Luxury Nails",
+  nameShort:   "RGV Nails",
   tagline:     "Where Luxury Meets Perfection.",
   rating:      "4.6",
   reviews:     "106",
