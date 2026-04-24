@@ -1,134 +1,184 @@
 'use strict';
 
-// Navbar scroll behavior
+/* ── Navbar scroll ── */
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
 
-// Mobile hamburger menu
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
+/* ── Mobile burger ── */
+const burger   = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
 
-hamburger.addEventListener('click', () => {
-  mobileMenu.classList.toggle('open');
+burger.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('mobile-open');
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
 });
 
-document.querySelectorAll('.mobile-link').forEach(link => {
-  link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+// Close on link click
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    navLinks.classList.remove('mobile-open');
+    burger.classList.remove('open');
+  });
 });
 
-// Close mobile menu on outside click
-document.addEventListener('click', (e) => {
+// Close on outside click
+document.addEventListener('click', e => {
   if (!navbar.contains(e.target)) {
-    mobileMenu.classList.remove('open');
+    navLinks.classList.remove('mobile-open');
+    burger.classList.remove('open');
   }
 });
 
-// Booking form — date minimum (today)
+/* ── Scroll-in animation ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const delay = Number(el.dataset.delay || 0);
+    setTimeout(() => el.classList.add('visible'), delay);
+    observer.unobserve(el);
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.svc-card').forEach(el => observer.observe(el));
+
+/* ── Date picker setup ── */
 const dateInput = document.getElementById('date');
-if (dateInput) {
-  const today = new Date().toISOString().split('T')[0];
-  dateInput.setAttribute('min', today);
-
-  // Disable Mondays (day 1) in the date picker via change event
-  dateInput.addEventListener('change', () => {
-    const selected = new Date(dateInput.value + 'T12:00:00');
-    if (selected.getDay() === 1) {
-      showDateError('We are closed on Mondays. Please select another day.');
-      dateInput.value = '';
-    } else {
-      clearDateError();
-    }
-  });
-}
-
-function showDateError(msg) {
-  let err = document.getElementById('dateError');
-  if (!err) {
-    err = document.createElement('p');
-    err.id = 'dateError';
-    err.style.cssText = 'color:#c0392b;font-size:.8rem;margin-top:4px;';
-    dateInput.parentNode.appendChild(err);
-  }
-  err.textContent = msg;
-}
-
-function clearDateError() {
-  const err = document.getElementById('dateError');
-  if (err) err.remove();
-}
-
-// Booking form — time slot filtering based on Sunday
 const timeSelect = document.getElementById('time');
-const allTimeOptions = timeSelect ? [...timeSelect.options] : [];
+const dateHint   = document.getElementById('dateHint');
 
-function filterTimeSlots() {
-  if (!dateInput || !timeSelect) return;
-  const selected = new Date(dateInput.value + 'T12:00:00');
-  const isSunday = selected.getDay() === 0;
+// Min date = today
+const today = new Date();
+const todayStr = today.toISOString().split('T')[0];
+dateInput.setAttribute('min', todayStr);
 
-  // Sunday hours: 11:30 AM – 2:00 PM
-  const sundaySlots = new Set(['11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM']);
+const TUE_TO_SAT_TIMES = [
+  '9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
+  '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM',
+  '2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM',
+  '5:00 PM','5:30 PM'
+];
+const SUNDAY_TIMES = ['11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM'];
 
-  // Rebuild options
-  timeSelect.innerHTML = '<option value="" disabled selected>Select a time…</option>';
-  allTimeOptions.forEach(opt => {
-    if (opt.value === '') return;
-    if (isSunday && !sundaySlots.has(opt.text)) return;
-    timeSelect.appendChild(opt.cloneNode(true));
+function buildTimeOptions(times) {
+  timeSelect.innerHTML = '<option value="" disabled selected>Choose a time…</option>';
+  times.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = opt.textContent = t;
+    timeSelect.appendChild(opt);
   });
 }
 
-dateInput?.addEventListener('change', filterTimeSlots);
+function handleDateChange() {
+  if (!dateInput.value) return;
+  const d = new Date(dateInput.value + 'T12:00:00');
+  const day = d.getDay(); // 0=Sun,1=Mon
 
-// Booking form submission
-const form = document.getElementById('bookingForm');
+  dateHint.textContent = '';
+  timeSelect.value = '';
+
+  if (day === 1) {
+    dateHint.textContent = 'We are closed on Mondays. Please pick another day.';
+    dateInput.value = '';
+    buildTimeOptions([]);
+    return;
+  }
+
+  if (day === 0) {
+    dateHint.textContent = 'Sunday hours: 11:30 AM – 2:00 PM';
+    buildTimeOptions(SUNDAY_TIMES);
+  } else {
+    buildTimeOptions(TUE_TO_SAT_TIMES);
+  }
+}
+
+dateInput.addEventListener('change', handleDateChange);
+buildTimeOptions(TUE_TO_SAT_TIMES); // default
+
+/* ── Booking form submission ── */
+const form        = document.getElementById('bookingForm');
+const submitBtn   = document.getElementById('submitBtn');
+const submitText  = document.getElementById('submitText');
+const submitSpinner = document.getElementById('submitSpinner');
 const formSuccess = document.getElementById('formSuccess');
+const formError   = document.getElementById('formError');
 
-form?.addEventListener('submit', (e) => {
+form.addEventListener('submit', async e => {
   e.preventDefault();
+  formError.hidden = true;
 
   if (!form.checkValidity()) {
     form.reportValidity();
     return;
   }
 
-  const btn = form.querySelector('button[type="submit"]');
-  const originalText = btn.textContent;
-  btn.textContent = 'Sending…';
-  btn.disabled = true;
+  submitText.hidden   = true;
+  submitSpinner.hidden = false;
+  submitBtn.disabled  = true;
 
-  // Simulate async submit (replace with real backend/API call)
-  setTimeout(() => {
-    form.style.display = 'none';
-    formSuccess.hidden = false;
-    formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 900);
+  // If Formspree ID is still placeholder, simulate success locally
+  const action = form.getAttribute('action');
+  if (action.includes('YOUR_FORM_ID')) {
+    await new Promise(r => setTimeout(r, 900));
+    showSuccess();
+    return;
+  }
+
+  // Real Formspree submission
+  try {
+    const data = new FormData(form);
+    const res  = await fetch(action, {
+      method: 'POST',
+      body: data,
+      headers: { Accept: 'application/json' }
+    });
+    if (res.ok) {
+      showSuccess();
+    } else {
+      showError();
+    }
+  } catch {
+    showError();
+  }
 });
 
-// Intersection Observer — fade-in on scroll
-const observerOpts = { threshold: 0.12 };
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, observerOpts);
+function showSuccess() {
+  form.querySelectorAll('.form-grid, .form-footer').forEach(el => el.style.display = 'none');
+  formSuccess.hidden = false;
+  formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 
-document.querySelectorAll('.service-card, .about-text, .about-img-wrap, .hours-block, .location-block, .badge')
-  .forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(24px)';
-    el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
-    observer.observe(el);
-  });
+function showError() {
+  submitText.hidden    = false;
+  submitSpinner.hidden = true;
+  submitBtn.disabled   = false;
+  formError.hidden     = false;
+}
 
-document.addEventListener('animationend', () => {}, { once: true });
+/* ── Highlight current open/closed status ── */
+function updateOpenStatus() {
+  const now = new Date();
+  const day  = now.getDay();
+  const mins = now.getHours() * 60 + now.getMinutes();
 
-// Add .visible class styles inline (avoids needing extra CSS)
-const style = document.createElement('style');
-style.textContent = '.visible { opacity: 1 !important; transform: none !important; }';
-document.head.appendChild(style);
+  let isOpen = false;
+  if (day >= 2 && day <= 6) isOpen = mins >= 570 && mins < 1080; // 9:30–18:00
+  if (day === 0)             isOpen = mins >= 690 && mins < 840;  // 11:30–14:00
+
+  const badge = document.createElement('span');
+  badge.className = 'open-badge';
+  badge.style.cssText = `
+    display:inline-block; padding:3px 12px; border-radius:50px; font-size:0.72rem;
+    font-weight:600; letter-spacing:0.06em; margin-left:12px; vertical-align:middle;
+    background:${isOpen ? '#2ecc71' : '#e74c3c'}; color:#fff;
+  `;
+  badge.textContent = isOpen ? 'Open Now' : 'Closed';
+
+  const heroH1 = document.querySelector('.hero-content h1');
+  if (heroH1 && !document.querySelector('.open-badge')) heroH1.after(badge);
+}
+
+updateOpenStatus();

@@ -3,332 +3,375 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RGV Luxury Nails – Harlingen, TX</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="RGV Luxury Nails – Premier nail salon in Harlingen, TX. Acrylic nails, pedicures, shellac, dip nails, eyelash extensions & more. Call 956-440-8400." />
+  <title>RGV Luxury Nails | Harlingen, TX</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- NAV -->
-  <header class="nav-header" id="navbar">
-    <div class="nav-inner">
-      <a href="#hero" class="nav-logo">RGV <span>Luxury Nails</span></a>
-      <nav class="nav-links">
+  <!-- FLOATING CALL BUTTON (mobile) -->
+  <a href="tel:9564408400" class="fab-call" aria-label="Call us">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.13 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+  </a>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#top" class="logo">
+        <span class="logo-main">RGV Luxury</span>
+        <span class="logo-sub">Nails</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
         <a href="#services">Services</a>
-        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
         <a href="#hours">Hours</a>
-        <a href="#contact">Contact</a>
-        <a href="#booking" class="btn-nav">Book Now</a>
+        <a href="#location">Location</a>
+        <a href="#booking" class="nav-cta">Book Now</a>
       </nav>
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <button class="burger" id="burger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
-    </div>
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#services" class="mobile-link">Services</a>
-      <a href="#about" class="mobile-link">About</a>
-      <a href="#hours" class="mobile-link">Hours</a>
-      <a href="#contact" class="mobile-link">Contact</a>
-      <a href="#booking" class="mobile-link btn-mobile">Book Now</a>
     </div>
   </header>
 
   <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero-overlay"></div>
+  <section class="hero" id="top">
+    <div class="hero-bg"></div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Harlingen's Premier Nail Salon</p>
+      <div class="hero-badge">✦ Harlingen's Premier Nail Salon ✦</div>
       <h1>RGV Luxury Nails</h1>
-      <div class="hero-stars">
-        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <span class="rating-text">4.6 &nbsp;·&nbsp; 106 Reviews</span>
+      <div class="star-row">
+        <div class="stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span class="half-star">★</span>
+        </div>
+        <span class="star-label">4.6 stars &nbsp;·&nbsp; 106 Reviews</span>
       </div>
-      <p class="hero-tagline">Elevating your beauty, one nail at a time.</p>
-      <div class="hero-cta">
-        <a href="#booking" class="btn-primary">Book an Appointment</a>
-        <a href="#services" class="btn-outline">View Services</a>
+      <p class="hero-sub">Where beauty meets luxury.<br>Serving the Rio Grande Valley with care.</p>
+      <div class="hero-actions">
+        <a href="#booking" class="btn-gold">Book Appointment</a>
+        <a href="tel:9564408400" class="btn-ghost">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.13 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          956-440-8400
+        </a>
       </div>
     </div>
-    <div class="hero-scroll-hint">
-      <span></span>
-    </div>
+    <a href="#services" class="hero-scroll">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </a>
   </section>
 
-  <!-- ABOUT -->
-  <section class="about section-pad" id="about">
-    <div class="container two-col">
-      <div class="about-img-wrap">
-        <div class="about-img-placeholder">
-          <div class="nail-art-icon">&#10024;</div>
-        </div>
-      </div>
-      <div class="about-text">
-        <p class="section-label">About Us</p>
-        <h2>A Sanctuary of Style &amp; Self-Care</h2>
-        <p>At RGV Luxury Nails, we believe every visit should feel like a retreat. Our talented team of licensed nail technicians and beauty specialists bring artistry and precision to every service — from classic manicures to stunning acrylic sets and relaxing pedicures.</p>
-        <p>Located in the heart of Harlingen, TX, we're committed to using premium products in a clean, welcoming environment. Your comfort and satisfaction are our top priority.</p>
-        <div class="about-badges">
-          <div class="badge"><span class="badge-num">4.6★</span><span>Rating</span></div>
-          <div class="badge"><span class="badge-num">106</span><span>Reviews</span></div>
-          <div class="badge"><span class="badge-num">10+</span><span>Services</span></div>
-        </div>
-      </div>
+  <!-- INFO BAR -->
+  <div class="info-bar">
+    <div class="info-bar-inner">
+      <span>📍 2021 W Lincoln St Ste B, Harlingen TX</span>
+      <span class="bar-divider">|</span>
+      <span>📞 <a href="tel:9564408400">956-440-8400</a></span>
+      <span class="bar-divider">|</span>
+      <span>🕐 Tue–Sat 9:30 AM–6 PM &nbsp;·&nbsp; Sun 11:30 AM–2 PM</span>
     </div>
-  </section>
+  </div>
 
   <!-- SERVICES -->
-  <section class="services section-pad" id="services">
+  <section class="section" id="services">
     <div class="container">
-      <p class="section-label centered">What We Offer</p>
-      <h2 class="centered">Our Services</h2>
-      <p class="section-sub centered">Indulge in our full menu of nail and beauty services, crafted to make you look and feel your best.</p>
+      <div class="section-head">
+        <span class="eyebrow">What We Offer</span>
+        <h2>Our Services</h2>
+        <p>From classic manicures to stunning lash extensions — we do it all with precision and care.</p>
+      </div>
       <div class="services-grid">
 
-        <div class="service-card">
-          <div class="service-icon">💅</div>
+        <div class="svc-card" data-delay="0">
+          <div class="svc-emoji">💅</div>
           <h3>Acrylic Nails</h3>
-          <p>Full sets and fills with a flawless, long-lasting finish. Customized shapes and lengths to suit your style.</p>
+          <p>Full sets and fills with flawless, long-lasting results. Custom shapes, lengths, and designs.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">✨</div>
+        <div class="svc-card" data-delay="60">
+          <div class="svc-emoji">✨</div>
           <h3>Basic &amp; Deluxe Manicures</h3>
-          <p>Classic nail care with shaping, cuticle work, and your choice of polish — or upgrade to a deluxe treatment.</p>
+          <p>Shaping, cuticle care, and polish in a classic or upgraded deluxe treatment.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">🌟</div>
+        <div class="svc-card" data-delay="120">
+          <div class="svc-emoji">💎</div>
           <h3>Shellac</h3>
-          <p>Chip-resistant gel-polish hybrid that lasts up to three weeks with a brilliant, high-gloss shine.</p>
+          <p>Chip-resistant gel-polish that lasts up to three weeks with a brilliant high-gloss shine.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">💎</div>
+        <div class="svc-card" data-delay="180">
+          <div class="svc-emoji">🌟</div>
           <h3>Dip Nails</h3>
-          <p>Durable, lightweight dip powder nails for a natural look with lasting color and added strength.</p>
+          <p>Lightweight dip powder for a natural look with lasting color and added nail strength.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">🌿</div>
+        <div class="svc-card" data-delay="240">
+          <div class="svc-emoji">🌿</div>
           <h3>Keratin Treatment Nails</h3>
-          <p>Nourishing keratin-infused nail treatments that strengthen and condition for healthier-looking nails.</p>
+          <p>Nourishing keratin-infused treatments that strengthen and condition for healthier nails.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">🛁</div>
+        <div class="svc-card" data-delay="300">
+          <div class="svc-emoji">🛁</div>
           <h3>Pedicures</h3>
-          <p>Relaxing foot soaks, exfoliation, and nail care that leave your feet soft, smooth, and beautifully polished.</p>
+          <p>Relaxing foot soaks, exfoliation, and nail care — leaving your feet smooth and polished.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">🌸</div>
+        <div class="svc-card" data-delay="360">
+          <div class="svc-emoji">🌸</div>
           <h3>Waxing</h3>
-          <p>Gentle and effective waxing services for smooth, hair-free skin — brows, lip, chin, and more.</p>
+          <p>Gentle and effective waxing for smooth, hair-free skin. Brows, lip, chin, and more.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">👁️</div>
+        <div class="svc-card" data-delay="420">
+          <div class="svc-emoji">👁️</div>
           <h3>Eyelash Extensions</h3>
-          <p>Semi-permanent lash extensions applied individually for a gorgeous, full look that lasts for weeks.</p>
+          <p>Semi-permanent lashes applied individually for a full, gorgeous look lasting weeks.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">🔆</div>
+        <div class="svc-card" data-delay="480">
+          <div class="svc-emoji">🔆</div>
           <h3>Eyelash Perm</h3>
-          <p>A lift and curl treatment that gives your natural lashes a beautifully wide-eyed, curled effect.</p>
+          <p>A lift and curl treatment giving your natural lashes a beautifully wide-eyed effect.</p>
         </div>
 
-        <div class="service-card">
-          <div class="service-icon">💫</div>
+        <div class="svc-card" data-delay="540">
+          <div class="svc-emoji">💫</div>
           <h3>Brow Laminations</h3>
-          <p>Define and restructure your brows for a full, feathered look that stays perfectly groomed all day.</p>
+          <p>Define and restructure your brows for a full, feathered, perfectly groomed look.</p>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- HOURS & LOCATION -->
-  <section class="hours section-pad" id="hours">
-    <div class="container two-col hours-wrap">
-      <div class="hours-block">
-        <p class="section-label">When to Visit</p>
-        <h2>Hours of Operation</h2>
-        <ul class="hours-list">
-          <li><span class="day">Monday</span><span class="time closed-day">Closed</span></li>
-          <li><span class="day">Tuesday</span><span class="time">9:30 AM – 6:00 PM</span></li>
-          <li><span class="day">Wednesday</span><span class="time">9:30 AM – 6:00 PM</span></li>
-          <li><span class="day">Thursday</span><span class="time">9:30 AM – 6:00 PM</span></li>
-          <li><span class="day">Friday</span><span class="time">9:30 AM – 6:00 PM</span></li>
-          <li><span class="day">Saturday</span><span class="time">9:30 AM – 6:00 PM</span></li>
-          <li><span class="day">Sunday</span><span class="time">11:30 AM – 2:00 PM</span></li>
-        </ul>
+  <!-- GALLERY -->
+  <section class="section gallery-section" id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Our Work</span>
+        <h2>Nail Art Gallery</h2>
+        <p>Every set is a work of art. Browse some of our favorite looks.</p>
       </div>
-      <div class="location-block">
-        <p class="section-label">Find Us</p>
-        <h2>Location &amp; Contact</h2>
-        <div class="location-details">
-          <div class="loc-item">
-            <span class="loc-icon">📍</span>
-            <div>
-              <strong>Address</strong>
-              <p>2021 W Lincoln St Ste B<br>Harlingen, TX 78552</p>
-            </div>
-          </div>
-          <div class="loc-item">
-            <span class="loc-icon">📞</span>
-            <div>
-              <strong>Phone</strong>
-              <p><a href="tel:9564408400">956-440-8400</a></p>
-            </div>
-          </div>
-          <div class="loc-item">
-            <span class="loc-icon">⭐</span>
-            <div>
-              <strong>Reviews</strong>
-              <p>4.6 Stars &nbsp;·&nbsp; 106 Reviews</p>
-            </div>
-          </div>
+      <div class="gallery-grid">
+        <div class="gallery-item gi-tall" style="--c1:#f5c6cb;--c2:#e8a0a8;">
+          <div class="gallery-label">Acrylic Full Set</div>
         </div>
-        <a href="https://maps.google.com/?q=2021+W+Lincoln+St+Ste+B+Harlingen+TX+78552" target="_blank" rel="noopener" class="btn-primary map-btn">Get Directions</a>
+        <div class="gallery-item" style="--c1:#d4a8c7;--c2:#b87fb0;">
+          <div class="gallery-label">Shellac Design</div>
+        </div>
+        <div class="gallery-item" style="--c1:#f9d9b0;--c2:#e8b87a;">
+          <div class="gallery-label">Dip Nails</div>
+        </div>
+        <div class="gallery-item gi-wide" style="--c1:#c8e6c9;--c2:#81c784;">
+          <div class="gallery-label">Pedicure</div>
+        </div>
+        <div class="gallery-item" style="--c1:#b3d9f7;--c2:#64b5f6;">
+          <div class="gallery-label">Lash Extensions</div>
+        </div>
+        <div class="gallery-item" style="--c1:#f5e0a0;--c2:#e8c84a;">
+          <div class="gallery-label">Nail Art</div>
+        </div>
+      </div>
+      <p class="gallery-note">📸 Follow us on social media for more nail inspiration!</p>
+    </div>
+  </section>
+
+  <!-- HOURS + MAP -->
+  <section class="section dark-section" id="hours">
+    <div class="container hours-container">
+      <div class="hours-side">
+        <span class="eyebrow light">When to Visit</span>
+        <h2 class="light-h">Hours of Operation</h2>
+        <ul class="hours-list">
+          <li class="closed-row">
+            <span class="day-name">Monday</span>
+            <span class="day-time closed">Closed</span>
+          </li>
+          <li>
+            <span class="day-name">Tuesday</span>
+            <span class="day-time">9:30 AM – 6:00 PM</span>
+          </li>
+          <li>
+            <span class="day-name">Wednesday</span>
+            <span class="day-time">9:30 AM – 6:00 PM</span>
+          </li>
+          <li>
+            <span class="day-name">Thursday</span>
+            <span class="day-time">9:30 AM – 6:00 PM</span>
+          </li>
+          <li>
+            <span class="day-name">Friday</span>
+            <span class="day-time">9:30 AM – 6:00 PM</span>
+          </li>
+          <li>
+            <span class="day-name">Saturday</span>
+            <span class="day-time">9:30 AM – 6:00 PM</span>
+          </li>
+          <li>
+            <span class="day-name">Sunday</span>
+            <span class="day-time sunday">11:30 AM – 2:00 PM</span>
+          </li>
+        </ul>
+        <div class="contact-info">
+          <a href="tel:9564408400" class="contact-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.13 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            956-440-8400
+          </a>
+          <a href="https://maps.google.com/?q=2021+W+Lincoln+St+Ste+B+Harlingen+TX+78552" target="_blank" rel="noopener" class="contact-pill outline-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Get Directions
+          </a>
+        </div>
+      </div>
+      <div class="map-side" id="location">
+        <div class="map-wrapper">
+          <iframe
+            title="RGV Luxury Nails Location"
+            src="https://maps.google.com/maps?q=2021+W+Lincoln+St+Ste+B,+Harlingen,+TX+78552&output=embed"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <div class="address-card">
+          <strong>📍 RGV Luxury Nails</strong>
+          <span>2021 W Lincoln St Ste B, Harlingen, TX 78552</span>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- BOOKING -->
-  <section class="booking section-pad" id="booking">
+  <section class="section booking-section" id="booking">
     <div class="container">
-      <p class="section-label centered">Reserve Your Spot</p>
-      <h2 class="centered">Book an Appointment</h2>
-      <p class="section-sub centered">Fill out the form below and we'll confirm your appointment as soon as possible. You can also call us at <a href="tel:9564408400">956-440-8400</a>.</p>
-
-      <form class="booking-form" id="bookingForm" novalidate>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="firstName">First Name <span class="req">*</span></label>
-            <input type="text" id="firstName" name="firstName" placeholder="Jane" required />
-          </div>
-          <div class="form-group">
-            <label for="lastName">Last Name <span class="req">*</span></label>
-            <input type="text" id="lastName" name="lastName" placeholder="Doe" required />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="phone">Phone Number <span class="req">*</span></label>
-            <input type="tel" id="phone" name="phone" placeholder="(956) 000-0000" required />
-          </div>
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="jane@example.com" />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="service">Service <span class="req">*</span></label>
-            <select id="service" name="service" required>
-              <option value="" disabled selected>Select a service…</option>
-              <option>Acrylic Nails</option>
-              <option>Basic Manicure</option>
-              <option>Deluxe Manicure</option>
-              <option>Shellac</option>
-              <option>Dip Nails</option>
-              <option>Keratin Treatment Nails</option>
-              <option>Pedicure</option>
-              <option>Waxing</option>
-              <option>Eyelash Extensions</option>
-              <option>Eyelash Perm</option>
-              <option>Brow Laminations</option>
-              <option>Other / Multiple Services</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="date">Preferred Date <span class="req">*</span></label>
-            <input type="date" id="date" name="date" required />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="time">Preferred Time <span class="req">*</span></label>
-            <select id="time" name="time" required>
-              <option value="" disabled selected>Select a time…</option>
-              <option>9:30 AM</option>
-              <option>10:00 AM</option>
-              <option>10:30 AM</option>
-              <option>11:00 AM</option>
-              <option>11:30 AM</option>
-              <option>12:00 PM</option>
-              <option>12:30 PM</option>
-              <option>1:00 PM</option>
-              <option>1:30 PM</option>
-              <option>2:00 PM</option>
-              <option>2:30 PM</option>
-              <option>3:00 PM</option>
-              <option>3:30 PM</option>
-              <option>4:00 PM</option>
-              <option>4:30 PM</option>
-              <option>5:00 PM</option>
-              <option>5:30 PM</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="guests">Number of Guests</label>
-            <select id="guests" name="guests">
-              <option value="1">1 (Just me)</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4+</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group full-width">
-          <label for="notes">Additional Notes</label>
-          <textarea id="notes" name="notes" rows="4" placeholder="Any special requests, nail inspiration, or questions?"></textarea>
-        </div>
-
-        <div class="form-submit">
-          <button type="submit" class="btn-primary btn-large">Request Appointment</button>
-        </div>
-
-        <div class="form-success" id="formSuccess" hidden>
-          <span class="success-icon">✅</span>
-          <strong>Thank you! Your appointment request has been received.</strong>
-          <p>We'll contact you shortly to confirm your booking. You can also call us at <a href="tel:9564408400">956-440-8400</a>.</p>
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact-strip" id="contact">
-    <div class="container contact-inner">
-      <div class="contact-item">
-        <span class="contact-icon">📍</span>
-        <div>
-          <strong>Address</strong>
-          <p>2021 W Lincoln St Ste B, Harlingen, TX 78552</p>
-        </div>
+      <div class="section-head">
+        <span class="eyebrow">Reserve Your Spot</span>
+        <h2>Book an Appointment</h2>
+        <p>Fill out the form below and we'll reach out to confirm. Or call us directly at <a href="tel:9564408400" class="inline-link">956-440-8400</a>.</p>
       </div>
-      <div class="contact-divider"></div>
-      <div class="contact-item">
-        <span class="contact-icon">📞</span>
-        <div>
-          <strong>Call Us</strong>
-          <p><a href="tel:9564408400">956-440-8400</a></p>
-        </div>
-      </div>
-      <div class="contact-divider"></div>
-      <div class="contact-item">
-        <span class="contact-icon">🕐</span>
-        <div>
-          <strong>Hours</strong>
-          <p>Tue–Sat 9:30 AM–6 PM &nbsp;|&nbsp; Sun 11:30 AM–2 PM</p>
+
+      <div class="booking-wrap">
+        <form
+          class="booking-form"
+          id="bookingForm"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+          novalidate>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="firstName">First Name <span class="req">*</span></label>
+              <input type="text" id="firstName" name="firstName" placeholder="Jane" required autocomplete="given-name" />
+            </div>
+            <div class="field">
+              <label for="lastName">Last Name <span class="req">*</span></label>
+              <input type="text" id="lastName" name="lastName" placeholder="Doe" required autocomplete="family-name" />
+            </div>
+            <div class="field">
+              <label for="phone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="(956) 000-0000" required autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="service">Service <span class="req">*</span></label>
+              <select id="service" name="service" required>
+                <option value="" disabled selected>Choose a service…</option>
+                <option>Acrylic Nails – Full Set</option>
+                <option>Acrylic Nails – Fill</option>
+                <option>Basic Manicure</option>
+                <option>Deluxe Manicure</option>
+                <option>Shellac</option>
+                <option>Dip Nails</option>
+                <option>Keratin Treatment Nails</option>
+                <option>Pedicure</option>
+                <option>Waxing</option>
+                <option>Eyelash Extensions</option>
+                <option>Eyelash Perm</option>
+                <option>Brow Laminations</option>
+                <option>Multiple Services / Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="guests">Number of Guests</label>
+              <select id="guests" name="guests">
+                <option value="1">1 – Just me</option>
+                <option value="2">2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4+ guests</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="date">Preferred Date <span class="req">*</span></label>
+              <input type="date" id="date" name="date" required />
+              <span class="field-hint" id="dateHint"></span>
+            </div>
+            <div class="field">
+              <label for="time">Preferred Time <span class="req">*</span></label>
+              <select id="time" name="time" required>
+                <option value="" disabled selected>Choose a time…</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="notes">Special Requests / Notes</label>
+              <textarea id="notes" name="notes" rows="4" placeholder="Nail inspo, special occasion, anything we should know…"></textarea>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn-gold btn-submit" id="submitBtn">
+              <span id="submitText">Request Appointment</span>
+              <span id="submitSpinner" hidden>Sending…</span>
+            </button>
+            <p class="form-note">We'll confirm your appointment via phone or email within 24 hours.</p>
+          </div>
+
+          <div class="form-success" id="formSuccess" hidden>
+            <div class="success-icon">🎉</div>
+            <h3>You're all set!</h3>
+            <p>Your appointment request has been received. We'll be in touch soon to confirm.</p>
+            <p>Questions? Call us at <a href="tel:9564408400">956-440-8400</a>.</p>
+          </div>
+
+          <div class="form-error" id="formError" hidden>
+            <p>⚠️ Something went wrong. Please try again or call us at <a href="tel:9564408400">956-440-8400</a>.</p>
+          </div>
+
+        </form>
+
+        <div class="booking-aside">
+          <div class="aside-card">
+            <div class="aside-icon">📍</div>
+            <strong>Address</strong>
+            <p>2021 W Lincoln St Ste B<br>Harlingen, TX 78552</p>
+          </div>
+          <div class="aside-card">
+            <div class="aside-icon">📞</div>
+            <strong>Phone</strong>
+            <p><a href="tel:9564408400">956-440-8400</a></p>
+          </div>
+          <div class="aside-card">
+            <div class="aside-icon">🕐</div>
+            <strong>Hours</strong>
+            <p>Tue–Sat: 9:30 AM – 6:00 PM<br>Sun: 11:30 AM – 2:00 PM<br><span style="color:#c0392b">Mon: Closed</span></p>
+          </div>
+          <div class="aside-card reviews-card">
+            <div class="aside-icon">⭐</div>
+            <strong>Reviews</strong>
+            <p class="review-stars">★★★★★</p>
+            <p>4.6 stars · 106 reviews</p>
+          </div>
         </div>
       </div>
     </div>
@@ -336,28 +379,46 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">RGV Luxury Nails</span>
-        <p>2021 W Lincoln St Ste B<br>Harlingen, TX 78552</p>
-        <p><a href="tel:9564408400">956-440-8400</a></p>
-      </div>
-      <div class="footer-links">
-        <strong>Quick Links</strong>
-        <a href="#services">Services</a>
-        <a href="#about">About</a>
-        <a href="#hours">Hours</a>
-        <a href="#booking">Book Now</a>
-      </div>
-      <div class="footer-hours">
-        <strong>Hours</strong>
-        <p>Mon: Closed</p>
-        <p>Tue–Sat: 9:30 AM – 6:00 PM</p>
-        <p>Sun: 11:30 AM – 2:00 PM</p>
+    <div class="footer-top">
+      <div class="container footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">RGV Luxury Nails</div>
+          <p>Harlingen's premier nail salon offering a full range of nail and beauty services in a clean, welcoming environment.</p>
+          <a href="tel:9564408400" class="footer-phone">956-440-8400</a>
+        </div>
+        <div class="footer-col">
+          <strong>Services</strong>
+          <ul>
+            <li>Acrylic Nails</li>
+            <li>Basic &amp; Deluxe Manicures</li>
+            <li>Shellac</li>
+            <li>Dip Nails</li>
+            <li>Keratin Treatment Nails</li>
+            <li>Pedicures</li>
+            <li>Waxing</li>
+            <li>Eyelash Extensions</li>
+            <li>Eyelash Perm</li>
+            <li>Brow Laminations</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <strong>Hours</strong>
+          <ul class="footer-hours">
+            <li><span>Monday</span><span class="fc">Closed</span></li>
+            <li><span>Tue – Sat</span><span>9:30 AM – 6 PM</span></li>
+            <li><span>Sunday</span><span>11:30 AM – 2 PM</span></li>
+          </ul>
+          <strong style="margin-top:24px;display:block">Address</strong>
+          <p>2021 W Lincoln St Ste B<br>Harlingen, TX 78552</p>
+          <a href="https://maps.google.com/?q=2021+W+Lincoln+St+Ste+B+Harlingen+TX+78552" target="_blank" rel="noopener" class="footer-dir-link">Get Directions →</a>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 RGV Luxury Nails. All rights reserved.</p>
+      <div class="container">
+        <span>© 2025 RGV Luxury Nails. All rights reserved.</span>
+        <span>2021 W Lincoln St Ste B, Harlingen, TX 78552</span>
+      </div>
     </div>
   </footer>
 
