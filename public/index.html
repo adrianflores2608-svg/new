@@ -77,10 +77,18 @@
         </header>
         <div class="modal-grid">
           <label>
+            <span>Stage</span>
+            <select id="email-stage">
+              <option value="initial">Initial cold email</option>
+              <option value="followup-3">Day 3 follow-up</option>
+              <option value="breakup-7">Day 7 breakup</option>
+            </select>
+          </label>
+          <label>
             <span>To (email)</span>
             <input id="to-email" type="email" placeholder="shop@example.com" />
           </label>
-          <label>
+          <label class="full">
             <span>Subject</span>
             <input id="subject" type="text" />
           </label>
@@ -93,6 +101,23 @@
           <button class="ghost" id="regenerate">Regenerate</button>
           <button class="ghost" id="copy-email">Copy</button>
           <button class="primary" id="open-mail">Open in Mail & Mark Sent</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="dm-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="dm-title">
+      <div class="modal-body">
+        <header>
+          <h3 id="dm-title">Instagram DM</h3>
+          <button class="icon" id="dm-close" aria-label="Close">&times;</button>
+        </header>
+        <div id="dm-body" class="dm-body">
+          <p class="empty">Generating...</p>
+        </div>
+        <footer>
+          <a id="dm-open-ig" class="ghost button-link" target="_blank" rel="noopener">Open on Instagram</a>
+          <button class="ghost" id="dm-regenerate">Regenerate</button>
+          <button class="primary" id="dm-mark-sent">Mark sent</button>
         </footer>
       </div>
     </div>

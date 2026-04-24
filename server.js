@@ -139,6 +139,28 @@ app.get("/api/shops", async (req, res) => {
   }
 });
 
+const EMAIL_STAGE_INSTRUCTIONS = {
+  "initial": `Stage: INITIAL cold email.
+- Subject should be casual, lowercase-friendly, 4-7 words, not salesy. No "Re:".
+- Body under 120 words.
+- Mention the shop by name naturally once.
+- One concrete offer: you built a quick demo site for them and would love to show it in person.
+- Ask for a 10-minute in-person stop-by, not a call.`,
+  "followup-3": `Stage: DAY 3 FOLLOW-UP. The initial email got no reply 3 days ago.
+- Subject must start with "Re: " and reuse the initial subject style (keep it short).
+- Body under 70 words. Shorter than the first email.
+- Acknowledge you're bumping this up, no guilt-trip.
+- Re-offer the demo link once.
+- Ask again for a 10-minute in-person stop-by this week.
+- Do not repeat the full pitch.`,
+  "breakup-7": `Stage: DAY 7 BREAKUP. No response after a week.
+- Subject must start with "Re: " and feel like a soft close.
+- Body under 55 words.
+- Polite goodbye. Make it easy to say no.
+- Say you'll stop following up but the demo link is still there if they ever want a look.
+- End warm, not passive-aggressive. No guilt.`,
+};
+
 app.post("/api/email", async (req, res) => {
   if (!anthropic) {
     return res.status(500).json({
@@ -146,7 +168,8 @@ app.post("/api/email", async (req, res) => {
     });
   }
 
-  const { shopName, city, demoUrl, senderName, tone, shopDetails } = req.body || {};
+  const { shopName, city, demoUrl, senderName, tone, shopDetails, stage: rawStage, previousSubject } = req.body || {};
+  const stage = EMAIL_STAGE_INSTRUCTIONS[rawStage] ? rawStage : "initial";
   if (!shopName || !senderName || !demoUrl) {
     return res.status(400).json({ error: "shopName, senderName, and demoUrl are required" });
   }
@@ -161,15 +184,14 @@ Extra shop details (optional, only use if clearly factual): ${shopDetails || "(n
 Sender name: ${senderName}
 Demo website to link: ${demoUrl}
 Tone: ${tone || "friendly, local, humble, concise"}
+${previousSubject ? `Previous subject used in this thread: "${previousSubject}"` : ""}
 
-Requirements:
+${EMAIL_STAGE_INSTRUCTIONS[stage]}
+
+Universal requirements:
 - Subject line on the first line, prefixed with "Subject: ".
-- Body under 120 words.
-- Mention the shop by name naturally once.
-- One concrete offer: you built a quick demo site for them and would love to show it in person.
-- Ask for a 10-minute in-person stop-by, not a call.
 - Sign off with just the sender's first name.
-- Plain text only. No markdown, no emojis, no bullet lists.`;
+- Plain text only. No markdown, no emojis, no bullet lists, no headers.`;
 
   try {
     const msg = await anthropic.messages.create({
@@ -188,10 +210,70 @@ Requirements:
     const subject = subjectMatch ? subjectMatch[1].trim() : `Quick idea for ${shopName}`;
     const body = text.replace(/^Subject:.*$/im, "").trim();
 
-    res.json({ subject, body, raw: text, model: MODEL });
+    res.json({ subject, body, raw: text, model: MODEL, stage });
   } catch (err) {
     console.error("email error:", err);
     res.status(502).json({ error: err.message || "Failed to generate email" });
+  }
+});
+
+app.post("/api/dm", async (req, res) => {
+  if (!anthropic) {
+    return res.status(500).json({
+      error: "ANTHROPIC_API_KEY is not set. Copy .env.example to .env and add your key.",
+    });
+  }
+
+  const { shopName, city, demoUrl, senderName, tone } = req.body || {};
+  if (!shopName || !senderName || !demoUrl) {
+    return res.status(400).json({ error: "shopName, senderName, and demoUrl are required" });
+  }
+
+  const system = `You ghostwrite Instagram DMs for a young, local web developer reaching out to small barbershops. DMs are way shorter and more casual than email. Sound like a real kid from town, not a marketer. No emojis, no hashtags, no sales buzzwords, no "I hope this message finds you well", no "reaching out". Never lie about their page or pretend to know their barbers by name.`;
+
+  const user = `Write exactly TWO Instagram DM variants for this shop.
+
+Shop name: ${shopName}
+City: ${city || "(unspecified)"}
+Sender name: ${senderName}
+Demo site link: ${demoUrl}
+Tone: ${tone || "casual, local, humble"}
+
+Rules for each variant:
+- Under 280 characters total, including the link.
+- 2-4 short sentences max.
+- Mention the shop by name ONCE, naturally.
+- One clear ask: a 10-minute in-person stop-by (not a call, not a Zoom).
+- Include the demo link as plain text.
+- Sign off with just the first name on a new line.
+- Plain text only. No emojis, no bullets, no markdown.
+
+Output format, exactly:
+---VARIANT 1---
+<text>
+---VARIANT 2---
+<text>`;
+
+  try {
+    const msg = await anthropic.messages.create({
+      model: MODEL,
+      max_tokens: 600,
+      system,
+      messages: [{ role: "user", content: user }],
+    });
+    const text = msg.content
+      .filter((b) => b.type === "text")
+      .map((b) => b.text)
+      .join("")
+      .trim();
+
+    const parts = text.split(/---VARIANT\s*\d+---/i).map((s) => s.trim()).filter(Boolean);
+    const variants = parts.length >= 2 ? parts.slice(0, 2) : [text];
+
+    res.json({ variants, raw: text, model: MODEL });
+  } catch (err) {
+    console.error("dm error:", err);
+    res.status(502).json({ error: err.message || "Failed to generate DM" });
   }
 });
 
