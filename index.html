@@ -3,560 +3,294 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notorious Cutz Barbershop | San Benito, TX</title>
-  <link rel="stylesheet" href="style.css?v=11" />
+  <title>SVG Web Studio | Professional Websites for Local Businesses</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <script src="config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0f; color: #a0a0b0; line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(10,10,15,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-logo { font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .nav-logo span { color: #7c6af5; }
+    .nav-cta {
+      background: #7c6af5; color: #fff; padding: 0.5rem 1.25rem;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: #9580ff; }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 1.5rem 4rem;
+      background: radial-gradient(ellipse at 50% 0%, rgba(124,106,245,0.15) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 720px; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(124,106,245,0.12);
+      border: 1px solid rgba(124,106,245,0.3);
+      color: #a090ff;
+      padding: 0.35rem 1rem; border-radius: 50px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800; color: #fff; line-height: 1.1;
+      letter-spacing: -1px; margin-bottom: 1.25rem;
+    }
+    .hero h1 span { color: #7c6af5; }
+    .hero p { font-size: 1.1rem; color: #6b6b80; max-width: 520px; margin: 0 auto 2.5rem; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: #7c6af5; color: #fff; padding: 0.85rem 2rem;
+      border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: #9580ff; transform: translateY(-2px); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06); color: #fff; padding: 0.85rem 2rem;
+      border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+      border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+    .stats {
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+    .stats-grid {
+      max-width: 800px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;
+    }
+    .stat-num { font-size: 2.2rem; font-weight: 800; color: #fff; }
+    .stat-label { font-size: 0.85rem; color: #6b6b80; margin-top: 0.25rem; }
+
+    .demos { padding: 6rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .demos h2 {
+      text-align: center; font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800; color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.5px;
+    }
+    .demos-sub { text-align: center; color: #6b6b80; margin-bottom: 3rem; }
+    .demos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .demo-card {
+      background: #12121a; border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; overflow: hidden; transition: all 0.3s; cursor: pointer;
+    }
+    .demo-card:hover { transform: translateY(-6px); border-color: rgba(124,106,245,0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .demo-thumb {
+      height: 180px; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative;
+    }
+    .demo-thumb.barbershop { background: linear-gradient(135deg, #1a0000, #3d0000); }
+    .demo-thumb.burger     { background: linear-gradient(135deg, #0f0900, #2a1500); }
+    .demo-thumb.nails      { background: linear-gradient(135deg, #120a0e, #2a1824); }
+    .demo-thumb.coming     { background: linear-gradient(135deg, #0a0a0f, #1a1a2e); }
+    .thumb-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 0.75rem 1rem; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .barbershop .thumb-label { color: #dc2020; }
+    .burger .thumb-label     { color: #c17f24; }
+    .nails .thumb-label      { color: #c9748f; }
+    .coming .thumb-label     { color: #444; }
+    .demo-body { padding: 1.5rem; }
+    .demo-tag {
+      display: inline-block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 0.25rem 0.75rem; border-radius: 50px; margin-bottom: 0.75rem;
+    }
+    .tag-barbershop { background: rgba(220,32,32,0.12); color: #dc2020; }
+    .tag-burger     { background: rgba(193,127,36,0.12); color: #c17f24; }
+    .tag-nails      { background: rgba(201,116,143,0.12); color: #c9748f; }
+    .tag-coming     { background: rgba(255,255,255,0.05); color: #555; }
+    .demo-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+    .demo-desc { font-size: 0.83rem; color: #6b6b80; margin-bottom: 1.25rem; line-height: 1.5; }
+    .demo-features { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+    .feature-tag {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      color: #8080a0; font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 4px;
+    }
+    .demo-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: #7c6af5; color: #fff; padding: 0.6rem 1.25rem;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 600; transition: background 0.2s;
+    }
+    .demo-link:hover { background: #9580ff; }
+    .demo-link.disabled { background: rgba(255,255,255,0.05); color: #555; cursor: default; pointer-events: none; }
+
+    .services { padding: 6rem 1.5rem; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.06); }
+    .services-inner { max-width: 1100px; margin: 0 auto; }
+    .services h2 {
+      text-align: center; font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800; color: #fff; margin-bottom: 0.5rem;
+    }
+    .services-sub { text-align: center; color: #6b6b80; margin-bottom: 3rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+    .service-card {
+      background: #12121a; border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 1.5rem; transition: all 0.2s;
+    }
+    .service-card:hover { border-color: rgba(124,106,245,0.3); transform: translateY(-3px); }
+    .service-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+    .service-card h3 { color: #fff; font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .service-card p { font-size: 0.83rem; color: #6b6b80; }
+
+    .cta-section {
+      padding: 6rem 1.5rem; text-align: center;
+      background: radial-gradient(ellipse at 50% 100%, rgba(124,106,245,0.12) 0%, transparent 70%);
+    }
+    .cta-section h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 1rem; }
+    .cta-section p { color: #6b6b80; margin-bottom: 2rem; font-size: 1.05rem; }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2rem 1.5rem; text-align: center;
+      font-size: 0.82rem; color: #3a3a4a;
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .hero-btns { flex-direction: column; align-items: center; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-inner">
-      <div class="logo">
-        <img src="6EA2EB4F-2528-4651-8081-09BADEA3B8DB.png" alt="Notorious Cutz Logo" class="logo-img" />
-        <span class="logo-text">Notorious Cutz</span>
-      </div>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#book">Book Now</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank">Facebook</a></li>
-      </ul>
-      <a href="#book" class="btn btn-nav">Book Appointment</a>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+  <nav>
+    <div class="nav-logo">SVG <span>Web</span> Studio</div>
+    <a href="mailto:Adrian.flores2608@gmail.com" class="nav-cta">Get a Website</a>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <div class="rating-badge">
-        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <span class="rating-num">4.9</span>
-        <span class="rating-label">Star Rating</span>
-      </div>
-      <h1>San Benito's<br /><span class="accent">Premier</span> Barbershop</h1>
-      <p class="hero-sub">Sharp cuts. Clean fades. Classic shaves. Walk out feeling your best.</p>
-      <div class="hero-actions">
-        <a href="#book" class="btn btn-primary">Schedule Appointment</a>
-        <a href="tel:9568732957" class="btn btn-outline">&#128222; Call Us</a>
-      </div>
-      <div class="hero-info">
-        <div class="info-pill">&#128205; 201B N Sam Houston, San Benito, TX</div>
-        <div class="info-pill">&#128222; (956) 873-2957</div>
-        <div class="info-pill">&#128336; Tue–Sat 11am–8pm</div>
-      </div>
-    </div>
-    <div class="hero-scroll-hint">&#8595; Scroll</div>
-  </section>
-
-  <!-- WHY US -->
-  <section class="why-us">
-    <div class="container">
-      <h2 class="section-title">Why Choose <span class="accent">Notorious Cutz?</span></h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">&#9986;</div>
-          <h3>Master Barbers</h3>
-          <p>Years of experience delivering precision cuts and fades every single time.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#128197;</div>
-          <h3>Easy Online Booking</h3>
-          <p>Reserve your spot in 60 seconds. No phone tag, no waiting in line.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#128172;</div>
-          <h3>Reminder Alerts</h3>
-          <p>We'll text and email you so you never miss your appointment.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#11088;</div>
-          <h3>4.9-Star Service</h3>
-          <p>Rated by hundreds of satisfied customers right here in the Rio Grande Valley.</p>
-        </div>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">&#127759; Serving the Rio Grande Valley</div>
+      <h1>Professional Websites<br />for <span>Local Businesses</span></h1>
+      <p>Fast, modern, mobile-ready websites built for barbershops, restaurants, nail salons and more — at a price that makes sense for small business.</p>
+      <div class="hero-btns">
+        <a href="mailto:Adrian.flores2608@gmail.com" class="btn-primary">Get Your Website Today</a>
+        <a href="#demos" class="btn-secondary">View Our Work ↓</a>
       </div>
     </div>
   </section>
 
-  <!-- SERVICES -->
-  <section class="services" id="services">
-    <div class="container">
-      <h2 class="section-title">Our <span class="accent">Services</span></h2>
-      <p class="section-sub">Premium grooming at prices you'll love</p>
+  <div class="stats">
+    <div class="stats-grid">
+      <div><div class="stat-num">3+</div><div class="stat-label">Websites Built</div></div>
+      <div><div class="stat-num">$0</div><div class="stat-label">Hosting Cost to You</div></div>
+      <div><div class="stat-num">48hr</div><div class="stat-label">Avg. Turnaround</div></div>
+    </div>
+  </div>
+
+  <section class="demos" id="demos">
+    <h2>Our Work</h2>
+    <p class="demos-sub">Real websites built for real businesses in the Valley</p>
+    <div class="demos-grid">
+
+      <div class="demo-card" onclick="location.href='notorious-cutz/'">
+        <div class="demo-thumb barbershop"><span>✂️</span><div class="thumb-label">Barbershop Template</div></div>
+        <div class="demo-body">
+          <span class="demo-tag tag-barbershop">Barbershop</span>
+          <div class="demo-name">Notorious Cutz</div>
+          <div class="demo-desc">San Benito barbershop with online booking, no-show protection, gallery and FAQ.</div>
+          <div class="demo-features">
+            <span class="feature-tag">Booking Form</span>
+            <span class="feature-tag">Gallery</span>
+            <span class="feature-tag">FAQ</span>
+            <span class="feature-tag">Mobile Ready</span>
+          </div>
+          <a href="notorious-cutz/" class="demo-link">View Demo →</a>
+        </div>
+      </div>
+
+      <div class="demo-card" onclick="location.href='branding-iron/'">
+        <div class="demo-thumb burger"><span>🍔</span><div class="thumb-label">Restaurant Template</div></div>
+        <div class="demo-body">
+          <span class="demo-tag tag-burger">Restaurant</span>
+          <div class="demo-name">Texas Branding Iron Burgers</div>
+          <div class="demo-desc">Harlingen burger restaurant with full menu, DoorDash ordering and food gallery.</div>
+          <div class="demo-features">
+            <span class="feature-tag">Full Menu</span>
+            <span class="feature-tag">DoorDash</span>
+            <span class="feature-tag">Gallery</span>
+            <span class="feature-tag">Mobile Ready</span>
+          </div>
+          <a href="branding-iron/" class="demo-link">View Demo →</a>
+        </div>
+      </div>
+
+      <div class="demo-card" onclick="location.href='rov-nails/'">
+        <div class="demo-thumb nails"><span>💅</span><div class="thumb-label">Nail Salon Template</div></div>
+        <div class="demo-body">
+          <span class="demo-tag tag-nails">Nail Salon</span>
+          <div class="demo-name">ROV Luxury Nails</div>
+          <div class="demo-desc">Harlingen luxury nail salon with services menu, online booking and reviews.</div>
+          <div class="demo-features">
+            <span class="feature-tag">Booking Form</span>
+            <span class="feature-tag">Services</span>
+            <span class="feature-tag">Reviews</span>
+            <span class="feature-tag">Mobile Ready</span>
+          </div>
+          <a href="rov-nails/" class="demo-link">View Demo →</a>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-thumb coming"><span>🔮</span><div class="thumb-label">Coming Soon</div></div>
+        <div class="demo-body">
+          <span class="demo-tag tag-coming">Coming Soon</span>
+          <div class="demo-name">Tattoo Shop Template</div>
+          <div class="demo-desc">Dark, edgy design with artist portfolios, booking and flash gallery.</div>
+          <div class="demo-features">
+            <span class="feature-tag">Portfolio</span>
+            <span class="feature-tag">Booking</span>
+            <span class="feature-tag">Gallery</span>
+          </div>
+          <a class="demo-link disabled">In Progress...</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="services">
+    <div class="services-inner">
+      <h2>What's Included</h2>
+      <p class="services-sub">Every website comes fully loaded</p>
       <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon">&#9986;</div>
-          <h3>Classic Haircut</h3>
-          <p>Scissor or clipper cut, tailored to your style</p>
-          <span class="price">$20</span>
-          <span class="duration">&#128336; 30 min</span>
-        </div>
-        <div class="service-card featured">
-          <div class="badge">Most Popular</div>
-          <div class="service-icon">&#128081;</div>
-          <h3>Skin Fade</h3>
-          <p>Zero to skin fade with a clean finish every time</p>
-          <span class="price">$25</span>
-          <span class="duration">&#128336; 40 min</span>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#129518;</div>
-          <h3>Beard Trim & Shape</h3>
-          <p>Line-up, shape, and hot towel finish</p>
-          <span class="price">$15</span>
-          <span class="duration">&#128336; 20 min</span>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#127774;</div>
-          <h3>Cut + Beard Combo</h3>
-          <p>Full haircut plus beard trim — best value</p>
-          <span class="price">$35</span>
-          <span class="duration">&#128336; 55 min</span>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#128116;</div>
-          <h3>Kids Cut (12 & under)</h3>
-          <p>Patient, friendly cuts for the little ones</p>
-          <span class="price">$15</span>
-          <span class="duration">&#128336; 25 min</span>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#10024;</div>
-          <h3>Hot Towel Shave</h3>
-          <p>Traditional straight razor shave with hot towel</p>
-          <span class="price">$30</span>
-          <span class="duration">&#128336; 45 min</span>
-        </div>
+        <div class="service-card"><div class="service-icon">📱</div><h3>Mobile Friendly</h3><p>Looks perfect on every phone, tablet and desktop.</p></div>
+        <div class="service-card"><div class="service-icon">⚡</div><h3>Fast Loading</h3><p>Optimized for speed so customers don't wait.</p></div>
+        <div class="service-card"><div class="service-icon">📅</div><h3>Online Booking</h3><p>Appointment forms that send directly to your email.</p></div>
+        <div class="service-card"><div class="service-icon">📍</div><h3>Google Maps</h3><p>Built-in map so customers can find you easily.</p></div>
+        <div class="service-card"><div class="service-icon">🎨</div><h3>Custom Design</h3><p>Unique look built to match your brand and style.</p></div>
+        <div class="service-card"><div class="service-icon">🔧</div><h3>Monthly Support</h3><p>We update your hours, photos and info anytime.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- GALLERY -->
-  <section class="gallery" id="gallery">
-    <div class="container">
-      <h2 class="section-title">The <span class="accent">Work</span></h2>
-      <p class="section-sub">Fresh cuts, clean fades, sharp lines</p>
-      <div class="gallery-grid">
-        <div class="gallery-item"><img src="IMG_7027.jpeg" alt="Taper Fade" /><div class="gallery-overlay">Taper Fade</div></div>
-        <div class="gallery-item"><img src="IMG_7026.jpeg" alt="Crop Fade" /><div class="gallery-overlay">Crop Fade</div></div>
-        <div class="gallery-item"><img src="IMG_7023.jpeg" alt="Kids Fade" /><div class="gallery-overlay">Kids Fade</div></div>
-        <div class="gallery-item"><img src="IMG_7024.jpeg" alt="Skin Fade" /><div class="gallery-overlay">Skin Fade</div></div>
-        <div class="gallery-item gi-wide"><img src="IMG_7025.jpeg" alt="The Shop" /><div class="gallery-overlay">The Shop</div></div>
-      </div>
-    </div>
+  <section class="cta-section">
+    <h2>Ready to get your business online?</h2>
+    <p>Starting at $600 — up and running in 48 hours.</p>
+    <a href="mailto:Adrian.flores2608@gmail.com" class="btn-primary" style="font-size:1rem;padding:1rem 2.5rem;">Contact Us Today</a>
   </section>
 
-  <!-- BOOKING SECTION -->
-  <section class="booking" id="book">
-    <div class="container">
-      <div class="booking-wrapper">
-        <div class="booking-info">
-          <h2>Book Your <span class="accent">Appointment</span></h2>
-          <p>Reserve your chair in under a minute. You'll receive a confirmation and an automatic reminder before your visit — so you never forget and we never have an empty chair.</p>
-          <div class="policy-box">
-            <h4>&#9888; Our No-Show Policy</h4>
-            <ul>
-              <li>&#10003; You'll get a text reminder 24 hours before</li>
-              <li>&#10003; You'll get another reminder 2 hours before</li>
-              <li>&#10003; Need to cancel? Do it 2+ hours ahead — no problem</li>
-              <li>&#10005; No-shows or last-minute cancels may require a deposit on future bookings</li>
-            </ul>
-          </div>
-          <div class="contact-quick">
-            <a href="tel:9568732957" class="contact-link">&#128222; (956) 873-2957</a>
-            <span class="contact-link">&#128205; 201B N Sam Houston, San Benito, TX</span>
-            <a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank" class="contact-link">&#128155; Facebook</a>
-          </div>
-        </div>
-
-        <div class="booking-form-wrap">
-          <form class="booking-form" id="bookingForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
-            <input type="hidden" name="access_key" value="PASTE_KEY_HERE" />
-            <input type="hidden" name="subject" value="New Appointment Request — Notorious Cutz" />
-            <input type="hidden" name="from_name" value="Notorious Cutz Website" />
-            <input type="hidden" name="redirect" value="false" />
-            <h3>Reserve Your Spot</h3>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="firstName">First Name *</label>
-                <input type="text" id="firstName" name="firstName" placeholder="John" required />
-                <span class="error-msg" id="firstNameError"></span>
-              </div>
-              <div class="form-group">
-                <label for="lastName">Last Name *</label>
-                <input type="text" id="lastName" name="lastName" placeholder="Doe" required />
-                <span class="error-msg" id="lastNameError"></span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="phone">Phone Number *</label>
-              <input type="tel" id="phone" name="phone" placeholder="(956) 555-0000" required />
-              <span class="error-msg" id="phoneError"></span>
-              <span class="field-hint">&#128172; We'll text you a reminder before your appointment</span>
-            </div>
-
-            <div class="form-group">
-              <label for="email">Email Address *</label>
-              <input type="email" id="email" name="email" placeholder="john@example.com" required />
-              <span class="error-msg" id="emailError"></span>
-              <span class="field-hint">&#128233; Confirmation and reminders will be sent here</span>
-            </div>
-
-            <div class="form-group">
-              <label for="service">Select Service *</label>
-              <select id="service" name="service" required>
-                <option value="">-- Choose a service --</option>
-                <option value="classic">Classic Haircut — $20 (30 min)</option>
-                <option value="fade">Skin Fade — $25 (40 min)</option>
-                <option value="beard">Beard Trim & Shape — $15 (20 min)</option>
-                <option value="combo">Cut + Beard Combo — $35 (55 min)</option>
-                <option value="kids">Kids Cut (12 & under) — $15 (25 min)</option>
-                <option value="shave">Hot Towel Shave — $30 (45 min)</option>
-              </select>
-              <span class="error-msg" id="serviceError"></span>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="apptDate">Preferred Date *</label>
-                <input type="date" id="apptDate" name="apptDate" required />
-                <span class="error-msg" id="apptDateError"></span>
-              </div>
-              <div class="form-group">
-                <label for="apptTime">Preferred Time *</label>
-                <select id="apptTime" name="apptTime" required>
-                  <option value="">-- Select Time --</option>
-                  <option value="11:00 AM">11:00 AM</option>
-                  <option value="11:30 AM">11:30 AM</option>
-                  <option value="12:00 PM">12:00 PM</option>
-                  <option value="12:30 PM">12:30 PM</option>
-                  <option value="1:00 PM">1:00 PM</option>
-                  <option value="1:30 PM">1:30 PM</option>
-                  <option value="2:00 PM">2:00 PM</option>
-                  <option value="2:30 PM">2:30 PM</option>
-                  <option value="3:00 PM">3:00 PM</option>
-                  <option value="3:30 PM">3:30 PM</option>
-                  <option value="4:00 PM">4:00 PM</option>
-                  <option value="4:30 PM">4:30 PM</option>
-                  <option value="5:00 PM">5:00 PM</option>
-                  <option value="5:30 PM">5:30 PM</option>
-                  <option value="6:00 PM">6:00 PM</option>
-                  <option value="6:30 PM">6:30 PM</option>
-                  <option value="7:00 PM">7:00 PM</option>
-                  <option value="7:30 PM">7:30 PM</option>
-                  <option value="8:00 PM">8:00 PM</option>
-                </select>
-                <span class="error-msg" id="apptTimeError"></span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="barber">Preferred Barber</label>
-              <select id="barber" name="barber">
-                <option value="any">No Preference (First Available)</option>
-                <option value="owner">Owner/Head Barber</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="notes">Notes (optional)</label>
-              <textarea id="notes" name="notes" rows="3" placeholder="Any special requests or style references..."></textarea>
-            </div>
-
-            <div class="deposit-box">
-              <div class="deposit-header">
-                <span class="deposit-icon">&#128274;</span>
-                <div>
-                  <strong>Secure Your Spot with a $10 Deposit</strong>
-                  <p>Optional but recommended — guarantees your appointment and goes toward your service.</p>
-                </div>
-              </div>
-              <div class="deposit-options">
-                <label class="deposit-option">
-                  <input type="radio" name="deposit" value="yes" id="depositYes" />
-                  <span>Yes, I'll pay a $10 deposit (Venmo / CashApp / Zelle)</span>
-                </label>
-                <label class="deposit-option">
-                  <input type="radio" name="deposit" value="no" id="depositNo" checked />
-                  <span>No deposit — I understand no-shows may require one in the future</span>
-                </label>
-              </div>
-              <p class="deposit-note">If paying deposit: send $10 to <strong>(956) 873-2957</strong> with your name &amp; appointment date.</p>
-            </div>
-
-            <div class="form-group consent-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="smsConsent" name="smsConsent" required />
-                <span>I agree to receive text reminders about my appointment *</span>
-              </label>
-              <span class="error-msg" id="smsConsentError"></span>
-            </div>
-
-            <div class="form-group consent-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="policyConsent" name="policyConsent" required />
-                <span>I understand the no-show policy and will cancel at least 2 hours in advance if needed *</span>
-              </label>
-              <span class="error-msg" id="policyConsentError"></span>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
-              Confirm Appointment
-            </button>
-          </form>
-
-          <!-- Success Message -->
-          <div class="booking-success" id="bookingSuccess" style="display:none;">
-            <div class="success-icon">&#10003;</div>
-            <h3>You're Booked!</h3>
-            <p id="successDetails"></p>
-            <div class="success-reminders">
-              <p>&#128172; Text reminder sent to your phone</p>
-              <p>&#128233; Confirmation email on its way</p>
-              <p>&#128336; We'll remind you again 24 hrs & 2 hrs before</p>
-            </div>
-            <p class="cancel-note">Need to cancel or reschedule? Call <strong>(956) 873-2957</strong> at least 2 hours before your appointment.</p>
-            <button class="btn btn-outline" onclick="resetForm()">Book Another</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- REVIEWS -->
-  <section class="reviews">
-    <div class="container">
-      <h2 class="section-title">What Customers <span class="accent">Say</span></h2>
-      <div class="rating-summary">
-        <div class="big-rating">4.9</div>
-        <div class="rating-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <div class="rating-sub">Based on Google Reviews</div>
-      </div>
-      <div class="reviews-grid">
-        <div class="review-card">
-          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"Best fade I've ever gotten in the Valley. The barber took his time and made sure every line was perfect. Will not go anywhere else."</p>
-          <div class="reviewer">— Carlos M., San Benito</div>
-        </div>
-        <div class="review-card">
-          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"Brought my son for his first real haircut. Super patient and friendly. He loved it and so did I. Definitely coming back!"</p>
-          <div class="reviewer">— Maria G., Harlingen</div>
-        </div>
-        <div class="review-card">
-          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"Love the online booking. Got a reminder text the day before so I didn't forget. Clean shop, great vibes, excellent cut."</p>
-          <div class="reviewer">— Jesse R., San Benito</div>
-        </div>
-        <div class="review-card">
-          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-          <p>"Hot towel shave was on point. Straight razor, real hot towel, the whole thing. Felt like a king walking out of there."</p>
-          <div class="reviewer">— David T., Brownsville</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT & MAP -->
-  <section class="contact" id="contact">
-    <div class="container">
-      <h2 class="section-title">Find <span class="accent">Us</span></h2>
-      <div class="contact-grid">
-        <div class="contact-details">
-          <h3>Notorious Cutz Barbershop</h3>
-          <div class="contact-item">
-            <span class="ci-icon">&#128205;</span>
-            <div>
-              <strong>Location</strong>
-              <p>201B North Sam Houston</p>
-              <p>San Benito, TX 78586</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="ci-icon">&#128222;</span>
-            <div>
-              <strong>Phone</strong>
-              <p><a href="tel:9568732957">(956) 873-2957</a></p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="ci-icon">&#128336;</span>
-            <div>
-              <strong>Hours</strong>
-              <p>Tuesday – Saturday: 11:00 AM – 8:00 PM</p>
-              <p>Monday: Closed</p>
-              <p>Sunday: Closed</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="ci-icon">&#11088;</span>
-            <div>
-              <strong>Rating</strong>
-              <p>4.9 Stars on Google</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="ci-icon">&#128155;</span>
-            <div>
-              <strong>Facebook</strong>
-              <p><a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank">Follow us on Facebook</a></p>
-            </div>
-          </div>
-          <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;">
-            <a href="tel:9568732957" class="btn btn-primary">&#128222; Call Now</a>
-            <a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank" class="btn btn-outline">&#128155; Facebook</a>
-          </div>
-        </div>
-        <div class="map-wrap">
-          <iframe
-            src="https://maps.google.com/maps?q=201+N+Sam+Houston,+San+Benito,+TX+78586&hl=en&z=16&output=embed"
-            width="100%"
-            height="400"
-            style="border:0;border-radius:12px;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="San Benito TX Map">
-          </iframe>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="faq" id="faq">
-    <div class="container">
-      <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
-      <p class="section-sub">Everything you need to know before you come in</p>
-      <div class="faq-grid">
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            Do I need an appointment or do you take walk-ins?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>Appointments are strongly recommended so you don't have to wait. Walk-ins are welcome based on availability, but booking online guarantees your spot.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            How do I cancel or reschedule?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>Call or text us at <a href="tel:9568732957">(956) 873-2957</a> at least 2 hours before your appointment and we'll take care of it — no problem at all.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            What happens if I don't show up?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>No-shows affect other clients waiting for that time slot. After a no-show, future bookings may require a $10 deposit to secure your appointment.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            How much does a haircut cost?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>Services start at $15 for beard trims and kids cuts, $20 for a classic cut, and $25 for a skin fade. Check our full services menu above for all pricing.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            Where are you located?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>We're at <strong>201B North Sam Houston, San Benito, TX 78586</strong>. See the map in the Contact section for directions.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            What are your hours?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>We're open <strong>Tuesday through Saturday, 11:00 AM – 8:00 PM</strong>. We are closed Sunday and Monday.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            Do you cut kids' hair?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>Yes! Kids cuts (12 & under) are $15. We're patient and make sure your child is comfortable the whole time.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            What payment methods do you accept?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>We accept cash, Venmo, CashApp, and Zelle. Deposits for appointments can be sent to <strong>(956) 873-2957</strong>.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <img src="6EA2EB4F-2528-4651-8081-09BADEA3B8DB.png" alt="Notorious Cutz Logo" class="logo-img footer-logo" />
-          <span class="logo-text">Notorious Cutz</span>
-          <p>San Benito's premier barbershop.<br />Sharp cuts. Clean fades. Real talk.</p>
-        </div>
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#book">Book Now</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-contact">
-          <h4>Contact Us</h4>
-          <p>&#128222; <a href="tel:9568732957">(956) 873-2957</a></p>
-          <p>&#128205; 201B N Sam Houston, San Benito, TX</p>
-          <p>&#11088; 4.9 Stars on Google</p>
-          <p>&#128155; <a href="https://www.facebook.com/share/18FXdneorz/?mibextid=wwXIfr" target="_blank">Facebook</a></p>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Notorious Cutz Barbershop. All rights reserved. San Benito, TX.</p>
-      </div>
-    </div>
+  <footer>
+    <p>&copy; 2025 SVG Web Studio · Rio Grande Valley, TX · Adrian.flores2608@gmail.com</p>
   </footer>
 
-  <script src="app.js"></script>
 </body>
 </html>
