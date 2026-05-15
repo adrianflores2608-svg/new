@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sparkle Pressure Washing | Driveways, Houses & Trash Cans</title>
+  <meta name="description" content="Professional pressure washing for driveways, houses, and trash cans. Book your appointment online today." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="logo">Sparkle<span>Wash</span></a>
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#book">Book</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <h1>Pressure Washing That Brings Back the Shine</h1>
+        <p class="lead">Driveways, houses, and trash cans cleaned fast and done right. Book your appointment in under a minute.</p>
+        <a href="#book" class="btn btn-primary btn-lg">Book an Appointment</a>
+      </div>
+    </section>
+
+    <section id="services" class="section">
+      <div class="container">
+        <h2>Our Services &amp; Pricing</h2>
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">&#128663;</div>
+            <h3>Driveway</h3>
+            <p>Remove dirt, oil stains, and grime. Restore your concrete to like-new.</p>
+            <div class="price">$50</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">&#127968;</div>
+            <h3>House</h3>
+            <p>Full exterior soft wash. Remove mildew, dirt, and cobwebs from siding.</p>
+            <div class="price">$65</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">&#128465;&#65039;</div>
+            <h3>Trash Can</h3>
+            <p>Deep clean and deodorize. Per can &mdash; great as an add-on.</p>
+            <div class="price">$15</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="book" class="section section-alt">
+      <div class="container narrow">
+        <h2>Book Your Appointment</h2>
+        <form id="booking-form" novalidate>
+          <fieldset>
+            <legend>Select your services</legend>
+
+            <label class="service-row">
+              <span class="service-label">
+                <input type="checkbox" name="driveway" data-price="50" />
+                Driveway &mdash; $50
+              </span>
+            </label>
+
+            <label class="service-row">
+              <span class="service-label">
+                <input type="checkbox" name="house" data-price="65" />
+                House &mdash; $65
+              </span>
+            </label>
+
+            <label class="service-row">
+              <span class="service-label">
+                <input type="checkbox" id="trash-toggle" name="trashcan" data-price="15" />
+                Trash Cans &mdash; $15 each
+              </span>
+              <span class="qty-wrap">
+                <label for="trash-qty">Qty</label>
+                <input type="number" id="trash-qty" name="trashcan_qty" min="1" max="20" value="1" disabled />
+              </span>
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Appointment details</legend>
+            <div class="grid-2">
+              <div class="field">
+                <label for="date">Preferred date</label>
+                <input type="date" id="date" name="date" required />
+              </div>
+              <div class="field">
+                <label for="time">Preferred time</label>
+                <select id="time" name="time" required>
+                  <option value="">Select a time</option>
+                  <option>8:00 AM</option>
+                  <option>10:00 AM</option>
+                  <option>12:00 PM</option>
+                  <option>2:00 PM</option>
+                  <option>4:00 PM</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Your information</legend>
+            <div class="field">
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" autocomplete="name" required />
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" autocomplete="tel" required />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" required />
+              </div>
+            </div>
+            <div class="field">
+              <label for="address">Service address</label>
+              <input type="text" id="address" name="address" autocomplete="street-address" required />
+            </div>
+            <div class="field">
+              <label for="notes">Notes (optional)</label>
+              <textarea id="notes" name="notes" rows="3" placeholder="Gate code, pets, special requests..."></textarea>
+            </div>
+          </fieldset>
+
+          <div class="total-bar">
+            <span>Estimated total</span>
+            <strong id="total">$0</strong>
+          </div>
+
+          <p class="error" id="form-error" hidden></p>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Request Appointment</button>
+          <p class="fineprint">You'll get a confirmation email and we'll text you to confirm the time.</p>
+        </form>
+
+        <div id="confirmation" class="confirmation" hidden>
+          <div class="check">&#10003;</div>
+          <h2>Request Sent!</h2>
+          <p id="confirmation-text"></p>
+          <button type="button" class="btn" id="book-another">Book another</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container narrow center">
+        <h2>Questions?</h2>
+        <p>Call or text us at <a href="tel:+15551234567">(555) 123-4567</a></p>
+        <p>Email <a href="mailto:hello@sparklewash.example">hello@sparklewash.example</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> Sparkle Pressure Washing. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
