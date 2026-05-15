@@ -1,14 +1,15 @@
 :root {
-  --blue: #0d6efd;
-  --blue-dark: #0a58ca;
-  --ink: #1a2230;
-  --muted: #5b6675;
+  --blue: #2563eb;
+  --blue-dark: #1d4ed8;
+  --ink: #2f3a4a;
+  --muted: #6b7480;
   --bg: #ffffff;
-  --bg-alt: #f4f7fb;
-  --border: #dde3ec;
+  --bg-alt: #eceff3;
+  --border: #d6dae1;
+  --slate: #3f4a5c;
   --green: #1aa260;
   --radius: 12px;
-  --shadow: 0 6px 24px rgba(13, 38, 76, 0.08);
+  --shadow: 0 6px 24px rgba(60, 72, 90, 0.10);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,7 +52,7 @@ a { color: var(--blue); }
 
 /* Hero */
 .hero {
-  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: #fff;
   padding: 90px 0;
   text-align: center;
@@ -145,7 +146,7 @@ input:focus, select:focus, textarea:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--ink);
+  background: var(--slate);
   color: #fff;
   padding: 16px 22px;
   border-radius: var(--radius);
@@ -168,7 +169,7 @@ input:focus, select:focus, textarea:focus {
 .confirmation p { color: var(--muted); margin-bottom: 24px; }
 
 /* Footer */
-.site-footer { background: var(--ink); color: #c8d0dc; padding: 28px 0; text-align: center; font-size: 0.9rem; }
+.site-footer { background: var(--slate); color: #d3d8e0; padding: 28px 0; text-align: center; font-size: 0.9rem; }
 
 @media (max-width: 760px) {
   .cards { grid-template-columns: 1fr; }
