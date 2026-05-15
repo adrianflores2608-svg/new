@@ -43,6 +43,41 @@
   els.forEach(function (el) { io.observe(el); });
 })();
 
+// --- Stat count-up ------------------------------------------------------
+(function () {
+  var nums = document.querySelectorAll(".stat-num");
+  if (!nums.length) return;
+
+  function countUp(el) {
+    var target = parseInt(el.getAttribute("data-target"), 10) || 0;
+    var suffix = el.getAttribute("data-suffix") || "";
+    var start = null;
+    var dur = 1400;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    nums.forEach(function (n) { countUp(n); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) {
+        countUp(en.target);
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  nums.forEach(function (n) { io.observe(n); });
+})();
+
 // --- Config -------------------------------------------------------------
 // Change this to the email address where you want booking requests sent.
 var OWNER_EMAIL = "adrian.flores2608@gmail.com";

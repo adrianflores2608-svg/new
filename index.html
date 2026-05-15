@@ -11,15 +11,40 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css?v=6" />
 </head>
 <body>
   <div id="intro" class="intro" aria-hidden="true">
     <div class="intro-scene">
-      <div class="cannon">
-        <div class="cannon-tank"></div>
-        <div class="cannon-lance"></div>
-        <div class="cannon-tip"></div>
+      <div class="washer">
+        <svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="wBody" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5fa3ff"/>
+              <stop offset="0.55" stop-color="#2563eb"/>
+              <stop offset="1" stop-color="#1737a8"/>
+            </linearGradient>
+            <linearGradient id="wMetal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f4f8ff"/>
+              <stop offset="0.5" stop-color="#c2cfe6"/>
+              <stop offset="1" stop-color="#7d8daa"/>
+            </linearGradient>
+            <radialGradient id="wTip" cx="0.3" cy="0.4" r="0.8">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#bcd4ff"/>
+            </radialGradient>
+          </defs>
+          <path d="M44 150 C20 150 14 132 30 120" stroke="#243049" stroke-width="14" stroke-linecap="round" fill="none"/>
+          <rect x="40" y="70" width="46" height="92" rx="16" fill="#243049"/>
+          <rect x="46" y="74" width="12" height="60" rx="6" fill="#3a4b6e"/>
+          <path d="M70 112 q-16 6 -14 26" stroke="#1b2438" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <rect x="74" y="60" width="70" height="52" rx="14" fill="url(#wBody)"/>
+          <ellipse cx="92" cy="74" rx="9" ry="16" fill="rgba(255,255,255,0.45)"/>
+          <rect x="138" y="74" width="104" height="20" rx="10" fill="url(#wMetal)"/>
+          <rect x="138" y="76" width="104" height="5" rx="3" fill="rgba(255,255,255,0.65)"/>
+          <polygon points="240,70 270,80 270,90 240,98" fill="url(#wTip)"/>
+          <circle cx="268" cy="85" r="11" fill="#ffffff" opacity="0.85"/>
+        </svg>
       </div>
       <div class="spray"></div>
       <div class="foam-fill"></div>
@@ -79,6 +104,27 @@
       </div>
       <div class="wave" aria-hidden="true">
         <svg viewBox="0 0 1440 110" preserveAspectRatio="none"><path d="M0,64 C240,110 480,10 720,40 C960,70 1200,110 1440,56 L1440,110 L0,110 Z"></path></svg>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="container stats-grid">
+        <div class="stat reveal">
+          <span class="stat-num" data-target="100" data-suffix="%">0</span>
+          <span class="stat-label">Satisfaction Guaranteed</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat-num" data-target="500" data-suffix="+">0</span>
+          <span class="stat-label">Surfaces Cleaned</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat-num" data-target="24" data-suffix="hr">0</span>
+          <span class="stat-label">Fast Response Time</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat-num" data-target="5" data-suffix="&#9733;">0</span>
+          <span class="stat-label">Rated Service</span>
+        </div>
       </div>
     </section>
 
@@ -263,6 +309,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
