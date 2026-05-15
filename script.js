@@ -85,7 +85,7 @@ var OWNER_EMAIL = "adrian.flores2608@gmail.com";
 // Web3Forms access key. Get yours free at https://web3forms.com
 // (enter adrian.flores2608@gmail.com, copy the key it emails you, paste below).
 // Until a real key is set, bookings fall back to opening the email app.
-var WEB3FORMS_ACCESS_KEY = "PASTE-YOUR-WEB3FORMS-ACCESS-KEY-HERE";
+var WEB3FORMS_ACCESS_KEY = "dc5e0c37-fe13-45ef-accf-442c10145bbe";
 
 // --- Elements -----------------------------------------------------------
 var form = document.getElementById("booking-form");
