@@ -82,6 +82,11 @@
 // Change this to the email address where you want booking requests sent.
 var OWNER_EMAIL = "adrian.flores2608@gmail.com";
 
+// Web3Forms access key. Get yours free at https://web3forms.com
+// (enter adrian.flores2608@gmail.com, copy the key it emails you, paste below).
+// Until a real key is set, bookings fall back to opening the email app.
+var WEB3FORMS_ACCESS_KEY = "PASTE-YOUR-WEB3FORMS-ACCESS-KEY-HERE";
+
 // --- Elements -----------------------------------------------------------
 var form = document.getElementById("booking-form");
 var totalEl = document.getElementById("total");
@@ -188,24 +193,69 @@ form.addEventListener("submit", function (e) {
   lines.push("Address: " + data.address);
   lines.push("Notes: " + (data.notes || "(none)"));
 
-  var subject = "Booking: " + data.name + " - " + data.date;
+  var subject = "New Booking: " + data.name + " - " + data.date + " " + data.time;
   var body = lines.join("\n");
-  var mailto =
-    "mailto:" + OWNER_EMAIL +
-    "?subject=" + encodeURIComponent(subject) +
-    "&body=" + encodeURIComponent(body);
 
-  // Open the customer's email client with the booking pre-filled.
-  window.location.href = mailto;
+  var submitBtn = form.querySelector('button[type="submit"]');
 
-  form.hidden = true;
-  confirmationText.textContent =
-    "Thanks, " + data.name + "! Your request for " + data.date + " at " +
-    data.time + " (estimated $" + r.total +
-    (r.needsQuote ? " + free quote" : "") +
-    ") is ready in your email app. Press send to finish, and we'll text you to confirm.";
-  confirmationEl.hidden = false;
-  confirmationEl.scrollIntoView({ behavior: "smooth" });
+  function showConfirmation() {
+    form.hidden = true;
+    confirmationText.textContent =
+      "Thanks, " + data.name + "! Your request for " + data.date + " at " +
+      data.time + " (estimated $" + r.total +
+      (r.needsQuote ? " + free quote" : "") +
+      ") has been sent. We'll text you at " + data.phone + " to confirm.";
+    confirmationEl.hidden = false;
+    confirmationEl.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function mailtoFallback() {
+    window.location.href =
+      "mailto:" + OWNER_EMAIL +
+      "?subject=" + encodeURIComponent(subject) +
+      "&body=" + encodeURIComponent(body);
+    showConfirmation();
+  }
+
+  // No key configured yet -> fall back so bookings still reach the owner.
+  if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY.indexOf("PASTE-") === 0) {
+    mailtoFallback();
+    return;
+  }
+
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Sending..."; }
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: subject,
+      from_name: "Prestige Power Washing Website",
+      "Customer Name": data.name,
+      "Phone": data.phone,
+      "Email": data.email,
+      "Service Address": data.address,
+      "Preferred Date": data.date,
+      "Preferred Time": data.time,
+      "Notes": data.notes || "(none)",
+      "Estimated Total": "$" + r.total + (r.needsQuote ? " + free quote" : ""),
+      message: body,
+      replyto: data.email
+    })
+  })
+    .then(function (res) { return res.json(); })
+    .then(function (json) {
+      if (json && json.success) {
+        showConfirmation();
+      } else {
+        mailtoFallback();
+      }
+    })
+    .catch(function () { mailtoFallback(); })
+    .then(function () {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Book Today"; }
+    });
 });
 
 bookAnotherBtn.addEventListener("click", function () {
