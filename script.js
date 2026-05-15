@@ -1,6 +1,6 @@
 // --- Config -------------------------------------------------------------
 // Change this to the email address where you want booking requests sent.
-var OWNER_EMAIL = "hello@sparklewash.example";
+var OWNER_EMAIL = "adrian.flores2608@gmail.com";
 
 // --- Elements -----------------------------------------------------------
 var form = document.getElementById("booking-form");
