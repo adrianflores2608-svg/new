@@ -5,8 +5,8 @@ var OWNER_EMAIL = "adrian.flores2608@gmail.com";
 // --- Elements -----------------------------------------------------------
 var form = document.getElementById("booking-form");
 var totalEl = document.getElementById("total");
-var trashToggle = document.getElementById("trash-toggle");
-var trashQty = document.getElementById("trash-qty");
+var quoteNote = document.getElementById("quote-note");
+var oilStain = document.getElementById("oil-stain");
 var errorEl = document.getElementById("form-error");
 var confirmationEl = document.getElementById("confirmation");
 var confirmationText = document.getElementById("confirmation-text");
@@ -20,47 +20,51 @@ dateInput.min = new Date().toISOString().split("T")[0];
 
 // --- Pricing ------------------------------------------------------------
 function selectedServices() {
-  var items = [];
-  var boxes = form.querySelectorAll('input[type="checkbox"][data-price]');
-  for (var i = 0; i < boxes.length; i++) {
-    var box = boxes[i];
-    if (!box.checked) continue;
-    var price = parseInt(box.getAttribute("data-price"), 10);
-    if (box.name === "trashcan") {
-      var qty = Math.max(1, parseInt(trashQty.value, 10) || 1);
-      items.push({ label: "Trash Cans x" + qty, amount: price * qty });
+  var result = { items: [], total: 0, needsQuote: false };
+  var selects = form.querySelectorAll("select[data-svc]");
+
+  for (var i = 0; i < selects.length; i++) {
+    var sel = selects[i];
+    var opt = sel.options[sel.selectedIndex];
+    if (!opt || opt.value === "") continue;
+
+    var label = sel.getAttribute("data-svc") + ": " + opt.text.trim();
+    if (opt.getAttribute("data-quote") === "1") {
+      result.needsQuote = true;
+      result.items.push({ label: label, amount: null });
     } else {
-      var label = box.name.charAt(0).toUpperCase() + box.name.slice(1);
-      items.push({ label: label, amount: price });
+      var price = parseInt(opt.getAttribute("data-price"), 10) || 0;
+      result.total += price;
+      result.items.push({ label: label, amount: price });
     }
   }
-  return items;
+
+  if (oilStain.checked) {
+    var add = parseInt(oilStain.getAttribute("data-price"), 10) || 0;
+    result.total += add;
+    result.items.push({ label: "Add-on: Oil Stain Treatment", amount: add });
+  }
+
+  return result;
 }
 
 function calcTotal() {
-  var items = selectedServices();
-  var sum = 0;
-  for (var i = 0; i < items.length; i++) sum += items[i].amount;
-  totalEl.textContent = "$" + sum;
-  return sum;
+  var r = selectedServices();
+  totalEl.textContent = "$" + r.total + (r.needsQuote ? " + free quote" : "");
+  quoteNote.hidden = !r.needsQuote;
+  return r;
 }
 
 form.addEventListener("change", calcTotal);
 form.addEventListener("input", calcTotal);
-
-trashToggle.addEventListener("change", function () {
-  trashQty.disabled = !trashToggle.checked;
-  if (trashToggle.checked) trashQty.focus();
-  calcTotal();
-});
 
 // --- Submit -------------------------------------------------------------
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   errorEl.hidden = true;
 
-  var items = selectedServices();
-  if (items.length === 0) {
+  var r = selectedServices();
+  if (r.items.length === 0) {
     errorEl.textContent = "Please select at least one service.";
     errorEl.hidden = false;
     return;
@@ -82,18 +86,18 @@ form.addEventListener("submit", function (e) {
     time: el["time"].value,
     notes: el["notes"].value.trim()
   };
-  var total = calcTotal();
 
   var lines = [];
   lines.push("New Pressure Washing Booking");
   lines.push("============================");
   lines.push("");
   lines.push("Services:");
-  for (var i = 0; i < items.length; i++) {
-    lines.push("  - " + items[i].label + ": $" + items[i].amount);
+  for (var i = 0; i < r.items.length; i++) {
+    var amt = r.items[i].amount === null ? "Free quote" : "$" + r.items[i].amount;
+    lines.push("  - " + r.items[i].label + ": " + amt);
   }
   lines.push("");
-  lines.push("Estimated total: $" + total);
+  lines.push("Estimated total: $" + r.total + (r.needsQuote ? " + free quote" : ""));
   lines.push("");
   lines.push("Date: " + data.date);
   lines.push("Time: " + data.time);
@@ -117,15 +121,15 @@ form.addEventListener("submit", function (e) {
   form.hidden = true;
   confirmationText.textContent =
     "Thanks, " + data.name + "! Your request for " + data.date + " at " +
-    data.time + " (estimated $" + total + ") is ready in your email app. " +
-    "Press send to finish, and we'll text you to confirm.";
+    data.time + " (estimated $" + r.total +
+    (r.needsQuote ? " + free quote" : "") +
+    ") is ready in your email app. Press send to finish, and we'll text you to confirm.";
   confirmationEl.hidden = false;
   confirmationEl.scrollIntoView({ behavior: "smooth" });
 });
 
 bookAnotherBtn.addEventListener("click", function () {
   form.reset();
-  trashQty.disabled = true;
   calcTotal();
   confirmationEl.hidden = true;
   form.hidden = false;

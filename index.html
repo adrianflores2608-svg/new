@@ -23,8 +23,12 @@
     <section class="hero">
       <div class="container">
         <h1>Pressure Washing That Brings Back the Shine</h1>
-        <p class="lead">Driveways, houses, and trash cans cleaned fast and done right. Book your appointment in under a minute.</p>
-        <a href="#book" class="btn btn-primary btn-lg">Book an Appointment</a>
+        <p class="lead">Driveways, houses, and trash cans cleaned fast and done right. Get a free quote today &mdash; or book online in under a minute.</p>
+        <div class="cta-row">
+          <a href="#book" class="btn btn-primary btn-lg">Book Today</a>
+          <a href="#book" class="btn btn-light btn-lg">Get a Free Quote Today</a>
+          <a href="sms:+19562022106" class="btn btn-light btn-lg">Text Us Now</a>
+        </div>
       </div>
     </section>
 
@@ -33,24 +37,42 @@
         <h2>Our Services &amp; Pricing</h2>
         <div class="cards">
           <div class="card">
+            <div class="card-icon">&#128465;&#65039;</div>
+            <h3>Trash Can Cleaning</h3>
+            <ul class="tiers">
+              <li><span>1 Can</span><strong>$15</strong></li>
+              <li><span>2 Cans</span><strong>$25</strong></li>
+              <li><span>3 Cans</span><strong>$35</strong></li>
+            </ul>
+          </div>
+          <div class="card">
             <div class="card-icon">&#128663;</div>
-            <h3>Driveway</h3>
-            <p>Remove dirt, oil stains, and grime. Restore your concrete to like-new.</p>
-            <div class="price">$50</div>
+            <h3>Driveway Washing</h3>
+            <ul class="tiers">
+              <li><span>Standard Driveway</span><strong>$50+</strong></li>
+              <li><span>Double Driveway</span><strong>$75+</strong></li>
+              <li><span>Oil Stain Treatment</span><strong>+$20</strong></li>
+            </ul>
           </div>
           <div class="card">
             <div class="card-icon">&#127968;</div>
-            <h3>House</h3>
-            <p>Full exterior soft wash. Remove mildew, dirt, and cobwebs from siding.</p>
-            <div class="price">$65</div>
+            <h3>House Washing</h3>
+            <ul class="tiers">
+              <li><span>Small House</span><strong>$65+</strong></li>
+              <li><span>Medium House</span><strong>$99+</strong></li>
+              <li><span>Large House</span><strong>Free Quote</strong></li>
+            </ul>
           </div>
           <div class="card">
-            <div class="card-icon">&#128465;&#65039;</div>
-            <h3>Trash Can</h3>
-            <p>Deep clean and deodorize. Per can &mdash; great as an add-on.</p>
-            <div class="price">$15</div>
+            <div class="card-icon">&#128260;</div>
+            <h3>Monthly Trash Can Plan</h3>
+            <ul class="tiers">
+              <li><span>Monthly Cleaning</span><strong>$20/mo</strong></li>
+              <li><span>Biweekly (up to 4 cans)</span><strong>$35/mo</strong></li>
+            </ul>
           </div>
         </div>
+        <p class="services-cta">Not sure what you need? <a href="#book">Get a free quote today</a> or <a href="sms:+19562022106">text us now</a> at (956) 202-2106.</p>
       </div>
     </section>
 
@@ -61,30 +83,47 @@
           <fieldset>
             <legend>Select your services</legend>
 
-            <label class="service-row">
-              <span class="service-label">
-                <input type="checkbox" name="driveway" data-price="50" />
-                Driveway &mdash; $50
-              </span>
-            </label>
+            <div class="field">
+              <label for="svc-trash">&#128465;&#65039; Trash Can Cleaning</label>
+              <select id="svc-trash" name="trashcan" data-svc="Trash Can Cleaning">
+                <option value="">None</option>
+                <option data-price="15">1 Can &mdash; $15</option>
+                <option data-price="25">2 Cans &mdash; $25</option>
+                <option data-price="35">3 Cans &mdash; $35</option>
+              </select>
+            </div>
 
-            <label class="service-row">
-              <span class="service-label">
-                <input type="checkbox" name="house" data-price="65" />
-                House &mdash; $65
-              </span>
-            </label>
+            <div class="field">
+              <label for="svc-driveway">&#128663; Driveway Washing</label>
+              <select id="svc-driveway" name="driveway" data-svc="Driveway Washing">
+                <option value="">None</option>
+                <option data-price="50">Standard Driveway &mdash; $50+</option>
+                <option data-price="75">Double Driveway &mdash; $75+</option>
+              </select>
+              <label class="inline-check">
+                <input type="checkbox" id="oil-stain" name="oil_stain" data-price="20" />
+                Add Oil Stain Treatment (+$20)
+              </label>
+            </div>
 
-            <label class="service-row">
-              <span class="service-label">
-                <input type="checkbox" id="trash-toggle" name="trashcan" data-price="15" />
-                Trash Cans &mdash; $15 each
-              </span>
-              <span class="qty-wrap">
-                <label for="trash-qty">Qty</label>
-                <input type="number" id="trash-qty" name="trashcan_qty" min="1" max="20" value="1" disabled />
-              </span>
-            </label>
+            <div class="field">
+              <label for="svc-house">&#127968; House Washing</label>
+              <select id="svc-house" name="house" data-svc="House Washing">
+                <option value="">None</option>
+                <option data-price="65">Small House &mdash; starting at $65</option>
+                <option data-price="99">Medium House &mdash; $99+</option>
+                <option data-price="0" data-quote="1">Large House &mdash; Free Quote</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="svc-plan">&#128260; Monthly Trash Can Plan</label>
+              <select id="svc-plan" name="plan" data-svc="Monthly Trash Can Plan">
+                <option value="">None</option>
+                <option data-price="20">Monthly Cleaning &mdash; $20/month</option>
+                <option data-price="35">Biweekly (up to 4 cans) &mdash; $35/month</option>
+              </select>
+            </div>
           </fieldset>
 
           <fieldset>
@@ -138,10 +177,11 @@
             <span>Estimated total</span>
             <strong id="total">$0</strong>
           </div>
+          <p class="quote-note" id="quote-note" hidden>Large house selected &mdash; we'll send you a free quote. Final pricing may vary by job size and condition.</p>
 
           <p class="error" id="form-error" hidden></p>
-          <button type="submit" class="btn btn-primary btn-lg btn-block">Request Appointment</button>
-          <p class="fineprint">You'll get a confirmation email and we'll text you to confirm the time.</p>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Book Today</button>
+          <p class="fineprint">Prices starting from the amounts shown; we confirm the final quote before any work. You'll get a confirmation email and we'll text you to confirm the time.</p>
         </form>
 
         <div id="confirmation" class="confirmation" hidden>
@@ -155,9 +195,14 @@
 
     <section id="contact" class="section">
       <div class="container narrow center">
-        <h2>Questions?</h2>
-        <p>Call or text us at <a href="tel:+19562022106">(956) 202-2106</a></p>
+        <h2>Get a Free Quote Today</h2>
+        <p>Text us now for the fastest response &mdash; <a href="sms:+19562022106">(956) 202-2106</a></p>
+        <p>Prefer to call? <a href="tel:+19562022106">(956) 202-2106</a></p>
         <p>Email <a href="mailto:adrian.flores2608@gmail.com">adrian.flores2608@gmail.com</a></p>
+        <p class="cta-row center-row">
+          <a href="#book" class="btn btn-primary btn-lg">Book Today</a>
+          <a href="sms:+19562022106" class="btn btn-light btn-lg">Text Us Now</a>
+        </p>
       </div>
     </section>
   </main>
