@@ -125,7 +125,14 @@ a { color: var(--blue); }
   opacity: 0;
   animation: introTextIn 0.6s cubic-bezier(.2,.8,.3,1) 2.3s forwards;
 }
-.intro-logo { font-size: clamp(2rem, 7vw, 3.4rem); font-weight: 900; color: var(--blue); letter-spacing: -1px; }
+.intro-logo-img {
+  display: block;
+  width: clamp(190px, 46vw, 360px);
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+.intro-logo { display: none; font-size: clamp(2rem, 7vw, 3.4rem); font-weight: 900; color: var(--blue); letter-spacing: -1px; flex-direction: row; }
 .intro-logo span { color: var(--cyan); }
 .intro-tag { font-size: clamp(.9rem, 2.6vw, 1.15rem); font-weight: 600; color: var(--slate); }
 
@@ -270,8 +277,11 @@ body.intro-lock { overflow: hidden; }
   z-index: 50;
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; }
-.logo { font-size: 1.45rem; font-weight: 900; text-decoration: none; color: var(--ink); letter-spacing: -.5px; }
-.logo span { color: var(--blue); }
+.logo { display: inline-flex; align-items: center; font-size: 1.45rem; font-weight: 900; text-decoration: none; color: var(--ink); letter-spacing: -.5px; }
+.logo-img { height: 46px; width: auto; display: block; }
+.logo-text { display: none; }
+.logo-text span { color: var(--blue); }
+.logo > span { color: var(--blue); }
 .site-header nav a {
   margin-left: 24px;
   text-decoration: none;
