@@ -1,3 +1,48 @@
+// --- Intro foam-cannon animation ---------------------------------------
+(function () {
+  var intro = document.getElementById("intro");
+  if (!intro) return;
+  var skip = document.getElementById("skip-intro");
+  var reduce = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.body.classList.add("intro-lock");
+
+  function endIntro() {
+    intro.classList.add("done");
+    document.body.classList.remove("intro-lock");
+  }
+
+  // CSS fades the overlay out at ~3s; remove it from the layout just after.
+  var timer = setTimeout(endIntro, reduce ? 600 : 3700);
+
+  if (skip) {
+    skip.addEventListener("click", function () {
+      clearTimeout(timer);
+      endIntro();
+    });
+  }
+})();
+
+// --- Scroll reveal ------------------------------------------------------
+(function () {
+  var els = document.querySelectorAll(".reveal");
+  if (!els.length) return;
+  if (!("IntersectionObserver" in window)) {
+    for (var i = 0; i < els.length; i++) els[i].classList.add("in");
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) {
+        en.target.classList.add("in");
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  els.forEach(function (el) { io.observe(el); });
+})();
+
 // --- Config -------------------------------------------------------------
 // Change this to the email address where you want booking requests sent.
 var OWNER_EMAIL = "adrian.flores2608@gmail.com";

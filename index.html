@@ -5,9 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prestige Pressure Washing | Driveways, Houses & Trash Cans</title>
   <meta name="description" content="Prestige Pressure Washing — professional cleaning for driveways, houses, and trash cans. Book your appointment online today." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div id="intro" class="intro" aria-hidden="true">
+    <div class="intro-scene">
+      <div class="cannon">
+        <div class="cannon-tank"></div>
+        <div class="cannon-lance"></div>
+        <div class="cannon-tip"></div>
+      </div>
+      <div class="spray"></div>
+      <div class="foam-fill"></div>
+      <div class="intro-text">
+        <span class="intro-logo">Prestige<span>Wash</span></span>
+        <span class="intro-tag">Foam on. Grime gone.</span>
+      </div>
+      <div class="drips">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <button type="button" id="skip-intro" class="skip-intro">Skip &raquo;</button>
+  </div>
   <header class="site-header">
     <div class="container header-inner">
       <a href="#top" class="logo">Prestige<span>Wash</span></a>
@@ -21,14 +44,28 @@
 
   <main id="top">
     <section class="hero">
-      <div class="container">
-        <h1>Pressure Washing That Brings Back the Shine</h1>
+      <div class="bubbles" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span>
+      </div>
+      <div class="container hero-inner">
+        <span class="hero-eyebrow">&#11088; Local pros &bull; Same-week service</span>
+        <h1>Pressure Washing That Brings Back the <span class="shine">Shine</span></h1>
         <p class="lead">Driveways, houses, and trash cans cleaned fast and done right. Get a free quote today &mdash; or book online in under a minute.</p>
         <div class="cta-row">
-          <a href="#book" class="btn btn-primary btn-lg">Book Today</a>
+          <a href="#book" class="btn btn-primary btn-lg btn-pulse">Book Today</a>
           <a href="#book" class="btn btn-light btn-lg">Get a Free Quote Today</a>
           <a href="sms:+19562022106" class="btn btn-light btn-lg">Text Us Now</a>
         </div>
+        <div class="badges">
+          <span class="badge">&#9989; Licensed &amp; Insured</span>
+          <span class="badge">&#9889; Fast Turnaround</span>
+          <span class="badge">&#128077; Satisfaction Guaranteed</span>
+        </div>
+      </div>
+      <div class="wave" aria-hidden="true">
+        <svg viewBox="0 0 1440 110" preserveAspectRatio="none"><path d="M0,64 C240,110 480,10 720,40 C960,70 1200,110 1440,56 L1440,110 L0,110 Z"></path></svg>
       </div>
     </section>
 
@@ -36,7 +73,7 @@
       <div class="container">
         <h2>Our Services &amp; Pricing</h2>
         <div class="cards">
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#128465;&#65039;</div>
             <h3>Trash Can Cleaning</h3>
             <ul class="tiers">
@@ -45,7 +82,7 @@
               <li><span>3 Cans</span><strong>$35</strong></li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#128663;</div>
             <h3>Driveway Washing</h3>
             <ul class="tiers">
@@ -54,7 +91,7 @@
               <li><span>Oil Stain Treatment</span><strong>+$20</strong></li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#127968;</div>
             <h3>House Washing</h3>
             <ul class="tiers">
@@ -63,7 +100,7 @@
               <li><span>Large House</span><strong>Free Quote</strong></li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#128260;</div>
             <h3>Monthly Trash Can Plan</h3>
             <ul class="tiers">
