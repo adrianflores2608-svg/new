@@ -13,8 +13,8 @@
     document.body.classList.remove("intro-lock");
   }
 
-  // CSS fades the overlay out at ~3s; remove it from the layout just after.
-  var timer = setTimeout(endIntro, reduce ? 600 : 3700);
+  // CSS fades the overlay out at ~5s; remove it from the layout just after.
+  var timer = setTimeout(endIntro, reduce ? 600 : 5800);
 
   if (skip) {
     skip.addEventListener("click", function () {
