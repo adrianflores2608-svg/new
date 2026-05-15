@@ -209,18 +209,12 @@ form.addEventListener("submit", function (e) {
     confirmationEl.scrollIntoView({ behavior: "smooth" });
   }
 
-  function mailtoFallback() {
-    window.location.href =
-      "mailto:" + OWNER_EMAIL +
-      "?subject=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(body);
-    showConfirmation();
-  }
-
-  // No key configured yet -> fall back so bookings still reach the owner.
-  if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY.indexOf("PASTE-") === 0) {
-    mailtoFallback();
-    return;
+  function showError() {
+    errorEl.innerHTML =
+      "We couldn't send that automatically. Please call or text us at " +
+      '<a href="tel:+19562022106">(956) 202-2106</a> and we\'ll book you right away.';
+    errorEl.hidden = false;
+    errorEl.scrollIntoView({ behavior: "smooth" });
   }
 
   if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Sending..."; }
@@ -244,15 +238,12 @@ form.addEventListener("submit", function (e) {
       replyto: data.email
     })
   })
-    .then(function (res) { return res.json(); })
-    .then(function (json) {
-      if (json && json.success) {
-        showConfirmation();
-      } else {
-        mailtoFallback();
-      }
+    .then(function (res) {
+      // Any successful HTTP response means the booking reached the service.
+      if (res.ok) { showConfirmation(); }
+      else { showError(); }
     })
-    .catch(function () { mailtoFallback(); })
+    .catch(function () { showError(); })
     .then(function () {
       if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Book Today"; }
     });
