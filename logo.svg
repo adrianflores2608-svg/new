@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 150" font-family="Poppins, Arial, sans-serif">
+  <defs>
+    <linearGradient id="ring" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b6fe0"/>
+      <stop offset="1" stop-color="#1737a8"/>
+    </linearGradient>
+    <linearGradient id="pfill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.5" stop-color="#cbd5e1"/>
+      <stop offset="1" stop-color="#8c97a8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Emblem -->
+  <g transform="translate(75 75)">
+    <circle r="68" fill="#0f1830"/>
+    <circle r="68" fill="none" stroke="url(#ring)" stroke-width="7"/>
+    <circle r="58" fill="none" stroke="#cbd5e1" stroke-width="2" opacity="0.5"/>
+    <!-- Crown -->
+    <path d="M-30 -20 L-30 -42 L-15 -30 L0 -48 L15 -30 L30 -42 L30 -20 Z"
+          fill="url(#steel)" stroke="#5b6675" stroke-width="1.5" stroke-linejoin="round"/>
+    <circle cx="-30" cy="-46" r="3.5" fill="url(#steel)"/>
+    <circle cx="0" cy="-52" r="3.5" fill="url(#steel)"/>
+    <circle cx="30" cy="-46" r="3.5" fill="url(#steel)"/>
+    <!-- P monogram -->
+    <text x="0" y="34" text-anchor="middle" font-size="78" font-weight="900"
+          fill="url(#pfill)" stroke="#dbe4f3" stroke-width="1.2">P</text>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(165 0)">
+    <text x="0" y="58" font-size="46" font-weight="900" fill="#2f3a4a" letter-spacing="2">PRESTIGE</text>
+    <text x="2" y="100" font-size="40" font-weight="800" fill="url(#pfill)" letter-spacing="3">POWER WASHING</text>
+    <text x="3" y="126" font-size="16" font-weight="700" fill="#6b7480" letter-spacing="6">EST. 2025</text>
+  </g>
+</svg>
