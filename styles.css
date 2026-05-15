@@ -1,7 +1,7 @@
 :root {
   --blue: #2563eb;
   --blue-dark: #1d4ed8;
-  --cyan: #38bdf8;
+  --cyan: #1d4ed8;
   --ink: #2f3a4a;
   --muted: #6b7480;
   --bg: #ffffff;
@@ -52,7 +52,7 @@ a { color: var(--blue); }
   inset: 0;
   z-index: 9999;
   background:
-    radial-gradient(circle at 18% 50%, rgba(56,189,248,.25), transparent 55%),
+    radial-gradient(circle at 18% 50%, rgba(37,99,235,.30), transparent 55%),
     radial-gradient(circle at 50% 50%, #1e40af 0%, #0a1a40 75%);
   overflow: hidden;
   animation: introOut 0.7s ease 5s forwards;
@@ -284,7 +284,7 @@ body.intro-lock { overflow: hidden; }
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 45%, #38bdf8 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 55%, #3b6fe0 100%);
   color: #fff;
   padding: 110px 0 130px;
   text-align: center;
@@ -400,7 +400,7 @@ body.intro-lock { overflow: hidden; }
 .btn-pulse { animation: pulse 2.4s ease-in-out infinite; }
 @keyframes pulse {
   0%, 100% { box-shadow: 0 8px 20px rgba(37,99,235,.35); }
-  50% { box-shadow: 0 8px 30px rgba(56,189,248,.7); }
+  50% { box-shadow: 0 8px 30px rgba(37,99,235,.65); }
 }
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
 .cta-row.center-row { margin-top: 26px; }
@@ -547,7 +547,7 @@ input:focus, select:focus, textarea:focus {
   font-size: 1.1rem;
   margin-bottom: 18px;
 }
-.total-bar strong { font-size: 1.6rem; color: #7dd3fc; }
+.total-bar strong { font-size: 1.6rem; color: #cbd5e1; }
 
 .error { color: #c62828; font-weight: 600; margin-bottom: 12px; }
 .fineprint { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 14px; }
