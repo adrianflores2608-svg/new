@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://adrianflores2608-svg.github.io/new/sitemap.xml
