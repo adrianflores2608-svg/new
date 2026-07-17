@@ -1,4 +1,5 @@
 import { Config } from "./config";
+import { walletConvictionWeight } from "./conviction";
 import { Storage } from "./storage";
 import { PositionEntry, Signal, SwapEvent, TokenPosition } from "./types";
 
@@ -40,6 +41,16 @@ export class SignalEngine {
       return null;
     }
 
+    const wallets = this.storage.getWallets();
+    const convictionScore = recentBuyers.reduce((sum, buyer) => {
+      const wallet = wallets.find((w) => w.address === buyer.wallet);
+      return sum + walletConvictionWeight(wallet);
+    }, 0);
+
+    if (convictionScore < this.config.minConvictionScoreForBuySignal) {
+      return null;
+    }
+
     position.signaledBuyAt = event.timestamp;
     this.storage.upsertPosition(position);
 
@@ -47,6 +58,7 @@ export class SignalEngine {
       type: "BUY",
       mint: event.mint,
       buyers: recentBuyers,
+      convictionScore,
     };
   }
 

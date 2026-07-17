@@ -55,7 +55,10 @@ async function main() {
   const count = Number.isFinite(requested) ? requested : top.length;
   const storage = new Storage();
   for (const ranking of top.slice(0, count)) {
-    storage.addWallet(ranking.address, "auto-discovered");
+    storage.addWallet(ranking.address, "auto-discovered", {
+      realizedPnlSol: ranking.realizedPnlSol,
+      winRate: ranking.winRate,
+    });
   }
   console.log(`\nAdded top ${Math.min(count, top.length)} wallet(s) to the watchlist.`);
 }

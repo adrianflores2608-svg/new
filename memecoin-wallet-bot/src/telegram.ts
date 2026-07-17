@@ -1,10 +1,11 @@
 import { Bot, Context } from "grammy";
 import { Config } from "./config";
 import { discoverCandidateWallets } from "./discover";
-import { rankWallets } from "./ranker";
-import { Storage } from "./storage";
-import { Signal } from "./types";
 import { TokenInfo, pumpFunUrl } from "./pumpfun";
+import { rankWallets } from "./ranker";
+import { PositionPlan } from "./risk";
+import { RugCheckResult } from "./rugcheck";
+import { Storage } from "./storage";
 
 function isAuthorized(ctx: Context, config: Config): boolean {
   return ctx.chat?.id.toString() === config.telegramChatId;
@@ -28,6 +29,7 @@ export function createBot(config: Config, storage: Storage): Bot {
         "/list - show tracked wallets\n" +
         "/positions - show tokens currently being tracked\n" +
         "/discover - find and rank candidate wallets by realized pump.fun PnL\n" +
+        "/paperstats - simulated track record of this bot's own signals\n" +
         "/status - bot status"
     )
   );
@@ -52,7 +54,17 @@ export function createBot(config: Config, storage: Storage): Bot {
     if (wallets.length === 0) {
       return ctx.reply("No wallets tracked yet. Add one with /addwallet <address> [label]");
     }
-    return ctx.reply(wallets.map((w) => `- ${w.address}${w.label ? ` (${w.label})` : ""}`).join("\n"));
+    return ctx.reply(
+      wallets
+        .map((w) => {
+          const track =
+            w.realizedPnlSol !== undefined
+              ? ` — ${w.realizedPnlSol.toFixed(1)} SOL realized, ${((w.winRate ?? 0) * 100).toFixed(0)}% win rate`
+              : "";
+          return `- ${w.address}${w.label ? ` (${w.label})` : ""}${track}`;
+        })
+        .join("\n")
+    );
   });
 
   bot.command("positions", (ctx) => {
@@ -112,10 +124,39 @@ export function createBot(config: Config, storage: Storage): Bot {
     }
   });
 
+  bot.command("paperstats", (ctx) => {
+    const closed = storage.getClosedPaperTrades();
+    const open = storage.getOpenPaperTrades();
+
+    if (closed.length === 0 && open.length === 0) {
+      return ctx.reply("No paper trades yet — they open automatically the next time a BUY signal fires.");
+    }
+
+    const wins = closed.filter((t) => (t.exit?.pnlSol ?? 0) > 0).length;
+    const totalPnlSol = closed.reduce((sum, t) => sum + (t.exit?.pnlSol ?? 0), 0);
+    const avgReturnPercent = closed.length
+      ? closed.reduce((sum, t) => sum + (t.exit?.pnlPercent ?? 0), 0) / closed.length
+      : 0;
+
+    const lines = [
+      `Simulated (paper) track record of this bot's own BUY signals:`,
+      `Closed trades: ${closed.length} (${wins} win / ${closed.length - wins} loss, ${
+        closed.length ? ((wins / closed.length) * 100).toFixed(0) : "0"
+      }% win rate)`,
+      `Total simulated PnL: ${totalPnlSol >= 0 ? "+" : ""}${totalPnlSol.toFixed(2)} SOL`,
+      `Average return per trade: ${avgReturnPercent >= 0 ? "+" : ""}${avgReturnPercent.toFixed(1)}%`,
+      `Open (still running): ${open.length}`,
+      "",
+      "This reflects hypothetical sizing from the risk plan attached to each alert — no real trades were placed.",
+    ];
+    return ctx.reply(lines.join("\n"));
+  });
+
   bot.command("status", (ctx) =>
     ctx.reply(
       `Tracking ${storage.getWallets().length} wallet(s).\n` +
-        `Buy signal threshold: ${config.minWalletsForBuySignal} wallet(s) within ${config.buySignalWindowMinutes}m.\n` +
+        `Buy signal threshold: ${config.minWalletsForBuySignal} wallet(s) / conviction ${config.minConvictionScoreForBuySignal} within ${config.buySignalWindowMinutes}m.\n` +
+        `Rug check mode: ${config.rugCheckMode}.\n` +
         `Poll interval: ${config.pollIntervalSeconds}s.`
     )
   );
@@ -123,25 +164,82 @@ export function createBot(config: Config, storage: Storage): Bot {
   return bot;
 }
 
-export async function sendAlert(
-  bot: Bot,
-  chatId: string,
-  signal: Signal,
-  tokenInfo?: TokenInfo
-): Promise<void> {
-  const name = tokenInfo?.symbol ?? tokenInfo?.name ?? `${signal.mint.slice(0, 8)}…`;
-  const link = pumpFunUrl(signal.mint);
+export interface BuyAlertData {
+  mint: string;
+  buyersCount: number;
+  convictionScore: number;
+  tokenInfo?: TokenInfo;
+  rugResult?: RugCheckResult;
+  plan: PositionPlan;
+}
+
+export async function sendBuyAlert(bot: Bot, chatId: string, data: BuyAlertData): Promise<void> {
+  const { mint, buyersCount, convictionScore, tokenInfo, rugResult, plan } = data;
+  const name = tokenInfo?.symbol ?? tokenInfo?.name ?? `${mint.slice(0, 8)}…`;
+  const link = pumpFunUrl(mint);
+
+  const rugFlagged = rugResult ? !rugResult.passed : false;
+  const rugLine = rugResult
+    ? rugFlagged
+      ? `\n⚠️ Rug flags: ${rugResult.reasons.join("; ")}`
+      : "\n✅ No crude rug flags (mint/freeze authority revoked, creator holding within bounds)"
+    : "";
+
+  const sizeLine =
+    plan.suggestedSizeSol > 0
+      ? `\nSuggested size: ~${plan.suggestedSizeSol.toFixed(3)} SOL (${plan.suggestedSizePercent.toFixed(1)}% of bankroll)` +
+        (plan.stopLossMarketCapSol
+          ? `\nStop-loss level: ~${plan.stopLossMarketCapSol.toFixed(1)} SOL market cap`
+          : "")
+      : "\nSuggested size: skip (risk plan sized this to ~0 given the rug flags above)";
 
   const message =
-    signal.type === "BUY"
-      ? `🟢 BUY SIGNAL — ${name}\n` +
-        `${signal.buyers.length} tracked wallet(s) bought this token:\n` +
-        signal.buyers.map((b) => `  • ${b.wallet}`).join("\n") +
-        (tokenInfo?.marketCapSol ? `\n\nMarket cap: ~${tokenInfo.marketCapSol.toFixed(1)} SOL` : "") +
-        `\n${link}`
-      : `🔴 SELL SIGNAL — ${name}\n` +
-        `${signal.seller.wallet} sold (${signal.sellersSoFar}/${signal.totalBuyers} tracked buyers now out).\n` +
-        `\n${link}`;
+    `🟢 BUY SIGNAL — ${name}\n` +
+    `${buyersCount} tracked wallet(s) bought (conviction score ${convictionScore.toFixed(2)})` +
+    (tokenInfo?.marketCapSol ? `\nMarket cap: ~${tokenInfo.marketCapSol.toFixed(1)} SOL` : "") +
+    rugLine +
+    sizeLine +
+    `\n${link}\n\n` +
+    "Not financial advice — this is a heuristic signal, review before acting.";
+
+  await bot.api.sendMessage(chatId, message);
+}
+
+export interface SellAlertData {
+  mint: string;
+  seller: string;
+  sellersSoFar: number;
+  totalBuyers: number;
+  tokenInfo?: TokenInfo;
+}
+
+export async function sendSellAlert(bot: Bot, chatId: string, data: SellAlertData): Promise<void> {
+  const { mint, seller, sellersSoFar, totalBuyers, tokenInfo } = data;
+  const name = tokenInfo?.symbol ?? tokenInfo?.name ?? `${mint.slice(0, 8)}…`;
+  const link = pumpFunUrl(mint);
+
+  const message =
+    `🔴 SELL SIGNAL — ${name}\n` +
+    `${seller} sold (${sellersSoFar}/${totalBuyers} tracked buyers now out).\n` +
+    `\n${link}`;
+
+  await bot.api.sendMessage(chatId, message);
+}
+
+export interface StopLossAlertData {
+  mint: string;
+  pnlSol: number;
+  pnlPercent: number;
+}
+
+export async function sendStopLossAlert(bot: Bot, chatId: string, data: StopLossAlertData): Promise<void> {
+  const { mint, pnlSol, pnlPercent } = data;
+  const message =
+    `📄 Paper trade stopped out — ${mint}\n` +
+    `Simulated exit at stop-loss level: ${pnlPercent >= 0 ? "+" : ""}${pnlPercent.toFixed(1)}% (${
+      pnlSol >= 0 ? "+" : ""
+    }${pnlSol.toFixed(3)} SOL)\n` +
+    `${pumpFunUrl(mint)}`;
 
   await bot.api.sendMessage(chatId, message);
 }

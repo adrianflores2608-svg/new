@@ -62,6 +62,7 @@ export interface TokenInfo {
   name?: string;
   symbol?: string;
   marketCapSol?: number;
+  creator?: string;
 }
 
 /**
@@ -78,6 +79,7 @@ export async function fetchTokenInfo(mint: string): Promise<TokenInfo | undefine
       name: data?.name,
       symbol: data?.symbol,
       marketCapSol: data?.market_cap,
+      creator: data?.creator,
     };
   } catch {
     return undefined;

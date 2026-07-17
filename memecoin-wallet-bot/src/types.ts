@@ -2,6 +2,10 @@ export interface TrackedWallet {
   address: string;
   label?: string;
   addedAt: number;
+  // Populated when a wallet was added via /discover or `npm run rank --add-top`;
+  // absent for manually-added wallets. Drives conviction weighting (src/conviction.ts).
+  realizedPnlSol?: number;
+  winRate?: number;
 }
 
 export type SwapDirection = "buy" | "sell";
@@ -30,10 +34,30 @@ export interface TokenPosition {
   signaledSellAt?: number;
 }
 
+export type PaperTradeExitReason = "signal_sell" | "stop_loss";
+
+export interface PaperTrade {
+  mint: string;
+  entryMarketCapSol: number;
+  entryTimestamp: number;
+  sizeSol: number;
+  stopLossMarketCapSol?: number;
+  rugFlagged: boolean;
+  exit?: {
+    marketCapSol: number;
+    timestamp: number;
+    reason: PaperTradeExitReason;
+    pnlSol: number;
+    pnlPercent: number;
+  };
+}
+
 export interface StoreShape {
   wallets: TrackedWallet[];
   lastSignature: Record<string, string>;
   positions: Record<string, TokenPosition>;
+  paperPositions: Record<string, PaperTrade>;
+  closedPaperTrades: PaperTrade[];
 }
 
 export type Signal =
@@ -41,9 +65,7 @@ export type Signal =
       type: "BUY";
       mint: string;
       buyers: PositionEntry[];
-      tokenName?: string;
-      tokenSymbol?: string;
-      marketCapSol?: number;
+      convictionScore: number;
     }
   | {
       type: "SELL";
@@ -51,6 +73,4 @@ export type Signal =
       seller: PositionEntry;
       sellersSoFar: number;
       totalBuyers: number;
-      tokenName?: string;
-      tokenSymbol?: string;
     };

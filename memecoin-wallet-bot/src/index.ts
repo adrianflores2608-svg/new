@@ -1,5 +1,6 @@
 import { loadConfig } from "./config";
 import { createPoller } from "./poller";
+import { createConnection } from "./rugcheck";
 import { SignalEngine } from "./signals";
 import { Storage } from "./storage";
 import { createBot } from "./telegram";
@@ -9,7 +10,8 @@ async function main() {
   const storage = new Storage();
   const signalEngine = new SignalEngine(storage, config);
   const bot = createBot(config, storage);
-  const poller = createPoller(config, storage, signalEngine, bot);
+  const connection = createConnection(config.heliusApiKey);
+  const poller = createPoller(config, storage, signalEngine, bot, connection);
 
   await bot.init();
   bot.start();
