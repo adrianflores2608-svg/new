@@ -57,86 +57,43 @@
 .stack-item.bug-low { border-left-color: var(--border); }
 .stack-item.bug-fixed { border-left-color: var(--green); opacity: 0.7; }
 
-/* ---------- Agent House ---------- */
-.agent-house {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 14px;
-}
-.room {
-  background: linear-gradient(180deg, #eaf1ff 0%, var(--bg-alt) 100%);
-  border: 1px solid var(--border);
+/* ---------- The Ecosystem (canvas scene) ---------- */
+.scene-wrap {
+  max-width: 900px;
+  margin: 0 auto;
   border-radius: 14px;
-  padding: 12px;
-  text-align: center;
-}
-.room-label {
-  font-weight: 700;
-  font-size: 0.8rem;
-  margin-bottom: 8px;
-}
-.room-floor {
-  position: relative;
-  height: 76px;
-  border-radius: 10px;
-  margin-bottom: 8px;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(37, 99, 235, 0.07), rgba(37, 99, 235, 0.02));
+  box-shadow: var(--shadow);
+  background: #eef3ff;
 }
-.room.state-ok .room-floor { box-shadow: inset 0 0 0 2px rgba(26, 162, 96, 0.35); }
-.room.state-stale .room-floor { box-shadow: inset 0 0 0 2px rgba(184, 134, 11, 0.3); }
-.room.state-never .room-floor { box-shadow: inset 0 0 0 2px rgba(107, 116, 128, 0.25); }
+.scene-wrap canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
-.sprite-shadow {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  width: 24px;
-  height: 7px;
-  background: rgba(20, 30, 50, 0.18);
-  border-radius: 50%;
-  animation: sprite-wander var(--wander-duration, 5s) ease-in-out infinite alternate;
-}
-.sprite {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  font-size: 1.9rem;
-  line-height: 1;
-  transform: translateX(-50%);
-  animation:
-    sprite-wander var(--wander-duration, 5s) ease-in-out infinite alternate,
-    sprite-bob var(--bob-duration, 1.1s) ease-in-out infinite;
-  filter: grayscale(0);
-}
-.room.state-ok .sprite { filter: drop-shadow(0 0 6px rgba(26, 162, 96, 0.55)); }
-.room.state-stale .sprite { opacity: 0.75; }
-.room.state-never .sprite { filter: grayscale(1); opacity: 0.45; animation-play-state: paused; }
-.room.state-never .sprite-shadow { animation-play-state: paused; }
-
-.room-mood {
-  position: absolute;
-  top: 4px;
-  right: 6px;
-  font-size: 0.95rem;
-}
-.room-caption {
-  font-size: 0.74rem;
+.scene-hud {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 14px 0 0;
+  padding: 0;
+  font-size: 0.78rem;
   color: var(--muted);
-  min-height: 2.4em;
 }
-
-@keyframes sprite-wander {
-  0% { transform: translateX(calc(-50% - 34px)); }
-  100% { transform: translateX(calc(-50% + 34px)); }
+.scene-hud li { display: flex; align-items: center; gap: 6px; }
+.scene-hud strong { color: var(--ink); font-weight: 700; }
+.hud-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  background: #6b7480;
 }
-@keyframes sprite-bob {
-  0%, 100% { margin-bottom: 0; }
-  50% { margin-bottom: 6px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sprite, .sprite-shadow { animation: none !important; }
-}
+.hud-dot.state-ok { background: var(--green); }
+.hud-dot.state-stale { background: #b8860b; }
+.hud-dot.state-never { background: #6b7480; }
 
 /* ---------- Goal progress ---------- */
 .goal-progress-track {

@@ -57,9 +57,12 @@
         </div>
 
         <div class="panel">
-          <h2>The Agent House</h2>
-          <p class="muted-note">Same status data, just easier to glance at: sprites speed up and glow right after their agent runs, then settle down until the next run. Still and dim means it hasn't run recently.</p>
-          <div class="agent-house" id="agent-house"></div>
+          <h2>The Ecosystem</h2>
+          <p class="muted-note">One shared world. Each agent wanders its own zone and walks over to the orchestrator's desk in the middle to report in right after it runs. Frozen and grayed out means it hasn't run yet.</p>
+          <div class="scene-wrap">
+            <canvas id="ecosystem-scene" width="900" height="440" aria-label="Animated map of the 5 agents and their current status"></canvas>
+          </div>
+          <ul class="scene-hud" id="scene-hud"></ul>
         </div>
 
         <div class="panel">
