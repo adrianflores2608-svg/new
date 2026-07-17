@@ -1,0 +1,28 @@
+{
+  "name": "memecoin-wallet-bot",
+  "version": "0.1.0",
+  "description": "Tracks a watchlist of Solana wallets for pump.fun buy/sell activity and sends Telegram alerts when enough tracked wallets pile into (or exit) the same token.",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc -p .",
+    "start": "node dist/index.js",
+    "rank": "ts-node src/rankWallets.ts",
+    "backtest": "ts-node src/backtestCli.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@grammyjs/auto-retry": "^2.0.2",
+    "@solana/web3.js": "^1.98.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "grammy": "^1.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2"
+  }
+}
