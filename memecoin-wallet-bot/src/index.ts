@@ -1,6 +1,7 @@
 import { loadConfig } from "./config";
 import { createPoller } from "./poller";
 import { createConnection } from "./rugcheck";
+import { startLocalServer } from "./server";
 import { SignalEngine } from "./signals";
 import { Storage } from "./storage";
 import { createBot } from "./telegram";
@@ -23,9 +24,12 @@ async function main() {
   const interval = poller.start();
   console.log(`[bot] Polling ${storage.getWallets().length} wallet(s) every ${config.pollIntervalSeconds}s.`);
 
+  const localServer = startLocalServer(storage, config.localServerPort);
+
   const shutdown = () => {
     console.log("[bot] Shutting down...");
     clearInterval(interval);
+    localServer.close();
     bot.stop();
     process.exit(0);
   };

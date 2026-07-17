@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Memecoin Wallet Bot Overlay",
+  "version": "0.1.0",
+  "description": "Shows this bot's BUY/SELL wallet signals on pump.fun coin pages. Requires the bot running locally (npm run dev).",
+  "permissions": [],
+  "host_permissions": [
+    "https://pump.fun/*",
+    "http://127.0.0.1:4756/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://pump.fun/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -127,6 +127,16 @@ performance evidence, let the live bot run and check `/paperstats`.
    - `/paperstats` — simulated track record of this bot's own signals
    - `/status` — bot health / config summary
 
+## Browser overlay (see signals on pump.fun itself)
+
+While the bot is running, it also serves a small local read-only API
+(`http://127.0.0.1:4756` by default) for the companion Chrome/Edge extension
+in `extension/` — it overlays a status banner (and a best-effort marker on
+the chart) directly on pump.fun coin pages. See `extension/README.md` for
+install steps and an important caveat: the chart-marker selectors were built
+without live access to pump.fun and may need adjusting once you actually try
+it against the real site.
+
 ## Configuration
 
 All tuning knobs live in `.env` (see `.env.example` for the full list with
@@ -208,3 +218,13 @@ history.
   signing code here. Adding auto-execution means handling a private key and
   real slippage/MEV risk — treat that as a separate, much higher-stakes
   decision if you ever want it; it was deliberately kept out of this project.
+- **Browser extension chart-anchoring is unverified.** It was built without
+  network access to inspect pump.fun's real DOM/chart library. The status
+  banner is robust (plain fixed overlay), but the colored marker meant to sit
+  on the chart itself depends on guessed CSS selectors that may not match the
+  live site — see `extension/README.md` for how to fix it if so.
+- **The local signal API has open CORS.** It binds to `127.0.0.1` only (not
+  reachable over the network) and exposes nothing but read-only, on-chain-
+  derived signal data — no secrets, no control endpoints — but any page open
+  in the same browser could technically query it. Low risk given what it
+  exposes, but worth knowing if you're security-conscious.

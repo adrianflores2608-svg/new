@@ -36,6 +36,7 @@ export interface Config {
   telegramChatId: string;
   pollIntervalSeconds: number;
   pollConcurrency: number;
+  localServerPort: number;
   minWalletsForBuySignal: number;
   minConvictionScoreForBuySignal: number;
   buySignalWindowMinutes: number;
@@ -70,6 +71,7 @@ export function loadConfig(): Config {
     telegramChatId: requireEnv("TELEGRAM_CHAT_ID"),
     pollIntervalSeconds: intEnv("POLL_INTERVAL_SECONDS", 10),
     pollConcurrency: intEnv("POLL_CONCURRENCY", 5),
+    localServerPort: intEnv("LOCAL_SERVER_PORT", 4756),
     minWalletsForBuySignal,
     minConvictionScoreForBuySignal: floatEnv(
       "MIN_CONVICTION_SCORE_FOR_BUY_SIGNAL",
