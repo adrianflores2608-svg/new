@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /leads.html
 
 Sitemap: https://adrianflores2608-svg.github.io/new/sitemap.xml

@@ -26,7 +26,7 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Prestige Power Washing" />
   <meta name="twitter:description" content="Professional pressure washing in the Rio Grande Valley. Book online or text for a free quote." />
-  <link rel="stylesheet" href="styles.css?v=14" />
+  <link rel="stylesheet" href="styles.css?v=15" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -131,6 +131,7 @@
       </a>
       <nav>
         <a href="#services">Services</a>
+        <a href="#commercial">Commercial</a>
         <a href="#book">Book</a>
         <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
@@ -223,6 +224,89 @@
           </div>
         </div>
         <p class="services-cta">Not sure what you need? <a href="#book">Get a free quote today</a> or <a href="sms:+19562022106">text us now</a> at (956) 202-2106.</p>
+      </div>
+    </section>
+
+    <section id="commercial" class="section section-alt">
+      <div class="container">
+        <h2>Commercial Pressure Washing</h2>
+        <p class="lead center reveal" style="max-width:640px;margin:0 auto 40px;">Now booking recurring commercial contracts &mdash; parking lots, storefronts, HOA common areas, and more. Licensed &amp; insured, with a certificate of insurance available on request.</p>
+        <div class="cards">
+          <div class="card reveal">
+            <div class="card-icon">&#128663;</div>
+            <h3>Parking Lots &amp; Sidewalks</h3>
+            <p>Gum, oil stains, and grime removed to keep entrances looking sharp for customers.</p>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon">&#127978;</div>
+            <h3>Storefronts &amp; Entryways</h3>
+            <p>Building exteriors, awnings, and walkways cleaned on a schedule that fits your hours.</p>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon">&#128465;&#65039;</div>
+            <h3>Dumpster Pads &amp; Corrals</h3>
+            <p>Regular cleaning to control odor, staining, and pests around waste areas.</p>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon">&#127968;</div>
+            <h3>HOA &amp; Multi-Family</h3>
+            <p>Common areas, sidewalks, and building exteriors for HOAs and apartment communities.</p>
+          </div>
+        </div>
+        <p class="services-cta">We offer <strong>monthly and quarterly recurring plans</strong> &mdash; most commercial properties save by locking in a schedule instead of one-off jobs.</p>
+
+        <div class="container narrow" style="padding:0;margin-top:40px;">
+          <form id="commercial-form" novalidate>
+            <fieldset>
+              <legend>Request a Commercial Proposal</legend>
+              <div class="grid-2">
+                <div class="field">
+                  <label for="c-business">Business / Property name</label>
+                  <input type="text" id="c-business" name="business" required />
+                </div>
+                <div class="field">
+                  <label for="c-name">Contact name</label>
+                  <input type="text" id="c-name" name="name" autocomplete="name" required />
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="field">
+                  <label for="c-phone">Phone</label>
+                  <input type="tel" id="c-phone" name="phone" autocomplete="tel" required />
+                </div>
+                <div class="field">
+                  <label for="c-email">Email</label>
+                  <input type="email" id="c-email" name="email" autocomplete="email" required />
+                </div>
+              </div>
+              <div class="field">
+                <label for="c-address">Property address</label>
+                <input type="text" id="c-address" name="address" autocomplete="street-address" required />
+              </div>
+              <div class="field">
+                <label for="c-frequency">Desired frequency</label>
+                <select id="c-frequency" name="frequency">
+                  <option value="">Select one</option>
+                  <option>One-time</option>
+                  <option>Monthly</option>
+                  <option>Quarterly</option>
+                  <option>Not sure yet</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="c-notes">Tell us about the property</label>
+                <textarea id="c-notes" name="notes" rows="3" placeholder="Approx. size, surfaces to clean, current pain points..."></textarea>
+              </div>
+            </fieldset>
+            <p class="error" id="commercial-form-error" hidden></p>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Request Proposal</button>
+          </form>
+          <div id="commercial-confirmation" class="confirmation" hidden>
+            <div class="check">&#10003;</div>
+            <h2>Request Sent!</h2>
+            <p id="commercial-confirmation-text"></p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -321,6 +405,23 @@
               <label for="notes">Notes (optional)</label>
               <textarea id="notes" name="notes" rows="3" placeholder="Gate code, pets, special requests..."></textarea>
             </div>
+            <div class="field">
+              <label for="source">How did you hear about us?</label>
+              <select id="source" name="source">
+                <option value="">Select one</option>
+                <option>Google Search</option>
+                <option>Facebook / Instagram</option>
+                <option>Nextdoor</option>
+                <option>Referral from a friend/neighbor</option>
+                <option>Door hanger</option>
+                <option>Repeat customer</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field" id="referral-field" hidden>
+              <label for="referred_by">Who referred you?</label>
+              <input type="text" id="referred_by" name="referred_by" placeholder="Their name — you'll both save on your next service" />
+            </div>
           </fieldset>
 
           <div class="total-bar">
@@ -348,6 +449,7 @@
         <h2>Service Area</h2>
         <p class="area-text reveal">Proudly serving <strong>the Rio Grande Valley</strong> &mdash; McAllen, Edinburg, Mission, Pharr, Brownsville, Harlingen &amp; surrounding areas.</p>
         <p class="reveal">Not sure if we reach you? <a href="sms:+19562022106">Text us at (956) 202-2106</a> and we'll let you know right away.</p>
+        <p class="reveal">&#128101; <strong>Refer a neighbor</strong> and you'll both save on your next service &mdash; just have them mention your name when booking.</p>
       </div>
     </section>
 
@@ -409,6 +511,6 @@
     <a href="#book" class="mcta mcta-book">Book</a>
   </div>
 
-  <script src="script.js?v=14"></script>
+  <script src="script.js?v=15"></script>
 </body>
 </html>

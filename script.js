@@ -96,8 +96,17 @@ var errorEl = document.getElementById("form-error");
 var confirmationEl = document.getElementById("confirmation");
 var confirmationText = document.getElementById("confirmation-text");
 var bookAnotherBtn = document.getElementById("book-another");
+var sourceSelect = document.getElementById("source");
+var referralField = document.getElementById("referral-field");
 
 document.getElementById("year").textContent = new Date().getFullYear();
+
+// Show the "who referred you" field only when relevant.
+if (sourceSelect && referralField) {
+  sourceSelect.addEventListener("change", function () {
+    referralField.hidden = sourceSelect.value.indexOf("Referral") !== 0;
+  });
+}
 
 // Prevent picking a date in the past.
 var dateInput = document.getElementById("date");
@@ -169,7 +178,9 @@ form.addEventListener("submit", function (e) {
     address: el["address"].value.trim(),
     date: el["date"].value,
     time: el["time"].value,
-    notes: el["notes"].value.trim()
+    notes: el["notes"].value.trim(),
+    source: el["source"] ? el["source"].value : "",
+    referredBy: el["referred_by"] ? el["referred_by"].value.trim() : ""
   };
 
   var lines = [];
@@ -192,6 +203,8 @@ form.addEventListener("submit", function (e) {
   lines.push("Email: " + data.email);
   lines.push("Address: " + data.address);
   lines.push("Notes: " + (data.notes || "(none)"));
+  lines.push("Heard about us via: " + (data.source || "(not specified)"));
+  if (data.referredBy) lines.push("Referred by: " + data.referredBy);
 
   var subject = "New Booking: " + data.name + " - " + data.date + " " + data.time;
   var body = lines.join("\n");
@@ -233,6 +246,8 @@ form.addEventListener("submit", function (e) {
       "Preferred Date": data.date,
       "Preferred Time": data.time,
       "Notes": data.notes || "(none)",
+      "How They Heard About Us": data.source || "(not specified)",
+      "Referred By": data.referredBy || "(n/a)",
       "Estimated Total": "$" + r.total + (r.needsQuote ? " + free quote" : ""),
       message: body,
       replyto: data.email
@@ -258,3 +273,98 @@ bookAnotherBtn.addEventListener("click", function () {
 });
 
 calcTotal();
+
+// --- Commercial proposal form -------------------------------------------
+(function () {
+  var cForm = document.getElementById("commercial-form");
+  if (!cForm) return;
+
+  var cError = document.getElementById("commercial-form-error");
+  var cConfirmation = document.getElementById("commercial-confirmation");
+  var cConfirmationText = document.getElementById("commercial-confirmation-text");
+
+  cForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    cError.hidden = true;
+
+    if (!cForm.checkValidity()) {
+      cError.textContent = "Please fill in all required fields.";
+      cError.hidden = false;
+      cForm.reportValidity();
+      return;
+    }
+
+    var el = cForm.elements;
+    var data = {
+      business: el["business"].value.trim(),
+      name: el["name"].value.trim(),
+      phone: el["phone"].value.trim(),
+      email: el["email"].value.trim(),
+      address: el["address"].value.trim(),
+      frequency: el["frequency"].value,
+      notes: el["notes"].value.trim()
+    };
+
+    var lines = [
+      "New Commercial Proposal Request",
+      "================================",
+      "",
+      "Business/Property: " + data.business,
+      "Contact: " + data.name,
+      "Phone: " + data.phone,
+      "Email: " + data.email,
+      "Property Address: " + data.address,
+      "Desired Frequency: " + (data.frequency || "(not specified)"),
+      "Notes: " + (data.notes || "(none)")
+    ];
+
+    var subject = "Commercial Proposal Request: " + data.business;
+    var submitBtn = cForm.querySelector('button[type="submit"]');
+
+    function showConfirmation() {
+      cForm.hidden = true;
+      cConfirmationText.textContent =
+        "Thanks, " + data.name + "! We'll put together a proposal for " + data.business +
+        " and reach out at " + data.phone + " or " + data.email + " shortly.";
+      cConfirmation.hidden = false;
+      cConfirmation.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function showError() {
+      cError.innerHTML =
+        "We couldn't send that automatically. Please call or text us at " +
+        '<a href="tel:+19562022106">(956) 202-2106</a> and we\'ll get your proposal started.';
+      cError.hidden = false;
+      cError.scrollIntoView({ behavior: "smooth" });
+    }
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Sending..."; }
+
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: subject,
+        from_name: "Prestige Power Washing Website (Commercial)",
+        "Business/Property": data.business,
+        "Contact Name": data.name,
+        "Phone": data.phone,
+        "Email": data.email,
+        "Property Address": data.address,
+        "Desired Frequency": data.frequency || "(not specified)",
+        "Notes": data.notes || "(none)",
+        message: lines.join("\n"),
+        replyto: data.email
+      })
+    })
+      .then(function (res) {
+        if (res.ok) { showConfirmation(); }
+        else { showError(); }
+      })
+      .catch(function () { showError(); })
+      .then(function () {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Request Proposal"; }
+      });
+  });
+})();
