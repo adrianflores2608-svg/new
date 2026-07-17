@@ -1,0 +1,9 @@
+{
+  "updated_at": "2026-07-17T23:17:57Z",
+  "updated_by": "init",
+  "note": "Research-only. This agent never scrapes or stores personal contact info (names/phones/addresses of individuals) — that would risk TCPA/CAN-SPAM issues and duplicates what the private Lead & Job Manager (leads.html) is already for. It surfaces public market intel for Adrian to act on manually: target areas, timing, competitor moves, pricing, angles.",
+  "service_area": ["McAllen", "Edinburg", "Mission", "Pharr", "Brownsville", "Harlingen"],
+  "market_notes": [],
+  "target_neighborhoods": [],
+  "action_items": []
+}

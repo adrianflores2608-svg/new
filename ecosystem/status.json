@@ -1,0 +1,9 @@
+{
+  "agents": {
+    "bug-tracker": { "last_run": null, "summary": "Not yet run.", "flags": [] },
+    "youtube-content": { "last_run": null, "summary": "Not yet run.", "flags": [] },
+    "lead-research": { "last_run": null, "summary": "Not yet run.", "flags": [] },
+    "goals-tracker": { "last_run": null, "summary": "Not yet run.", "flags": [] },
+    "orchestrator": { "last_run": null, "summary": "Not yet run.", "flags": [] }
+  }
+}

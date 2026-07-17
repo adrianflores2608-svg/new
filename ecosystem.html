@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Control | Prestige Power Washing</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="logo.svg?v=1" />
+  <link rel="stylesheet" href="styles.css?v=15" />
+  <link rel="stylesheet" href="leads.css?v=1" />
+  <link rel="stylesheet" href="ecosystem.css?v=1" />
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("ppw_ecosystem_unlocked") === "1") {
+          document.documentElement.classList.add("unlocked");
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <div id="lock-screen">
+    <div class="lock-box">
+      <h1>&#129302; Mission Control</h1>
+      <p>Enter your PIN to continue.</p>
+      <input type="password" id="pin-input" inputmode="numeric" autocomplete="off" placeholder="PIN" />
+      <button type="button" id="unlock-btn" class="btn btn-primary btn-block">Unlock</button>
+      <p class="error" id="pin-error" hidden>Incorrect PIN.</p>
+      <p class="lock-note">This PIN only keeps out casual visitors — it's not real security, since this page's code is part of a public repo. The data below (bugs, content ideas, market research, goals) is read straight from JSON files in this repo, updated automatically by scheduled agents.</p>
+    </div>
+  </div>
+
+  <div id="dashboard">
+    <header class="dash-header">
+      <div class="container">
+        <div>
+          <h1>Mission Control</h1>
+          <p>Prestige Power Washing &mdash; internal tool, not linked from the public site</p>
+        </div>
+        <div class="dash-actions">
+          <button type="button" class="btn btn-light" id="refresh-btn">Refresh</button>
+          <button type="button" class="btn btn-light" id="lock-btn">Lock</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="dash-main">
+      <div class="container">
+
+        <div class="panel">
+          <h2>Agent Status</h2>
+          <p class="muted-note">Each agent runs on its own schedule, updates its data file, and reports here. The orchestrator checks that every agent is actually running and flags anything stalled or broken.</p>
+          <div class="agent-grid" id="agent-status"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Bug Tracker</h2>
+          <div class="toolbar">
+            <button type="button" class="tab-btn active" data-bug-filter="all">All</button>
+            <button type="button" class="tab-btn" data-bug-filter="open">Open</button>
+            <button type="button" class="tab-btn" data-bug-filter="investigating">Investigating</button>
+            <button type="button" class="tab-btn" data-bug-filter="fixed">Fixed</button>
+          </div>
+          <div id="bug-list" class="stack-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>YouTube Content Pipeline</h2>
+          <p class="muted-note" id="youtube-status-note"></p>
+          <h3 class="sub-h">Ideas &amp; In Progress</h3>
+          <div id="youtube-ideas" class="stack-list"></div>
+          <h3 class="sub-h">Published &mdash; Views &amp; Hooks</h3>
+          <div id="youtube-published" class="stack-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>RGV Lead Research</h2>
+          <p class="muted-note">Market intel only &mdash; no scraped personal contact info. Real leads live in the <a href="leads.html">Lead &amp; Job Manager</a>.</p>
+          <h3 class="sub-h">Target Areas</h3>
+          <div id="lead-neighborhoods" class="stack-list"></div>
+          <h3 class="sub-h">Market Notes</h3>
+          <div id="lead-notes" class="stack-list"></div>
+          <h3 class="sub-h">Action Items</h3>
+          <div id="lead-actions" class="stack-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Goals</h2>
+          <div id="goals-list" class="stack-list"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="ecosystem.js?v=1"></script>
+</body>
+</html>

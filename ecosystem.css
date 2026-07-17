@@ -1,0 +1,76 @@
+/* Mission Control — dashboard-specific styles (loaded on top of styles.css + leads.css) */
+
+.muted-note { font-size: 0.85rem; color: var(--muted); margin-bottom: 14px; }
+.sub-h { font-size: 0.92rem; margin: 18px 0 10px; color: var(--slate); }
+
+/* ---------- Agent status grid ---------- */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.agent-card {
+  background: var(--bg-alt);
+  border-radius: 12px;
+  padding: 14px 16px;
+  border-left: 5px solid var(--border);
+}
+.agent-card.ok { border-left-color: var(--green); }
+.agent-card.stale { border-left-color: #b8860b; }
+.agent-card.never { border-left-color: #6b7480; }
+.agent-card .agent-name { font-weight: 700; font-size: 0.92rem; margin-bottom: 4px; }
+.agent-card .agent-summary { font-size: 0.82rem; color: var(--muted); margin-bottom: 4px; }
+.agent-card .agent-time { font-size: 0.72rem; color: var(--muted); }
+.agent-card .agent-flags { font-size: 0.78rem; color: #c62828; margin-top: 6px; }
+
+/* ---------- Generic stacked item list ---------- */
+.stack-list { display: flex; flex-direction: column; gap: 10px; }
+.stack-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  border-left: 5px solid var(--border);
+}
+.stack-item .item-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.stack-item .item-title { font-weight: 700; font-size: 0.98rem; }
+.stack-item .item-meta { font-size: 0.8rem; color: var(--muted); }
+.stack-item .item-body { font-size: 0.88rem; }
+
+/* severity / status pills reuse .pill from leads.css, add colors */
+.pill.severity-critical, .pill.severity-high { background: #ffe1e1; color: #c62828; }
+.pill.severity-medium { background: #fff3d6; color: #8a5a00; }
+.pill.severity-low { background: var(--bg-alt); color: var(--slate); }
+.pill.status-fixed { background: #e1f5ea; color: #0f7a3d; }
+.pill.status-open { background: #ffe1e1; color: #c62828; }
+.pill.status-investigating { background: #fff3d6; color: #8a5a00; }
+.pill.status-wontfix { background: var(--bg-alt); color: var(--slate); }
+
+.stack-item.bug-critical, .stack-item.bug-high { border-left-color: #c62828; }
+.stack-item.bug-medium { border-left-color: #b8860b; }
+.stack-item.bug-low { border-left-color: var(--border); }
+.stack-item.bug-fixed { border-left-color: var(--green); opacity: 0.7; }
+
+/* ---------- Goal progress ---------- */
+.goal-progress-track {
+  background: var(--bg-alt);
+  border-radius: 20px;
+  height: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.goal-progress-fill {
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  height: 100%;
+  border-radius: 20px;
+}
+
+@media (max-width: 640px) {
+  .stack-item .item-top { flex-direction: column; }
+}

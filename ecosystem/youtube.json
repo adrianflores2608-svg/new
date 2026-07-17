@@ -1,0 +1,12 @@
+{
+  "updated_at": "2026-07-17T23:17:57Z",
+  "updated_by": "init",
+  "channel_status": "not_launched",
+  "channel_notes": "No channel live yet. This file is the scaffold the youtube-content agent fills in once a channel exists: content ideas now, then published-video stats and hook/virality patterns after launch.",
+  "content_ideas": [],
+  "published_videos": [],
+  "hook_patterns": {
+    "working": [],
+    "not_working": []
+  }
+}
