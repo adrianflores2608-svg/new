@@ -1,3 +1,4 @@
+import { autoRetry } from "@grammyjs/auto-retry";
 import { Bot, Context } from "grammy";
 import { Config } from "./config";
 import { discoverCandidateWallets } from "./discover";
@@ -13,6 +14,9 @@ function isAuthorized(ctx: Context, config: Config): boolean {
 
 export function createBot(config: Config, storage: Storage): Bot {
   const bot = new Bot(config.telegramBotToken);
+  // Transparently waits and retries when Telegram responds 429 (rate limit)
+  // instead of silently dropping an alert.
+  bot.api.config.use(autoRetry());
 
   // This is a single-user bot: only the configured chat may issue commands.
   bot.use(async (ctx, next) => {
@@ -242,4 +246,15 @@ export async function sendStopLossAlert(bot: Bot, chatId: string, data: StopLoss
     `${pumpFunUrl(mint)}`;
 
   await bot.api.sendMessage(chatId, message);
+}
+
+export interface HealthAlertData {
+  recovered: boolean;
+  message: string;
+}
+
+/** Self-monitoring: lets the bot tell you when it's actually broken, instead of you noticing only by the alert silence. */
+export async function sendHealthAlert(bot: Bot, chatId: string, data: HealthAlertData): Promise<void> {
+  const prefix = data.recovered ? "✅ Bot recovered" : "⚠️ Bot health warning";
+  await bot.api.sendMessage(chatId, `${prefix}\n${data.message}`);
 }

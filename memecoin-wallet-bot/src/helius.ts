@@ -1,6 +1,9 @@
 import axios from "axios";
+import { withRetry } from "./retry";
 
 const HELIUS_BASE = "https://api.helius.xyz/v0";
+const RETRY_ATTEMPTS = 3;
+const RETRY_BASE_DELAY_MS = 500;
 
 /**
  * Shape of Helius' "enhanced transaction history" response, trimmed to the
@@ -53,9 +56,13 @@ export async function fetchWalletTransactions(
     params.before = opts.beforeSignature;
   }
 
-  const { data } = await axios.get<HeliusTransaction[]>(
-    `${HELIUS_BASE}/addresses/${address}/transactions`,
-    { params, timeout: 15_000 }
+  const { data } = await withRetry(
+    () =>
+      axios.get<HeliusTransaction[]>(`${HELIUS_BASE}/addresses/${address}/transactions`, {
+        params,
+        timeout: 15_000,
+      }),
+    { attempts: RETRY_ATTEMPTS, baseDelayMs: RETRY_BASE_DELAY_MS }
   );
 
   return Array.isArray(data) ? data : [];

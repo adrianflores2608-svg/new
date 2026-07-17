@@ -30,7 +30,11 @@ buy or sell. Only risk money you can afford to lose completely.
 1. You add wallet addresses to a watchlist, either manually or via
    `/discover` / `npm run rank` (see below).
 2. Every `POLL_INTERVAL_SECONDS`, the bot pulls each wallet's recent
-   transactions from Helius and picks out pump.fun buys/sells.
+   transactions from Helius (up to `POLL_CONCURRENCY` wallets at once, so a
+   long watchlist doesn't slow the cycle down) and picks out pump.fun
+   buys/sells. Helius calls automatically retry on rate limits/transient
+   errors; if fetching keeps failing, you get a ⚠️ health-warning alert
+   instead of silently missing signals.
 3. Buys are weighted by each wallet's **conviction score** (1.0 for an
    unranked wallet; higher for wallets with a strong sampled realized PnL,
    lower for a weak one — see `src/conviction.ts`). Once enough distinct
@@ -130,7 +134,8 @@ defaults). The main ones:
 
 | Variable | Meaning |
 | --- | --- |
-| `POLL_INTERVAL_SECONDS` | How often to poll each wallet |
+| `POLL_INTERVAL_SECONDS` | How often to poll wallets (default 10s — lower means faster alerts but more Helius API usage) |
+| `POLL_CONCURRENCY` | How many wallets to poll in parallel per cycle |
 | `MIN_WALLETS_FOR_BUY_SIGNAL` | Distinct wallets needed to trigger a BUY alert (a floor) |
 | `MIN_CONVICTION_SCORE_FOR_BUY_SIGNAL` | Weighted threshold using ranked wallets' PnL — see `src/conviction.ts` |
 | `BUY_SIGNAL_WINDOW_MINUTES` | Rolling window used to count "bought together" |
@@ -144,6 +149,27 @@ State (tracked wallets, last-seen signature per wallet, open positions, open
 and closed paper trades) is persisted to `data/state.json` so restarts don't
 reprocess old transactions, re-fire old signals, or lose paper-trading
 history.
+
+## Speed and reliability
+
+- **Polling is parallelized** across wallets (`POLL_CONCURRENCY`, default 5)
+  instead of one at a time, so a watchlist of many wallets doesn't make each
+  cycle take longer than the poll interval itself.
+- **Helius API calls auto-retry** on network errors, 429 (rate limit), and 5xx
+  responses, with exponential backoff (or the server's `Retry-After` header
+  when present) — see `src/retry.ts`. Non-retryable errors (bad API key, etc.)
+  fail immediately instead of retrying pointlessly.
+- **Telegram API calls auto-retry** on rate limits via the official
+  `@grammyjs/auto-retry` plugin, so a burst of alerts doesn't silently drop
+  messages.
+- **Self health-check**: if wallet-data fetching fails 5 times in a row, the
+  bot sends itself a ⚠️ warning to your Telegram (and a ✅ recovery message
+  once it starts working again) — so you find out the bot is stuck instead of
+  just wondering why no alerts are coming.
+- None of this makes the bot "faster than competitors" in any verifiable
+  sense (there's no benchmark against other tools) — it just removes the
+  obvious self-inflicted latency (sequential polling) and failure modes
+  (unhandled rate limits, silent breakage) that were previously in the code.
 
 ## Known limitations / things to verify before relying on this
 

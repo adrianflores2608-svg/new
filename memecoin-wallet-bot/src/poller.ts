@@ -1,14 +1,17 @@
 import { Connection } from "@solana/web3.js";
 import { Bot } from "grammy";
 import { Config } from "./config";
+import { mapWithConcurrency } from "./concurrency";
 import { fetchWalletTransactions } from "./helius";
 import { fetchTokenInfo, parseSwapsFromTransactions } from "./pumpfun";
 import { computePositionPlan } from "./risk";
 import { checkToken, RugCheckResult } from "./rugcheck";
 import { SignalEngine } from "./signals";
 import { Storage } from "./storage";
-import { sendBuyAlert, sendSellAlert, sendStopLossAlert } from "./telegram";
+import { sendBuyAlert, sendHealthAlert, sendSellAlert, sendStopLossAlert } from "./telegram";
 import { PaperTrade, PaperTradeExitReason } from "./types";
+
+const HEALTH_WARNING_THRESHOLD = 5; // consecutive failed wallet fetches before warning
 
 export function createPoller(
   config: Config,
@@ -18,6 +21,31 @@ export function createPoller(
   connection: Connection
 ) {
   let running = false;
+  let consecutiveFetchFailures = 0;
+  let healthWarningSent = false;
+
+  function recordFetchResult(success: boolean): void {
+    if (success) {
+      consecutiveFetchFailures = 0;
+      if (healthWarningSent) {
+        healthWarningSent = false;
+        sendHealthAlert(bot, config.telegramChatId, {
+          recovered: true,
+          message: "Wallet data fetching is working again.",
+        }).catch((err) => console.error("[poller] failed to send recovery alert:", (err as Error).message));
+      }
+      return;
+    }
+
+    consecutiveFetchFailures += 1;
+    if (consecutiveFetchFailures >= HEALTH_WARNING_THRESHOLD && !healthWarningSent) {
+      healthWarningSent = true;
+      sendHealthAlert(bot, config.telegramChatId, {
+        recovered: false,
+        message: `Failed to fetch wallet data ${consecutiveFetchFailures} times in a row. Check HELIUS_API_KEY and your network connection — alerts may be delayed or missed until this recovers.`,
+      }).catch((err) => console.error("[poller] failed to send health alert:", (err as Error).message));
+    }
+  }
 
   function closePaperTradeAndMaybeNotify(
     mint: string,
@@ -132,7 +160,9 @@ export function createPoller(
       txs = await fetchWalletTransactions(address, config.heliusApiKey, {
         untilSignature: lastSignature,
       });
+      recordFetchResult(true);
     } catch (err) {
+      recordFetchResult(false);
       console.error(`[poller] failed to fetch transactions for ${address}:`, (err as Error).message);
       return;
     }
@@ -171,9 +201,11 @@ export function createPoller(
     if (running) return; // don't overlap with a still-running previous pass
     running = true;
     try {
-      for (const wallet of storage.getWallets()) {
-        await pollWallet(wallet.address);
-      }
+      const wallets = storage.getWallets();
+      // Poll wallets concurrently (bounded) instead of one at a time — with a
+      // short poll interval, sequential fetches for many wallets could take
+      // longer than the interval itself and starve every other cycle.
+      await mapWithConcurrency(wallets, config.pollConcurrency, (wallet) => pollWallet(wallet.address));
       await checkOpenPaperTradesForStopLoss();
     } finally {
       running = false;
