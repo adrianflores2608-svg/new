@@ -24,6 +24,25 @@ var AGENT_LABELS = {
   "orchestrator": "Orchestrator"
 };
 
+var AGENT_ORDER = ["orchestrator", "bug-tracker", "youtube-content", "lead-research", "goals-tracker"];
+
+var AGENT_SPRITES = {
+  "bug-tracker": "\u{1F41B}",
+  "youtube-content": "\u{1F3AC}",
+  "lead-research": "\u{1F9FD}",
+  "goals-tracker": "\u{1F3AF}",
+  "orchestrator": "\u{1F9ED}"
+};
+
+var STATE_MOOD = { ok: "⚡", stale: "\u{1F4A4}", never: "\u{1F319}" };
+var STATE_WANDER = { ok: "2.6s", stale: "6s", never: "5s" };
+var STATE_BOB = { ok: "0.7s", stale: "1.6s", never: "1.6s" };
+
+function agentState(a) {
+  if (!a || !a.last_run) return "never";
+  return Date.now() - new Date(a.last_run).getTime() > 1000 * 60 * 60 * 6 ? "stale" : "ok";
+}
+
 // ---------------------------------------------------------------------------
 // Lock screen
 // ---------------------------------------------------------------------------
@@ -99,6 +118,7 @@ function loadAll() {
     fetchJSON(DATA_FILES.goals).catch(function () { return null; })
   ]).then(function (results) {
     renderStatus(results[0]);
+    renderHouse(results[0], results[1], results[2], results[3], results[4]);
     renderBugs(results[1]);
     renderYoutube(results[2]);
     renderLeads(results[3]);
@@ -109,11 +129,9 @@ function loadAll() {
 function renderStatus(data) {
   var el = document.getElementById("agent-status");
   var agents = (data && data.agents) || {};
-  var order = ["orchestrator", "bug-tracker", "youtube-content", "lead-research", "goals-tracker"];
-  el.innerHTML = order.map(function (key) {
+  el.innerHTML = AGENT_ORDER.map(function (key) {
     var a = agents[key] || {};
-    var state = !a.last_run ? "never" :
-      (Date.now() - new Date(a.last_run).getTime() > 1000 * 60 * 60 * 6 ? "stale" : "ok");
+    var state = agentState(a);
     var flags = (a.flags || []).map(function (f) { return esc(f); }).join("<br>");
     return '<div class="agent-card ' + state + '">' +
       '<div class="agent-name">' + esc(AGENT_LABELS[key] || key) + "</div>" +
@@ -121,6 +139,52 @@ function renderStatus(data) {
       '<div class="agent-time">' + esc(timeAgo(a.last_run)) + "</div>" +
       (flags ? '<div class="agent-flags">' + flags + "</div>" : "") +
       "</div>";
+  }).join("");
+}
+
+function agentCaption(key, state, statusData, bugs, youtube, leads, goals) {
+  var a = ((statusData && statusData.agents) || {})[key] || {};
+  if (key === "bug-tracker") {
+    var open = ((bugs && bugs.bugs) || []).filter(function (b) { return b.status === "open"; }).length;
+    return state === "never" ? "hasn't scanned yet" : open + " open bug" + (open === 1 ? "" : "s");
+  }
+  if (key === "youtube-content") {
+    var ideas = (youtube && youtube.content_ideas || []).length;
+    if (youtube && youtube.channel_status === "not_launched" && !ideas) return "channel not launched yet";
+    return ideas + " idea" + (ideas === 1 ? "" : "s") + " queued";
+  }
+  if (key === "lead-research") {
+    var areas = (leads && leads.target_neighborhoods || []).length;
+    return state === "never" ? "hasn't researched yet" : areas + " area" + (areas === 1 ? "" : "s") + " tracked";
+  }
+  if (key === "goals-tracker") {
+    var objs = (goals && goals.objectives || []).length;
+    return state === "never" ? "no goals set yet" : objs + " goal" + (objs === 1 ? "" : "s") + " tracked";
+  }
+  if (key === "orchestrator") {
+    var agents = (statusData && statusData.agents) || {};
+    var healthy = AGENT_ORDER.filter(function (k) { return agentState(agents[k]) === "ok"; }).length;
+    return healthy + "/" + AGENT_ORDER.length + " agents healthy";
+  }
+  return a.summary || "";
+}
+
+function renderHouse(statusData, bugs, youtube, leads, goals) {
+  var el = document.getElementById("agent-house");
+  var agents = (statusData && statusData.agents) || {};
+  el.innerHTML = AGENT_ORDER.map(function (key) {
+    var a = agents[key] || {};
+    var state = agentState(a);
+    var style = "--wander-duration:" + STATE_WANDER[state] + ";--bob-duration:" + STATE_BOB[state] + ";";
+    return '<div class="room state-' + state + '">' +
+      '<div class="room-label">' + esc(AGENT_LABELS[key] || key) + "</div>" +
+      '<div class="room-floor" style="' + style + '">' +
+        '<div class="room-mood">' + STATE_MOOD[state] + "</div>" +
+        '<div class="sprite-shadow"></div>' +
+        '<div class="sprite">' + AGENT_SPRITES[key] + "</div>" +
+      "</div>" +
+      '<div class="room-caption">' + esc(agentCaption(key, state, statusData, bugs, youtube, leads, goals)) + "<br>" + esc(timeAgo(a.last_run)) + "</div>" +
+    "</div>";
   }).join("");
 }
 
