@@ -1,0 +1,12 @@
+# Python environment (uv)
+.venv/
+__pycache__/
+*.pyc
+
+# Vendored/built local servers (whisper.cpp clone + build output + models)
+vendor/
+
+# Signal bus runtime files (regenerated on every launch)
+.voice_state
+.voice_waveform
+.voice_loading_pid
