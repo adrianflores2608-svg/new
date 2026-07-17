@@ -1,5 +1,7 @@
 import { Bot, Context } from "grammy";
 import { Config } from "./config";
+import { discoverCandidateWallets } from "./discover";
+import { rankWallets } from "./ranker";
 import { Storage } from "./storage";
 import { Signal } from "./types";
 import { TokenInfo, pumpFunUrl } from "./pumpfun";
@@ -25,6 +27,7 @@ export function createBot(config: Config, storage: Storage): Bot {
         "/removewallet <address> - stop tracking a wallet\n" +
         "/list - show tracked wallets\n" +
         "/positions - show tokens currently being tracked\n" +
+        "/discover - find and rank candidate wallets by realized pump.fun PnL\n" +
         "/status - bot status"
     )
   );
@@ -62,6 +65,51 @@ export function createBot(config: Config, storage: Storage): Bot {
       return `${p.mint} — ${status} (${buyers} buyers / ${sellers} sold)\n${pumpFunUrl(p.mint)}`;
     });
     return ctx.reply(lines.join("\n\n"));
+  });
+
+  bot.command("discover", async (ctx) => {
+    await ctx.reply(
+      `Sampling buyers from ${config.rankSeedTokenLimit} trending pump.fun tokens and scoring realized PnL — this can take a couple of minutes...`
+    );
+
+    try {
+      const candidates = await discoverCandidateWallets({
+        seedMintLimit: config.rankSeedTokenLimit,
+        tradesPerMint: config.rankTradesPerSeed,
+        maxCandidates: config.rankMaxCandidates,
+      });
+
+      if (candidates.length === 0) {
+        return ctx.reply("Couldn't find any candidate wallets (pump.fun's public API may be unreachable/changed).");
+      }
+
+      const rankings = await rankWallets(candidates, {
+        heliusApiKey: config.heliusApiKey,
+        historyPages: config.rankHistoryPages,
+        historyPageSize: config.rankHistoryPageSize,
+        minClosedPositions: config.rankMinClosedPositions,
+        concurrency: config.rankConcurrency,
+      });
+
+      const top = rankings.slice(0, config.rankTopN);
+      if (top.length === 0) {
+        return ctx.reply(
+          `Scored ${candidates.length} candidate(s) but none had ${config.rankMinClosedPositions}+ closed positions. Try again later or lower RANK_MIN_CLOSED_POSITIONS.`
+        );
+      }
+
+      const lines = top.map(
+        (r, i) =>
+          `${i + 1}. ${r.realizedPnlSol.toFixed(2)} SOL — ${(r.winRate * 100).toFixed(0)}% win rate, ${r.closedPositions} closed\n   ${r.address}\n   /addwallet ${r.address}`
+      );
+
+      await ctx.reply(
+        `Top ${top.length} of ${candidates.length} scored candidate(s) by realized PnL:\n\n${lines.join("\n\n")}\n\n` +
+          "This is a heuristic ranking over a small trade sample — not proof of skill. Review before adding."
+      );
+    } catch (err) {
+      await ctx.reply(`Discovery failed: ${(err as Error).message}`);
+    }
   });
 
   bot.command("status", (ctx) =>

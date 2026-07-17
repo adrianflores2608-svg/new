@@ -31,13 +31,16 @@ export interface HeliusTransaction {
 }
 
 /**
- * Fetch transactions for a wallet, newest first, optionally only those
- * after `untilSignature` (Helius stops paging once it hits that signature).
+ * Fetch transactions for a wallet, newest first.
+ * - `untilSignature`: stop paging once this signature is reached (used by the
+ *   poller to fetch only what's new since the last processed transaction).
+ * - `beforeSignature`: start paging from just before this signature (used to
+ *   walk further back into history, e.g. for PnL ranking).
  */
 export async function fetchWalletTransactions(
   address: string,
   apiKey: string,
-  opts: { untilSignature?: string; limit?: number } = {}
+  opts: { untilSignature?: string; beforeSignature?: string; limit?: number } = {}
 ): Promise<HeliusTransaction[]> {
   const params: Record<string, string | number> = {
     "api-key": apiKey,
@@ -46,6 +49,9 @@ export async function fetchWalletTransactions(
   if (opts.untilSignature) {
     params.until = opts.untilSignature;
   }
+  if (opts.beforeSignature) {
+    params.before = opts.beforeSignature;
+  }
 
   const { data } = await axios.get<HeliusTransaction[]>(
     `${HELIUS_BASE}/addresses/${address}/transactions`,
@@ -53,4 +59,31 @@ export async function fetchWalletTransactions(
   );
 
   return Array.isArray(data) ? data : [];
+}
+
+/**
+ * Walk further back into a wallet's history than a single page, for use
+ * cases (like PnL ranking) that need a broader trade sample than the
+ * poller's "what's new" queries.
+ */
+export async function fetchWalletHistoryPages(
+  address: string,
+  apiKey: string,
+  opts: { pages: number; pageSize: number }
+): Promise<HeliusTransaction[]> {
+  const all: HeliusTransaction[] = [];
+  let beforeSignature: string | undefined;
+
+  for (let i = 0; i < opts.pages; i++) {
+    const batch = await fetchWalletTransactions(address, apiKey, {
+      beforeSignature,
+      limit: opts.pageSize,
+    });
+    if (batch.length === 0) break;
+    all.push(...batch);
+    beforeSignature = batch[batch.length - 1].signature;
+    if (batch.length < opts.pageSize) break;
+  }
+
+  return all;
 }

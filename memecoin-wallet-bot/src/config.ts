@@ -29,6 +29,14 @@ export interface Config {
   minWalletsForBuySignal: number;
   buySignalWindowMinutes: number;
   sellAlertOnAnySell: boolean;
+  rankSeedTokenLimit: number;
+  rankTradesPerSeed: number;
+  rankMaxCandidates: number;
+  rankMinClosedPositions: number;
+  rankTopN: number;
+  rankHistoryPages: number;
+  rankHistoryPageSize: number;
+  rankConcurrency: number;
 }
 
 export function loadConfig(): Config {
@@ -40,5 +48,13 @@ export function loadConfig(): Config {
     minWalletsForBuySignal: intEnv("MIN_WALLETS_FOR_BUY_SIGNAL", 2),
     buySignalWindowMinutes: intEnv("BUY_SIGNAL_WINDOW_MINUTES", 10),
     sellAlertOnAnySell: boolEnv("SELL_ALERT_ON_ANY_SELL", true),
+    rankSeedTokenLimit: intEnv("RANK_SEED_TOKEN_LIMIT", 15),
+    rankTradesPerSeed: intEnv("RANK_TRADES_PER_SEED", 50),
+    rankMaxCandidates: intEnv("RANK_MAX_CANDIDATES", 60),
+    rankMinClosedPositions: intEnv("RANK_MIN_CLOSED_POSITIONS", 3),
+    rankTopN: intEnv("RANK_TOP_N", 15),
+    rankHistoryPages: intEnv("RANK_HISTORY_PAGES", 3),
+    rankHistoryPageSize: intEnv("RANK_HISTORY_PAGE_SIZE", 100),
+    rankConcurrency: intEnv("RANK_CONCURRENCY", 4),
   };
 }

@@ -25,6 +25,31 @@ not an instruction to buy or sell. Only risk money you can afford to lose.
    SELL alert (either on the first sell, or once a majority of buyers have
    exited — see `SELL_ALERT_ON_ANY_SELL`).
 
+## Wallet discovery (finding candidates for the watchlist)
+
+The core bot only tracks wallets you already know about. To find candidates,
+`npm run rank` (or the `/discover` Telegram command):
+
+1. Samples recent buyers across a set of currently-trending pump.fun tokens
+   (`src/discover.ts`) as a candidate pool.
+2. Pulls each candidate's transaction history from Helius and reconstructs
+   realized SOL PnL per token using FIFO cost-basis matching across their
+   buy/sell pairs (`src/ranker.ts`).
+3. Filters out wallets with fewer than `RANK_MIN_CLOSED_POSITIONS` closed
+   round-trips (too little signal to judge), then ranks the rest by total
+   realized PnL.
+
+```bash
+npm run rank                 # print the ranked list
+npm run rank -- --add-top 5  # also add the top 5 to the watchlist
+```
+
+**Treat this as a rough heuristic, not a leaderboard of "the best traders":**
+it only samples a limited recent history per wallet (`RANK_HISTORY_PAGES` *
+`RANK_HISTORY_PAGE_SIZE` transactions), realized PnL ignores open positions,
+and a wallet that got lucky on a couple of trades can outrank a consistently
+disciplined one. Use it to generate candidates to review, not to auto-trust.
+
 ## Setup
 
 1. **Helius API key** — sign up at https://dev.helius.dev, create an API key
@@ -46,6 +71,7 @@ not an instruction to buy or sell. Only risk money you can afford to lose.
    - `/addwallet <address> [label]` — start tracking a wallet
    - `/list` — see tracked wallets
    - `/positions` — see tokens currently being tracked/signaled
+   - `/discover` — find and rank candidate wallets by realized PnL (see below)
    - `/status` — bot health / config summary
 
 ## Configuration
@@ -65,16 +91,15 @@ or re-fire old signals.
 
 ## Known limitations / things to verify before relying on this
 
-- **Wallet discovery is manual.** "Top wallets" here means whatever addresses
-  you add — this does not rank or discover profitable traders for you. A
-  natural follow-up project would compute realized PnL per wallet from
-  historical pump.fun trades and auto-populate the watchlist.
-- **Third-party APIs can change.** Both the Helius enhanced-transactions
-  response shape (`src/helius.ts`) and pump.fun's public token-metadata
-  endpoint (`src/pumpfun.ts`, `frontend-api.pump.fun`, undocumented) may
-  change field names or behavior without notice. If alerts stop showing
-  token names/market cap, or stop firing entirely, check those first against
-  current Helius docs.
+- **Discovery is a heuristic, not a guarantee.** `/discover` and `npm run rank`
+  surface candidates worth reviewing — they don't identify "the best"
+  wallets. See the Wallet discovery section above for the sampling caveats.
+- **Third-party APIs can change.** The Helius enhanced-transactions response
+  shape (`src/helius.ts`) and pump.fun's public endpoints (`src/pumpfun.ts`,
+  `src/discover.ts` — all against `frontend-api.pump.fun`, undocumented) may
+  change field names, paths, or behavior without notice. If alerts stop
+  showing token names/market cap, or discovery stops returning candidates,
+  check those first against the current Helius docs and pump.fun site.
 - **No execution path.** By design there is no swap-building or transaction-
   signing code here. Adding auto-execution means handling a private key and
   real slippage/MEV risk — treat that as a separate, much higher-stakes
