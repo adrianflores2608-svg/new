@@ -1,5 +1,5 @@
 import axios from "axios";
-import { HeliusTransaction } from "./helius";
+import { HeliusNativeTransfer, HeliusTokenTransfer, HeliusTransaction } from "./helius";
 import { SwapEvent } from "./types";
 
 // pump.fun bonding-curve program. Once a token "graduates" it migrates to
@@ -10,10 +10,33 @@ const PUMP_SOURCES = new Set(["PUMP_FUN", "PUMP_AMM"]);
 const WRAPPED_SOL_MINT = "So11111111111111111111111111111111111111112";
 const LAMPORTS_PER_SOL = 1_000_000_000;
 
+function netTokenAmount(transfers: HeliusTokenTransfer[], wallet: string, mint: string): number {
+  return transfers.reduce((net, t) => {
+    if (t.mint !== mint) return net;
+    if (t.toUserAccount === wallet) net += t.tokenAmount ?? 0;
+    if (t.fromUserAccount === wallet) net -= t.tokenAmount ?? 0;
+    return net;
+  }, 0);
+}
+
+function netSolAmount(transfers: HeliusNativeTransfer[], wallet: string): number {
+  return transfers.reduce((net, t) => {
+    if (t.toUserAccount === wallet) net += t.amount ?? 0;
+    if (t.fromUserAccount === wallet) net -= t.amount ?? 0;
+    return net;
+  }, 0);
+}
+
 /**
  * Turn a wallet's raw Helius transactions into pump.fun buy/sell events.
  * Only transactions Helius attributes to pump.fun (or its AMM) are considered —
  * this intentionally ignores unrelated SPL transfers/swaps from the same wallet.
+ *
+ * Uses net token/SOL movement across ALL transfer legs for the wallet, not
+ * just the first matching leg — a single swap transaction can carry more
+ * than one native transfer (e.g. a priority-fee tip alongside the swap
+ * amount) or more than one token-transfer entry for the same mint, and
+ * picking only the first would misclassify or misprice the trade.
  */
 export function parseSwapsFromTransactions(
   txs: HeliusTransaction[],
@@ -27,29 +50,28 @@ export function parseSwapsFromTransactions(
     const tokenTransfers = tx.tokenTransfers ?? [];
     const nativeTransfers = tx.nativeTransfers ?? [];
 
-    const tokenLeg = tokenTransfers.find(
+    const mint = tokenTransfers.find(
       (t) =>
         t.mint &&
         t.mint !== WRAPPED_SOL_MINT &&
         (t.fromUserAccount === wallet || t.toUserAccount === wallet)
-    );
-    if (!tokenLeg || !tokenLeg.mint) continue;
+    )?.mint;
+    if (!mint) continue;
 
-    const solLeg = nativeTransfers.find(
-      (t) => t.fromUserAccount === wallet || t.toUserAccount === wallet
-    );
-    if (!solLeg || !solLeg.amount) continue;
+    const netToken = netTokenAmount(tokenTransfers, wallet, mint);
+    const netSol = netSolAmount(nativeTransfers, wallet);
+    if (netToken === 0 || netSol === 0) continue;
 
-    const isBuy = tokenLeg.toUserAccount === wallet && solLeg.fromUserAccount === wallet;
-    const isSell = tokenLeg.fromUserAccount === wallet && solLeg.toUserAccount === wallet;
+    const isBuy = netToken > 0 && netSol < 0;
+    const isSell = netToken < 0 && netSol > 0;
     if (!isBuy && !isSell) continue;
 
     events.push({
       wallet,
-      mint: tokenLeg.mint,
+      mint,
       direction: isBuy ? "buy" : "sell",
-      solAmount: solLeg.amount / LAMPORTS_PER_SOL,
-      tokenAmount: tokenLeg.tokenAmount ?? 0,
+      solAmount: Math.abs(netSol) / LAMPORTS_PER_SOL,
+      tokenAmount: Math.abs(netToken),
       signature: tx.signature,
       timestamp: tx.timestamp,
     });

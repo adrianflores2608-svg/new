@@ -14,7 +14,10 @@ async function main() {
   const poller = createPoller(config, storage, signalEngine, bot, connection);
 
   await bot.init();
-  bot.start();
+  bot.start().catch((err) => {
+    console.error("[bot] Telegram polling crashed:", err);
+    process.exit(1);
+  });
   console.log("[bot] Telegram bot started.");
 
   const interval = poller.start();

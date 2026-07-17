@@ -139,6 +139,14 @@ export function createPoller(
 
     if (txs.length === 0) return;
 
+    if (!lastSignature) {
+      // First time polling this wallet: establish a baseline instead of
+      // replaying potentially weeks-old trades as if they just happened.
+      // Helius returns newest-first, so txs[0] is the current tip.
+      storage.setLastSignature(address, txs[0].signature);
+      return;
+    }
+
     // Helius returns newest-first; replay oldest-first so signals fire in the right order.
     const ordered = [...txs].reverse();
 
