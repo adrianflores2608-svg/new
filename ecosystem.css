@@ -58,18 +58,96 @@
 .stack-item.bug-fixed { border-left-color: var(--green); opacity: 0.7; }
 
 /* ---------- The Ecosystem (canvas scene) ---------- */
+.panel-dark {
+  background: radial-gradient(120% 140% at 15% 0%, #16204a 0%, #0a0f26 55%, #050812 100%);
+  color: #d8e0ff;
+}
+.panel-dark .scene-title {
+  font-family: "Orbitron", "Poppins", sans-serif;
+  letter-spacing: 0.04em;
+  color: #7ef7ff;
+  text-shadow: 0 0 12px rgba(126, 247, 255, 0.55);
+}
+.panel-dark .scene-note { color: #93a0d6; }
+
+.terminal-ticker {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.82rem;
+  color: #6ef58a;
+  background: #050a12;
+  border: 1px solid #163126;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 0 6px rgba(110, 245, 138, 0.6);
+}
+.terminal-ticker::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  margin-left: 2px;
+  background: #6ef58a;
+  animation: ticker-blink 1s steps(1) infinite;
+  vertical-align: text-bottom;
+}
+@keyframes ticker-blink { 50% { opacity: 0; } }
+
 .scene-wrap {
+  position: relative;
   max-width: 900px;
   margin: 0 auto;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: var(--shadow);
-  background: #eef3ff;
+  box-shadow: 0 0 0 1px rgba(126, 247, 255, 0.18), 0 20px 60px rgba(0, 0, 0, 0.55);
+  background: #050812;
 }
 .scene-wrap canvas {
   display: block;
   width: 100%;
   height: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.scene-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #7ef7ff;
+  opacity: 0.85;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px rgba(126, 247, 255, 0.7));
+}
+.scene-corner.tl { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+.scene-corner.tr { top: 6px; right: 6px; border-left: none; border-bottom: none; }
+.scene-corner.bl { bottom: 6px; left: 6px; border-right: none; border-top: none; }
+.scene-corner.br { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+
+.scene-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+.scene-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 0 90px 20px rgba(0, 0, 0, 0.7);
 }
 
 .scene-hud {
@@ -80,10 +158,11 @@
   margin: 14px 0 0;
   padding: 0;
   font-size: 0.78rem;
-  color: var(--muted);
+  font-family: "Share Tech Mono", monospace;
+  color: #93a0d6;
 }
 .scene-hud li { display: flex; align-items: center; gap: 6px; }
-.scene-hud strong { color: var(--ink); font-weight: 700; }
+.scene-hud strong { color: #d8e0ff; font-weight: 700; }
 .hud-dot {
   width: 9px;
   height: 9px;
@@ -91,9 +170,13 @@
   display: inline-block;
   background: #6b7480;
 }
-.hud-dot.state-ok { background: var(--green); }
-.hud-dot.state-stale { background: #b8860b; }
-.hud-dot.state-never { background: #6b7480; }
+.hud-dot.state-ok { background: #1aa260; box-shadow: 0 0 6px #1aa260; }
+.hud-dot.state-stale { background: #d19a1f; box-shadow: 0 0 6px #d19a1f; }
+.hud-dot.state-never { background: #4a5266; }
+
+@media (max-width: 640px) {
+  .terminal-ticker { white-space: normal; }
+}
 
 /* ---------- Goal progress ---------- */
 .goal-progress-track {

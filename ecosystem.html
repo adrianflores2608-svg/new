@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mission Control | Prestige Power Washing</title>
   <meta name="robots" content="noindex, nofollow" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Orbitron:wght@600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="logo.svg?v=1" />
   <link rel="stylesheet" href="styles.css?v=15" />
   <link rel="stylesheet" href="leads.css?v=1" />
@@ -56,11 +56,18 @@
           <div class="agent-grid" id="agent-status"></div>
         </div>
 
-        <div class="panel">
-          <h2>The Ecosystem</h2>
-          <p class="muted-note">One shared world. Each agent wanders its own zone and walks over to the orchestrator's desk in the middle to report in right after it runs. Frozen and grayed out means it hasn't run yet.</p>
+        <div class="panel panel-dark">
+          <h2 class="scene-title">The Ecosystem</h2>
+          <p class="muted-note scene-note">One shared world. Each agent wanders its own zone and walks the data-line to HQ to report in right after it runs. Frozen and grayed out means it hasn't run yet.</p>
+          <div class="terminal-ticker" id="terminal-ticker">&gt; booting mission control_</div>
           <div class="scene-wrap">
+            <span class="scene-corner tl"></span>
+            <span class="scene-corner tr"></span>
+            <span class="scene-corner bl"></span>
+            <span class="scene-corner br"></span>
             <canvas id="ecosystem-scene" width="900" height="440" aria-label="Animated map of the 5 agents and their current status"></canvas>
+            <div class="scene-scanlines" aria-hidden="true"></div>
+            <div class="scene-vignette" aria-hidden="true"></div>
           </div>
           <ul class="scene-hud" id="scene-hud"></ul>
         </div>
