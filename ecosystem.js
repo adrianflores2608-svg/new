@@ -60,7 +60,7 @@ function agentState(a) {
 // grayscale. Everything below is canvas primitives — no image assets.
 // ---------------------------------------------------------------------------
 var Scene = (function () {
-  var W = 900, H = 440;
+  var W = 900, H = 480;
   var HUB = { x: 450, y: 220, r: 50 };
   var EMOJI_FONT = "'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif";
   var ZONES = {
@@ -80,6 +80,10 @@ var Scene = (function () {
   var frame = 0, radarAngle = 0;
 
   function rand(a, b) { return a + Math.random() * (b - a); }
+  function beat(phase) {
+    var t = frame * 0.06, p = phase || 0;
+    return 0.5 + 0.25 * Math.sin(t + p) + 0.15 * Math.sin(t * 2.3 + p * 1.7) + 0.1 * Math.sin(t * 4.1 + p * 0.6);
+  }
   function randomPointInRect(rect, pad) {
     return { x: rand(rect.x + pad, rect.x + rect.w - pad), y: rand(rect.y + pad, rect.y + rect.h - pad) };
   }
@@ -206,17 +210,44 @@ var Scene = (function () {
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
       ctx.lineTo(b.x, b.y);
-      ctx.strokeStyle = hexToRgba(zone.accent, 0.16);
+      ctx.strokeStyle = hexToRgba(zone.accent, 0.1 + beat(key.length) * 0.14);
       ctx.lineWidth = 1.5;
       ctx.stroke();
     });
   }
 
+  function drawPulseStrip() {
+    var barCount = 26, gap = 2.5, totalW = 340;
+    var bw = (totalW - gap * (barCount - 1)) / barCount;
+    var startX = W / 2 - totalW / 2;
+    var stripY = H - 40, stripH = 22;
+    var activeCount = ALL_KEYS.filter(function (k) { return ents[k].state === "ok"; }).length;
+    var boost = 0.35 + activeCount * 0.14;
+    var colors = [ZONES["bug-tracker"].accent, ZONES["youtube-content"].accent, HQ_ACCENT, ZONES["lead-research"].accent, ZONES["goals-tracker"].accent];
+    ctx.save();
+    ctx.font = "600 9px 'Share Tech Mono', monospace";
+    ctx.fillStyle = "rgba(126,247,255,0.4)";
+    ctx.textAlign = "center";
+    ctx.fillText("SYSTEM PULSE", W / 2, stripY - 10);
+    for (var i = 0; i < barCount; i++) {
+      var amp = Math.max(0.06, beat(i * 0.8) * boost);
+      var bh = 2 + amp * stripH;
+      var color = colors[i % colors.length];
+      var bx = startX + i * (bw + gap);
+      ctx.fillStyle = hexToRgba(color, 0.85);
+      ctx.shadowColor = color; ctx.shadowBlur = 5;
+      ctx.fillRect(bx, stripY + stripH - bh, bw, bh);
+    }
+    ctx.restore();
+  }
+
   function drawZoneProps(key) {
-    var zone = ZONES[key], rect = zone.rect, ac = zone.accent;
+    var zone = ZONES[key], rect = zone.rect, ac = zone.accent, state = ents[key].state;
+    var active = state !== "never";
     ctx.save();
     ctx.strokeStyle = hexToRgba(ac, 0.55);
     ctx.fillStyle = hexToRgba(ac, 0.35);
+
     if (key === "bug-tracker") {
       for (var i = 0; i < 3; i++) {
         var rx = rect.x + rect.w - 46 + i * 13;
@@ -225,26 +256,77 @@ var Scene = (function () {
         ctx.fillStyle = (frame + i * 20) % 60 < 30 ? hexToRgba(ac, 0.9) : hexToRgba(ac, 0.2);
         ctx.fillRect(rx + 2, rect.y + 24, 5, 3);
       }
+      var tx = rect.x + 16, ty = rect.y + rect.h - 50;
+      ctx.strokeStyle = hexToRgba(ac, 0.5); ctx.lineWidth = 1;
+      ctx.strokeRect(tx, ty, 78, 36);
+      for (var li = 0; li < 3; li++) {
+        var lw = active ? 16 + ((frame + li * 11) % 46) : 20;
+        ctx.beginPath(); ctx.moveTo(tx + 7, ty + 9 + li * 9); ctx.lineTo(tx + 7 + lw, ty + 9 + li * 9);
+        ctx.strokeStyle = hexToRgba(ac, 0.65); ctx.lineWidth = 2; ctx.stroke();
+      }
+      if (state === "ok" && frame % 50 < 28) {
+        var wx = rect.x + rect.w - 20, wy = rect.y + rect.h - 50;
+        ctx.beginPath(); ctx.moveTo(wx, wy); ctx.lineTo(wx - 8, wy + 14); ctx.lineTo(wx + 8, wy + 14); ctx.closePath();
+        ctx.fillStyle = hexToRgba("#ffd166", 0.9); ctx.fill();
+        ctx.fillStyle = "#3a2400"; ctx.font = "700 9px monospace"; ctx.textAlign = "center";
+        ctx.fillText("!", wx, wy + 12);
+      }
     } else if (key === "youtube-content") {
       var cx = rect.x + rect.w - 34, cy = rect.y + 34;
       ctx.beginPath(); ctx.arc(cx, cy, 15, 0, Math.PI * 2); ctx.lineWidth = 1.4; ctx.stroke();
       ctx.beginPath(); ctx.moveTo(cx - 5, cy - 7); ctx.lineTo(cx - 5, cy + 7); ctx.lineTo(cx + 8, cy); ctx.closePath();
       ctx.fillStyle = hexToRgba(ac, 0.8); ctx.fill();
+      if (active && frame % 40 < 22) {
+        ctx.beginPath(); ctx.arc(rect.x + 20, rect.y + 20, 4, 0, Math.PI * 2);
+        ctx.fillStyle = "#ff3b3b"; ctx.shadowColor = "#ff3b3b"; ctx.shadowBlur = 8; ctx.fill(); ctx.shadowBlur = 0;
+        ctx.fillStyle = "#ffb3b3"; ctx.font = "700 8px 'Share Tech Mono', monospace"; ctx.textAlign = "left";
+        ctx.fillText("REC", rect.x + 28, rect.y + 17);
+      }
+      var vuX = rect.x + 16, vuY = rect.y + rect.h - 20;
+      for (var vb = 0; vb < 8; vb++) {
+        var amp = active ? beat(vb * 0.9 + key.length) : 0.1;
+        var bh = 3 + amp * 20;
+        ctx.fillStyle = hexToRgba(ac, 0.75);
+        ctx.fillRect(vuX + vb * 7, vuY - bh, 4, bh);
+      }
     } else if (key === "lead-research") {
       var bx = rect.x + rect.w - 56, by = rect.y + 18;
       ctx.lineWidth = 1;
       ctx.strokeRect(bx, by, 40, 32);
       for (var gxp = bx; gxp <= bx + 40; gxp += 10) { ctx.beginPath(); ctx.moveTo(gxp, by); ctx.lineTo(gxp, by + 32); ctx.stroke(); }
       for (var gyp = by; gyp <= by + 32; gyp += 8) { ctx.beginPath(); ctx.moveTo(bx, gyp); ctx.lineTo(bx + 40, gyp); ctx.stroke(); }
+      var pin1 = { x: bx + 12, y: by + 10 }, pin2 = { x: bx + 28, y: by + 22 };
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.moveTo(pin1.x, pin1.y); ctx.lineTo(pin2.x, pin2.y);
+      ctx.strokeStyle = hexToRgba(ac, 0.6); ctx.stroke();
+      ctx.setLineDash([]);
       ctx.fillStyle = hexToRgba(ac, 0.85);
-      ctx.beginPath(); ctx.arc(bx + 12, by + 10, 2.4, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(bx + 28, by + 22, 2.4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(pin1.x, pin1.y, 2.4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(pin2.x, pin2.y, 2.4, 0, Math.PI * 2); ctx.fill();
+
+      var rcx = rect.x + 30, rcy = rect.y + rect.h - 34, rr = 16, ang = frame * (active ? 0.015 : 0.004);
+      ctx.strokeStyle = hexToRgba(ac, 0.55); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(rcx, rcy, rr, 0, Math.PI * 2); ctx.stroke();
+      for (var tick = 0; tick < 4; tick++) {
+        var ta = ang + tick * (Math.PI / 2);
+        ctx.beginPath();
+        ctx.moveTo(rcx + Math.cos(ta) * (rr - 5), rcy + Math.sin(ta) * (rr - 5));
+        ctx.lineTo(rcx + Math.cos(ta) * (rr + 3), rcy + Math.sin(ta) * (rr + 3));
+        ctx.strokeStyle = tick === 0 ? hexToRgba("#ff5d6c", 0.9) : hexToRgba(ac, 0.7);
+        ctx.lineWidth = 1.6; ctx.stroke();
+      }
     } else if (key === "goals-tracker") {
-      var tx = rect.x + rect.w - 34, ty = rect.y + 34;
+      var tgx = rect.x + rect.w - 34, tgy = rect.y + 34;
       [15, 10, 5].forEach(function (r, idx) {
-        ctx.beginPath(); ctx.arc(tx, ty, r, 0, Math.PI * 2);
+        ctx.beginPath(); ctx.arc(tgx, tgy, r, 0, Math.PI * 2);
         ctx.strokeStyle = idx % 2 === 0 ? hexToRgba(ac, 0.6) : hexToRgba(ac, 0.9);
         ctx.lineWidth = 2; ctx.stroke();
+      });
+      var bcx = rect.x + 18, bcy = rect.y + rect.h - 18;
+      var heights = [10, 18, 13, 22];
+      heights.forEach(function (h, idx) {
+        ctx.fillStyle = hexToRgba(ac, 0.35 + idx * 0.15);
+        ctx.fillRect(bcx + idx * 10, bcy - h, 6, h);
       });
     }
     ctx.restore();
@@ -253,7 +335,7 @@ var Scene = (function () {
   function drawZones() {
     ZONE_KEYS.forEach(function (key) {
       var zone = ZONES[key], state = ents[key].state;
-      var pulse = 0.5 + 0.5 * Math.sin(frame * 0.05 + key.length);
+      var pulse = beat(key.length);
       ctx.save();
       ctx.fillStyle = hexToRgba(zone.accent, 0.09);
       roundRect(zone.rect.x, zone.rect.y, zone.rect.w, zone.rect.h, 16);
@@ -350,6 +432,20 @@ var Scene = (function () {
     ctx.font = "700 12px Orbitron, sans-serif";
     ctx.textAlign = "center";
     ctx.fillText("HQ", HUB.x, HUB.y - HUB.r - 14);
+
+    var dots = 16, litSpan = 3;
+    var chase = Math.floor(frame * 0.4) % dots;
+    for (var i = 0; i < dots; i++) {
+      var ang = (i / dots) * Math.PI * 2 - Math.PI / 2;
+      var lx = HUB.x + Math.cos(ang) * (HUB.r + 9);
+      var ly = HUB.y + Math.sin(ang) * (HUB.r + 9);
+      var dist = Math.min((i - chase + dots) % dots, (chase - i + dots) % dots);
+      var lit = state !== "never" && dist < litSpan;
+      ctx.beginPath(); ctx.arc(lx, ly, 2, 0, Math.PI * 2);
+      ctx.fillStyle = lit ? HQ_ACCENT : "rgba(126,247,255,0.15)";
+      if (lit) { ctx.shadowColor = HQ_ACCENT; ctx.shadowBlur = 6; }
+      ctx.fill(); ctx.shadowBlur = 0;
+    }
   }
 
   function drawEntities() {
@@ -390,6 +486,7 @@ var Scene = (function () {
     drawPulses();
     drawHub();
     drawEntities();
+    drawPulseStrip();
   }
 
   function tick() {
