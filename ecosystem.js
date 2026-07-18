@@ -45,8 +45,6 @@ var ZONE_LOG_COLOR = {
   "orchestrator": "#7ef7ff"
 };
 
-var STATE_MOOD = { ok: "⚡", stale: "\u{1F4A4}", never: "\u{1F319}" };
-
 function agentState(a) {
   if (!a || !a.last_run) return "never";
   return Date.now() - new Date(a.last_run).getTime() > 1000 * 60 * 60 * 6 ? "stale" : "ok";
@@ -173,14 +171,30 @@ var Scene = (function () {
     });
   }
 
-  function roundRect(x, y, w, h, r) {
+  function chamferRect(x, y, w, h, c) {
     ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
+    ctx.moveTo(x + c, y);
+    ctx.lineTo(x + w - c, y);
+    ctx.lineTo(x + w, y + c);
+    ctx.lineTo(x + w, y + h - c);
+    ctx.lineTo(x + w - c, y + h);
+    ctx.lineTo(x + c, y + h);
+    ctx.lineTo(x, y + h - c);
+    ctx.lineTo(x, y + c);
     ctx.closePath();
+  }
+
+  function drawCornerTicks(x, y, w, h, len, color) {
+    var pts = [[x, y, 1, 1], [x + w, y, -1, 1], [x, y + h, 1, -1], [x + w, y + h, -1, -1]];
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.4;
+    pts.forEach(function (p) {
+      ctx.beginPath();
+      ctx.moveTo(p[0], p[1] + len * p[3]);
+      ctx.lineTo(p[0], p[1]);
+      ctx.lineTo(p[0] + len * p[2], p[1]);
+      ctx.stroke();
+    });
   }
 
   function hexToRgba(hex, a) {
@@ -189,16 +203,30 @@ var Scene = (function () {
   }
 
   function drawBackground() {
-    var grad = ctx.createRadialGradient(W / 2, H / 2, 40, W / 2, H / 2, 620);
-    grad.addColorStop(0, "#0d1330");
-    grad.addColorStop(1, "#04060f");
+    var grad = ctx.createRadialGradient(HUB.x, HUB.y, 30, W / 2, H / 2, 640);
+    grad.addColorStop(0, "#0c1433");
+    grad.addColorStop(1, "#03050f");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, W, H);
 
+    ctx.save();
     ctx.strokeStyle = "rgba(126,247,255,0.05)";
     ctx.lineWidth = 1;
     for (var gx = 0; gx <= W; gx += 30) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
     for (var gy = 0; gy <= H; gy += 30) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
+
+    ctx.strokeStyle = "rgba(126,247,255,0.045)";
+    [90, 180, 280, 380].forEach(function (r) {
+      ctx.beginPath(); ctx.arc(HUB.x, HUB.y, r, 0, Math.PI * 2); ctx.stroke();
+    });
+    for (var s = 0; s < 12; s++) {
+      var a = (s / 12) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(HUB.x + Math.cos(a) * 90, HUB.y + Math.sin(a) * 90);
+      ctx.lineTo(HUB.x + Math.cos(a) * 380, HUB.y + Math.sin(a) * 380);
+      ctx.stroke();
+    }
+    ctx.restore();
   }
 
   function drawConnectors() {
@@ -207,12 +235,15 @@ var Scene = (function () {
       var c = zoneCenter(zone);
       var a = edgePoint(c, HUB, 95);
       var b = edgePoint(HUB, c, HUB.r);
+      ctx.save();
+      ctx.setLineDash([5, 5]);
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
       ctx.lineTo(b.x, b.y);
-      ctx.strokeStyle = hexToRgba(zone.accent, 0.1 + beat(key.length) * 0.14);
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = hexToRgba(zone.accent, 0.08 + beat(key.length) * 0.1);
+      ctx.lineWidth = 1;
       ctx.stroke();
+      ctx.restore();
     });
   }
 
@@ -265,11 +296,19 @@ var Scene = (function () {
         ctx.strokeStyle = hexToRgba(ac, 0.65); ctx.lineWidth = 2; ctx.stroke();
       }
       if (state === "ok" && frame % 50 < 28) {
-        var wx = rect.x + rect.w - 20, wy = rect.y + rect.h - 50;
-        ctx.beginPath(); ctx.moveTo(wx, wy); ctx.lineTo(wx - 8, wy + 14); ctx.lineTo(wx + 8, wy + 14); ctx.closePath();
-        ctx.fillStyle = hexToRgba("#ffd166", 0.9); ctx.fill();
-        ctx.fillStyle = "#3a2400"; ctx.font = "700 9px monospace"; ctx.textAlign = "center";
-        ctx.fillText("!", wx, wy + 12);
+        var wx = rect.x + rect.w - 20, wy = rect.y + rect.h - 44, hr = 9;
+        ctx.beginPath();
+        for (var hi = 0; hi < 6; hi++) {
+          var ha = hi * (Math.PI / 3) - Math.PI / 2;
+          var hpx = wx + Math.cos(ha) * hr, hpy = wy + Math.sin(ha) * hr;
+          if (hi === 0) ctx.moveTo(hpx, hpy); else ctx.lineTo(hpx, hpy);
+        }
+        ctx.closePath();
+        ctx.fillStyle = "rgba(255,209,102,0.16)"; ctx.fill();
+        ctx.strokeStyle = "#ffd166"; ctx.lineWidth = 1.3;
+        ctx.shadowColor = "#ffd166"; ctx.shadowBlur = 6; ctx.stroke(); ctx.shadowBlur = 0;
+        ctx.fillStyle = "#ffd166"; ctx.font = "700 10px 'Share Tech Mono', monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText("!", wx, wy + 1);
       }
     } else if (key === "youtube-content") {
       var cx = rect.x + rect.w - 34, cy = rect.y + 34;
@@ -334,36 +373,48 @@ var Scene = (function () {
 
   function drawZones() {
     ZONE_KEYS.forEach(function (key) {
-      var zone = ZONES[key], state = ents[key].state;
+      var zone = ZONES[key], rect = zone.rect, state = ents[key].state;
       var pulse = beat(key.length);
       ctx.save();
-      ctx.fillStyle = hexToRgba(zone.accent, 0.09);
-      roundRect(zone.rect.x, zone.rect.y, zone.rect.w, zone.rect.h, 16);
+      ctx.fillStyle = hexToRgba(zone.accent, 0.055);
+      chamferRect(rect.x, rect.y, rect.w, rect.h, 14);
       ctx.fill();
       ctx.shadowColor = zone.accent;
-      ctx.shadowBlur = state === "ok" ? 14 + pulse * 6 : 6;
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = hexToRgba(zone.accent, state === "never" ? 0.35 : 0.85);
+      ctx.shadowBlur = state === "ok" ? 10 + pulse * 8 : 4;
+      ctx.lineWidth = 1.3;
+      ctx.strokeStyle = hexToRgba(zone.accent, state === "never" ? 0.3 : 0.8);
       ctx.stroke();
+      ctx.shadowBlur = 0;
+      chamferRect(rect.x + 5, rect.y + 5, rect.w - 10, rect.h - 10, 9);
+      ctx.strokeStyle = hexToRgba(zone.accent, state === "never" ? 0.14 : 0.3);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      drawCornerTicks(rect.x - 3, rect.y - 3, rect.w + 6, rect.h + 6, 9, hexToRgba(zone.accent, 0.9));
       ctx.restore();
 
       drawZoneProps(key);
 
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
-      ctx.font = "16px " + EMOJI_FONT;
-      ctx.fillText(zone.emoji, zone.rect.x + 14, zone.rect.y + 10);
-      ctx.fillStyle = "#e8ecff";
-      ctx.font = "700 12px Orbitron, sans-serif";
-      ctx.fillText(zone.label, zone.rect.x + 38, zone.rect.y + 13);
+      ctx.font = "15px " + EMOJI_FONT;
+      ctx.globalAlpha = 0.85;
+      ctx.fillText(zone.emoji, zone.rect.x + 16, zone.rect.y + 11);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#dfe6ff";
+      ctx.font = "700 11px Orbitron, sans-serif";
+      ctx.fillText(zone.label, zone.rect.x + 39, zone.rect.y + 13);
+      ctx.fillStyle = hexToRgba(zone.accent, 0.55);
+      ctx.font = "600 8px 'Share Tech Mono', monospace";
+      ctx.fillText("SECTOR " + (ZONE_KEYS.indexOf(key) + 1).toString().padStart(2, "0"), zone.rect.x + 39, zone.rect.y + 27);
 
       var led = STATE_COLOR[state];
-      ctx.beginPath();
-      ctx.arc(zone.rect.x + zone.rect.w - 14, zone.rect.y + 16, 5, 0, Math.PI * 2);
+      ctx.save();
+      ctx.translate(zone.rect.x + zone.rect.w - 16, zone.rect.y + 17);
+      ctx.rotate(Math.PI / 4);
       ctx.fillStyle = led;
-      ctx.shadowColor = led; ctx.shadowBlur = 8;
-      ctx.fill();
-      ctx.shadowBlur = 0;
+      ctx.shadowColor = led; ctx.shadowBlur = 7;
+      ctx.fillRect(-4, -4, 8, 8);
+      ctx.restore();
     });
   }
 
@@ -387,12 +438,23 @@ var Scene = (function () {
       var c = zoneCenter(zone);
       var a = edgePoint(c, HUB, 95);
       var b = edgePoint(HUB, c, HUB.r);
+      var ang = Math.atan2(b.y - a.y, b.x - a.x);
       pulses[key].forEach(function (pu) {
-        var x = a.x + (b.x - a.x) * pu.t, y = a.y + (b.y - a.y) * pu.t;
         ctx.save();
-        ctx.fillStyle = zone.accent;
-        ctx.shadowColor = zone.accent; ctx.shadowBlur = 10;
-        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowColor = zone.accent; ctx.shadowBlur = 8;
+        [0, -0.05, -0.1].forEach(function (dt, idx) {
+          var t = Math.max(0, Math.min(1, pu.t + dt));
+          var x = a.x + (b.x - a.x) * t, y = a.y + (b.y - a.y) * t;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(ang);
+          ctx.globalAlpha = 1 - idx * 0.35;
+          ctx.beginPath();
+          ctx.moveTo(-4, -4); ctx.lineTo(3, 0); ctx.lineTo(-4, 4);
+          ctx.strokeStyle = zone.accent; ctx.lineWidth = 1.6;
+          ctx.stroke();
+          ctx.restore();
+        });
         ctx.restore();
       });
     });
@@ -400,79 +462,161 @@ var Scene = (function () {
 
   function drawHub() {
     var state = ents.orchestrator.state;
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(HUB.x, HUB.y, HUB.r, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.fillStyle = "rgba(126,247,255,0.06)";
-    ctx.fillRect(HUB.x - HUB.r, HUB.y - HUB.r, HUB.r * 2, HUB.r * 2);
-    [1, 0.66, 0.33].forEach(function (f) {
-      ctx.beginPath(); ctx.arc(HUB.x, HUB.y, HUB.r * f, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(126,247,255,0.15)"; ctx.lineWidth = 1; ctx.stroke();
-    });
-    if (state !== "never") {
-      ctx.beginPath();
-      ctx.moveTo(HUB.x, HUB.y);
-      ctx.arc(HUB.x, HUB.y, HUB.r, radarAngle - 0.7, radarAngle);
-      ctx.closePath();
-      ctx.fillStyle = hexToRgba(HQ_ACCENT, 0.22);
-      ctx.fill();
-    }
-    ctx.restore();
+    var live = state !== "never";
+    var core = 9 + beat(0) * 2.5;
 
-    ctx.beginPath();
-    ctx.arc(HUB.x, HUB.y, HUB.r, 0, Math.PI * 2);
-    ctx.strokeStyle = hexToRgba(HQ_ACCENT, 0.9);
-    ctx.shadowColor = HQ_ACCENT; ctx.shadowBlur = 16;
-    ctx.lineWidth = 2.5;
+    // outer instrument bezel — fixed tick-mark dial
+    var bezelR = HUB.r + 16;
+    for (var t = 0; t < 60; t++) {
+      var ta = (t / 60) * Math.PI * 2;
+      var major = t % 5 === 0;
+      var r1 = bezelR - (major ? 7 : 4), r2 = bezelR;
+      ctx.beginPath();
+      ctx.moveTo(HUB.x + Math.cos(ta) * r1, HUB.y + Math.sin(ta) * r1);
+      ctx.lineTo(HUB.x + Math.cos(ta) * r2, HUB.y + Math.sin(ta) * r2);
+      ctx.strokeStyle = hexToRgba(HQ_ACCENT, major ? 0.55 : 0.22);
+      ctx.lineWidth = major ? 1.4 : 0.8;
+      ctx.stroke();
+    }
+
+    // radar sweep — fading trail of thin arcs, clipped to the mid ring
+    if (live) {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(HUB.x, HUB.y, HUB.r, 0, Math.PI * 2); ctx.clip();
+      for (var s = 0; s < 10; s++) {
+        var a0 = radarAngle - s * 0.09;
+        ctx.beginPath();
+        ctx.arc(HUB.x, HUB.y, HUB.r, a0 - 0.05, a0);
+        ctx.strokeStyle = hexToRgba(HQ_ACCENT, 0.5 * (1 - s / 10));
+        ctx.lineWidth = HUB.r;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // mid ring — slow counter-rotation with satellite ticks
+    ctx.beginPath(); ctx.arc(HUB.x, HUB.y, HUB.r, 0, Math.PI * 2);
+    ctx.strokeStyle = hexToRgba(HQ_ACCENT, 0.75);
+    ctx.shadowColor = HQ_ACCENT; ctx.shadowBlur = 12;
+    ctx.lineWidth = 1.4;
     ctx.stroke();
     ctx.shadowBlur = 0;
+    var midAngle = -frame * 0.012;
+    for (var m = 0; m < 6; m++) {
+      var ma = midAngle + m * (Math.PI / 3);
+      ctx.save();
+      ctx.translate(HUB.x + Math.cos(ma) * HUB.r, HUB.y + Math.sin(ma) * HUB.r);
+      ctx.rotate(ma + Math.PI / 4);
+      ctx.fillStyle = hexToRgba(HQ_ACCENT, live ? 0.85 : 0.25);
+      ctx.fillRect(-2.5, -2.5, 5, 5);
+      ctx.restore();
+    }
+
+    // inner ring — faster counter-rotation
+    var innerR = HUB.r * 0.62;
+    ctx.beginPath(); ctx.arc(HUB.x, HUB.y, innerR, 0, Math.PI * 2);
+    ctx.strokeStyle = hexToRgba(HQ_ACCENT, 0.4);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 5]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // crosshair breaking past the bezel
+    [0, Math.PI / 2, Math.PI, Math.PI * 1.5].forEach(function (ca) {
+      ctx.beginPath();
+      ctx.moveTo(HUB.x + Math.cos(ca) * (bezelR + 2), HUB.y + Math.sin(ca) * (bezelR + 2));
+      ctx.lineTo(HUB.x + Math.cos(ca) * (bezelR + 10), HUB.y + Math.sin(ca) * (bezelR + 10));
+      ctx.strokeStyle = hexToRgba(HQ_ACCENT, 0.5);
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    });
+
+    // reactor core
+    var coreGrad = ctx.createRadialGradient(HUB.x, HUB.y, 0, HUB.x, HUB.y, core * 2.4);
+    coreGrad.addColorStop(0, hexToRgba(HQ_ACCENT, live ? 0.85 : 0.3));
+    coreGrad.addColorStop(1, hexToRgba(HQ_ACCENT, 0));
+    ctx.fillStyle = coreGrad;
+    ctx.beginPath(); ctx.arc(HUB.x, HUB.y, core * 2.4, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    for (var hi = 0; hi < 6; hi++) {
+      var ha = hi * (Math.PI / 3) - Math.PI / 2 + midAngle;
+      var hp = { x: HUB.x + Math.cos(ha) * core, y: HUB.y + Math.sin(ha) * core };
+      if (hi === 0) ctx.moveTo(hp.x, hp.y); else ctx.lineTo(hp.x, hp.y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = "#eafcff";
+    ctx.fill();
 
     ctx.fillStyle = "#c9f7ff";
-    ctx.font = "700 12px Orbitron, sans-serif";
+    ctx.font = "700 11px Orbitron, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("HQ", HUB.x, HUB.y - HUB.r - 14);
-
-    var dots = 16, litSpan = 3;
-    var chase = Math.floor(frame * 0.4) % dots;
-    for (var i = 0; i < dots; i++) {
-      var ang = (i / dots) * Math.PI * 2 - Math.PI / 2;
-      var lx = HUB.x + Math.cos(ang) * (HUB.r + 9);
-      var ly = HUB.y + Math.sin(ang) * (HUB.r + 9);
-      var dist = Math.min((i - chase + dots) % dots, (chase - i + dots) % dots);
-      var lit = state !== "never" && dist < litSpan;
-      ctx.beginPath(); ctx.arc(lx, ly, 2, 0, Math.PI * 2);
-      ctx.fillStyle = lit ? HQ_ACCENT : "rgba(126,247,255,0.15)";
-      if (lit) { ctx.shadowColor = HQ_ACCENT; ctx.shadowBlur = 6; }
-      ctx.fill(); ctx.shadowBlur = 0;
-    }
+    ctx.fillText("H · Q", HUB.x, HUB.y - bezelR - 12);
   }
 
   function drawEntities() {
     ALL_KEYS.forEach(function (key) {
       var e = ents[key];
+      var ac = ZONE_LOG_COLOR[key] || HQ_ACCENT;
       var frozen = e.state === "never";
+      var ringR = 17;
       ctx.save();
       if (frozen) ctx.globalAlpha = 0.4;
 
+      // reticle ring: solid arc = status, dim dashed remainder = untracked
+      var sweep = e.state === "ok" ? Math.PI * 1.5 : e.state === "stale" ? Math.PI * 0.7 : 0;
+      if (sweep > 0) {
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, ringR, -Math.PI / 2, -Math.PI / 2 + sweep);
+        ctx.strokeStyle = ac;
+        ctx.shadowColor = ac; ctx.shadowBlur = 7;
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
       ctx.beginPath();
-      ctx.ellipse(e.x, e.y + 14, 13, 4, 0, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(0,0,0,0.4)";
-      ctx.fill();
+      ctx.arc(e.x, e.y, ringR, 0, Math.PI * 2);
+      ctx.setLineDash([2, 4]);
+      ctx.strokeStyle = hexToRgba(ac, 0.3);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.setLineDash([]);
 
-      ctx.font = "26px " + EMOJI_FONT;
+      // rotating corner brackets — lock-on indicator
+      var bAngle = frozen ? 0 : frame * (e.state === "ok" ? 0.02 : 0.008);
+      for (var c = 0; c < 4; c++) {
+        var ca = bAngle + c * (Math.PI / 2);
+        ctx.save();
+        ctx.translate(e.x + Math.cos(ca) * ringR, e.y + Math.sin(ca) * ringR);
+        ctx.rotate(ca);
+        ctx.strokeStyle = hexToRgba(ac, 0.8);
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.moveTo(-4, -4); ctx.lineTo(0, -4); ctx.moveTo(-4, -4); ctx.lineTo(-4, 0);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.font = "22px " + EMOJI_FONT;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       if (frozen) ctx.filter = "grayscale(1)";
       ctx.fillText(AGENT_SPRITES[key], e.x, e.y);
       ctx.filter = "none";
 
-      ctx.font = "12px " + EMOJI_FONT;
-      ctx.fillText(STATE_MOOD[e.state], e.x + 15, e.y - 14);
+      // projection beam base instead of a cartoon shadow
+      ctx.beginPath();
+      ctx.moveTo(e.x, e.y + ringR);
+      ctx.lineTo(e.x, e.y + ringR + 8);
+      ctx.strokeStyle = hexToRgba(ac, 0.4);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(e.x - 5, e.y + ringR + 8); ctx.lineTo(e.x, e.y + ringR + 4); ctx.lineTo(e.x + 5, e.y + ringR + 8);
+      ctx.strokeStyle = hexToRgba(ac, 0.55);
+      ctx.stroke();
 
       ctx.font = "600 9px 'Share Tech Mono', monospace";
       ctx.fillStyle = "#c9d3ff";
-      ctx.fillText(AGENT_LABELS[key] || key, e.x, e.y + 23);
+      ctx.fillText(AGENT_LABELS[key] || key, e.x, e.y + ringR + 21);
       ctx.restore();
     });
   }
