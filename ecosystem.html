@@ -103,9 +103,30 @@
           <div id="lead-actions" class="stack-list"></div>
         </div>
 
+        <div class="panel panel-dark">
+          <h2 class="scene-title">Activity Log</h2>
+          <p class="muted-note scene-note">Everything every agent has worked on, and what's queued up next.</p>
+          <div class="toolbar">
+            <button type="button" class="tab-btn active" data-log-filter="all">All</button>
+            <button type="button" class="tab-btn" data-log-filter="orchestrator">Orchestrator</button>
+            <button type="button" class="tab-btn" data-log-filter="bug-tracker">Bug Tracker</button>
+            <button type="button" class="tab-btn" data-log-filter="youtube-content">YouTube</button>
+            <button type="button" class="tab-btn" data-log-filter="lead-research">Leads</button>
+            <button type="button" class="tab-btn" data-log-filter="goals-tracker">Goals</button>
+          </div>
+          <div id="activity-log" class="log-feed"></div>
+        </div>
+
         <div class="panel">
           <h2>Goals</h2>
-          <div id="goals-list" class="stack-list"></div>
+          <p class="muted-note">Daily steps ladder into the weekly objective, weekly into monthly, monthly into the year goal.</p>
+          <div class="toolbar">
+            <button type="button" class="tab-btn active" data-goal-horizon="day">Today</button>
+            <button type="button" class="tab-btn" data-goal-horizon="week">This Week</button>
+            <button type="button" class="tab-btn" data-goal-horizon="month">This Month</button>
+            <button type="button" class="tab-btn" data-goal-horizon="year">This Year</button>
+          </div>
+          <div id="goals-list"></div>
         </div>
 
       </div>

@@ -1,6 +1,11 @@
 {
-  "updated_at": "2026-07-17T23:17:57Z",
+  "updated_at": "2026-07-18T00:00:00Z",
   "updated_by": "init",
-  "note": "Tracks objectives and progress only — no real revenue/financial figures, since this repo is public. Keep dollar amounts out; use rough progress_pct instead.",
-  "objectives": []
+  "note": "Tracks objectives and progress only — no real revenue/financial figures, since this repo is public. Keep dollar amounts out; use rough progress_pct instead. Each horizon rolls up into the next: daily steps should ladder into the weekly objective, weekly into monthly, monthly into the yearly one.",
+  "horizons": {
+    "day": { "label": "Today", "objectives": [] },
+    "week": { "label": "This Week", "objectives": [] },
+    "month": { "label": "This Month", "objectives": [] },
+    "year": { "label": "This Year", "objectives": [] }
+  }
 }

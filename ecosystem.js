@@ -13,8 +13,11 @@ var DATA_FILES = {
   bugs: "ecosystem/bugs.json",
   youtube: "ecosystem/youtube.json",
   leads: "ecosystem/leads_research.json",
-  goals: "ecosystem/goals.json"
+  goals: "ecosystem/goals.json",
+  activity: "ecosystem/activity_log.json"
 };
+
+var HORIZON_ORDER = ["day", "week", "month", "year"];
 
 var AGENT_LABELS = {
   "bug-tracker": "Bug Tracker",
@@ -32,6 +35,14 @@ var AGENT_SPRITES = {
   "lead-research": "\u{1F9FD}",
   "goals-tracker": "\u{1F3AF}",
   "orchestrator": "\u{1F9ED}"
+};
+
+var ZONE_LOG_COLOR = {
+  "bug-tracker": "#ff5d6c",
+  "youtube-content": "#c86bff",
+  "lead-research": "#3ddc97",
+  "goals-tracker": "#ffd166",
+  "orchestrator": "#7ef7ff"
 };
 
 var STATE_MOOD = { ok: "⚡", stale: "\u{1F4A4}", never: "\u{1F319}" };
@@ -492,7 +503,8 @@ function loadAll() {
     fetchJSON(DATA_FILES.bugs).catch(function () { return null; }),
     fetchJSON(DATA_FILES.youtube).catch(function () { return null; }),
     fetchJSON(DATA_FILES.leads).catch(function () { return null; }),
-    fetchJSON(DATA_FILES.goals).catch(function () { return null; })
+    fetchJSON(DATA_FILES.goals).catch(function () { return null; }),
+    fetchJSON(DATA_FILES.activity).catch(function () { return null; })
   ]).then(function (results) {
     renderStatus(results[0]);
     renderHud(results[0], results[1], results[2], results[3], results[4]);
@@ -502,6 +514,7 @@ function loadAll() {
     renderYoutube(results[2]);
     renderLeads(results[3]);
     renderGoals(results[4]);
+    renderActivityLog(results[5]);
   });
 }
 
@@ -670,16 +683,71 @@ function renderLeads(data) {
   }).join("") : emptyState("No action items yet.");
 }
 
+function renderObjective(g) {
+  var pct = Math.max(0, Math.min(100, g.progress_pct || 0));
+  var steps = (g.steps || []).map(function (s) {
+    return '<li class="' + (s.done ? "step-done" : "") + '">' + (s.done ? "☑" : "☐") + " " + esc(s.text) + "</li>";
+  }).join("");
+  return '<div class="stack-item">' +
+    '<div class="item-top"><span class="item-title">' + esc(g.title) +
+    '</span><span class="pill">' + esc(g.status || "") + "</span></div>" +
+    (g.description ? '<div class="item-body">' + esc(g.description) + "</div>" : "") +
+    '<div class="goal-progress-track"><div class="goal-progress-fill" style="width:' + pct + '%"></div></div>' +
+    (steps ? '<ul class="step-list">' + steps + "</ul>" : "") +
+  "</div>";
+}
+
 function renderGoals(data) {
   var el = document.getElementById("goals-list");
-  var goals = (data && data.objectives) || [];
-  el.innerHTML = goals.length ? goals.map(function (g) {
-    var pct = Math.max(0, Math.min(100, g.progress_pct || 0));
-    return '<div class="stack-item">' +
-      '<div class="item-top"><span class="item-title">' + esc(g.title) +
-      '</span><span class="pill">' + esc(g.status || "") + "</span></div>" +
-      '<div class="item-body">' + esc(g.description || "") + "</div>" +
-      '<div class="goal-progress-track"><div class="goal-progress-fill" style="width:' + pct + '%"></div></div>' +
+  var horizons = (data && data.horizons) || {};
+  el.innerHTML = HORIZON_ORDER.map(function (h) {
+    var horizon = horizons[h] || { label: h, objectives: [] };
+    var objs = horizon.objectives || [];
+    var body = objs.length ? objs.map(renderObjective).join("") : emptyState("No " + (horizon.label || h).toLowerCase() + " goals set yet.");
+    return '<div class="horizon-panel" data-horizon="' + h + '"' + (h === "day" ? "" : ' hidden') + '>' + body + "</div>";
+  }).join("");
+
+  var buttons = document.querySelectorAll("[data-goal-horizon]");
+  buttons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      buttons.forEach(function (b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      var horizon = btn.getAttribute("data-goal-horizon");
+      el.querySelectorAll(".horizon-panel").forEach(function (p) {
+        p.hidden = p.getAttribute("data-horizon") !== horizon;
+      });
+    });
+  });
+}
+
+function renderActivityLog(data) {
+  var el = document.getElementById("activity-log");
+  var entries = ((data && data.entries) || []).slice().sort(function (a, b) {
+    return new Date(b.ts).getTime() - new Date(a.ts).getTime();
+  });
+  var activeBtn = document.querySelector("[data-log-filter].active");
+  renderLogEntries(entries, activeBtn ? activeBtn.getAttribute("data-log-filter") : "all");
+
+  var buttons = document.querySelectorAll("[data-log-filter]");
+  buttons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      buttons.forEach(function (b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      renderLogEntries(entries, btn.getAttribute("data-log-filter"));
+    });
+  });
+}
+
+function renderLogEntries(entries, filter) {
+  var el = document.getElementById("activity-log");
+  var filtered = (filter && filter !== "all") ? entries.filter(function (e) { return e.agent === filter; }) : entries;
+  if (!filtered.length) { el.innerHTML = emptyState("No activity logged yet."); return; }
+  el.innerHTML = filtered.slice(0, 80).map(function (e) {
+    var icon = e.type === "next" ? "⏳" : "✅";
+    return '<div class="log-line">' +
+      '<span class="log-ts">' + esc(timeAgo(e.ts)) + "</span>" +
+      '<span class="log-agent" style="color:' + esc(ZONE_LOG_COLOR[e.agent] || "#7ef7ff") + '">' + esc(AGENT_LABELS[e.agent] || e.agent) + "</span>" +
+      "<span>" + icon + " " + esc(e.text) + "</span>" +
     "</div>";
-  }).join("") : emptyState("No goals set yet.");
+  }).join("");
 }

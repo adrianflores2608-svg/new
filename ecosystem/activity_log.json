@@ -1,0 +1,6 @@
+{
+  "updated_at": "2026-07-18T00:00:00Z",
+  "updated_by": "init",
+  "note": "Every agent appends here on each run: what it just did (type: done) and what it's queued to do next (type: next). The Activity Log panel reads this straight — newest first.",
+  "entries": []
+}
